@@ -131,7 +131,7 @@ class StringHelper
             $charsets[] = str_split($value);
         }
 
-        return self::createRandomString($length, $charsets);
+        return self::generateRandomString($length, $charsets);
     }
 
     /**
@@ -160,7 +160,7 @@ class StringHelper
             $charsets[] = str_split($value);
         }
 
-        return self::createRandomString($length, $charsets);
+        return self::generateRandomString($length, $charsets);
     }
 
     /**
@@ -190,7 +190,7 @@ class StringHelper
             $charsets[] = str_split($value);
         }
 
-        return self::createRandomString($length, $charsets);
+        return self::generateRandomString($length, $charsets);
     }
 
     /**
@@ -200,7 +200,7 @@ class StringHelper
      * @param  array $charsets
      * @return string
      */
-    public static function createRandomString($length, $charsets)
+    public static function generateRandomString($length, $charsets)
     {
         $string  = '';
         $indices = array_keys($charsets);
