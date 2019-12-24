@@ -23,7 +23,7 @@ namespace Pop\Utils;
  * @license    http://www.popphp.org/license     New BSD License
  * @version    1.0.0
  */
-class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, ArrayableInterface
+class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, \Serializable, ArrayableInterface, JsonableInterface
 {
 
     /**
@@ -39,9 +39,33 @@ class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, Array
      *
      * @param  array $data
      */
-    private function __construct(array $data = [])
+    public function __construct(array $data = [])
     {
         $this->data = $data;
+    }
+
+    /**
+     * Create array object from JSON string
+     *
+     * @param  string  $jsonString
+     * @param  int     $depth
+     * @param  int     $options
+     * @return ArrayObject
+     */
+    public static function createFromJson($jsonString, $depth = 512, $options = 0)
+    {
+        return (new self())->jsonUnserialize($jsonString, $depth, $options);
+    }
+
+    /**
+     * Create array object from serialized string
+     *
+     * @param  string  $string
+     * @return ArrayObject
+     */
+    public static function createFromSerialized($string)
+    {
+        return (new self())->unserialize($string);
     }
 
     /**
@@ -72,6 +96,63 @@ class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, Array
     public function toArray()
     {
         return $this->data;
+    }
+
+    /**
+     * JSON serialize the array object
+     *
+     * @param  int $options
+     * @param  int $depth
+     * @return string
+     */
+    public function jsonSerialize($options = 0, $depth = 512)
+    {
+        return json_encode($this->data, $options, $depth);
+    }
+
+    /**
+     * Unserialize a JSON string
+     *
+     * @param  string  $jsonString
+     * @param  int     $depth
+     * @param  int     $options
+     * @return ArrayObject
+     */
+    public function jsonUnserialize($jsonString, $depth = 512, $options = 0)
+    {
+        $this->data = json_decode($jsonString, true, $depth, $options);
+        return $this;
+    }
+
+    /**
+     * Serialize the array object
+     *
+     * @param  boolean $self
+     * @return string
+     */
+    public function serialize($self = false)
+    {
+        return ($self)? serialize($this) : serialize($this->data);
+    }
+
+    /**
+     * Unserialize a string
+     *
+     * @param  string $string
+     * @throws Exception
+     * @return ArrayObject
+     */
+    public function unserialize($string)
+    {
+        $data = @unserialize($string);
+        if ($data instanceof ArrayObject) {
+            return $data;
+        } else if (is_array($data)) {
+            $this->data = $data;
+            return $this;
+        } else {
+            throw new Exception('Error: The string was not able to be correctly unserialized.');
+        }
     }
 
     /**
