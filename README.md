@@ -25,7 +25,7 @@ Or, require it in your composer.json file
 BASIC USAGE
 -----------
 
-### Array Objects
+### Array Object
 
 The `Pop\Utils\ArrayObject` class implements a number of interfaces to allow it to behave like
 array, but with much more functionality built in. With it, you can access the array data within
@@ -75,7 +75,7 @@ echo $arrayObject->serialize();
 
 ### String Helper
 
-The `Pop\Utils\ArrayObject` class has a number of static methods to assist in
+The `Pop\Utils\StringHelper` class has a number of static methods to assist in
 manipulating and generating strings.
 
 ##### Slugs
@@ -84,7 +84,7 @@ manipulating and generating strings.
 
 use Pop\Utils\StringHelper;
 
-echo StringHelper::createSlug('Hello World'); // hello-world
+echo StringHelper::createSlug('Hello World | Home Page'); // hello-world-home-page
 
 ```
 
@@ -96,7 +96,7 @@ use Pop\Utils\StringHelper;
 
 echo StringHelper::createLinks('Test Email test@test.com and Test Website http://www.test.com/');
 // Test Email <a href="mailto:test@test.com">test@test.com</a> and
-// Test Website < href="http://www.test.com/">http://www.test.com/</a>
+// Test Website <href="http://www.test.com/">http://www.test.com/</a>
 
 
 ```
@@ -115,7 +115,7 @@ echo StringHelper::createRandomAlphaNum(10, StringHelper::UPPERCASE); // 6S73HQ6
 
 ##### Convert Case
 
-The convert case feature allows for the followind case and string format types:
+The convert case feature allows for the following case and string format types:
 
 - TitleCase
 - camelCase
@@ -125,7 +125,7 @@ The convert case feature allows for the followind case and string format types:
 - folder/path
 - url/path (uri)
 
-And that can be utilized via static method calls:
+And can be utilized via a variety of dynamic static method calls:
 
 ```php
 
@@ -137,5 +137,8 @@ echo StringHelper::camelCaseToDash('camelCase');              // camel-case
 echo StringHelper::camelCaseToUnderscore('camelCase');        // camel_case
 echo StringHelper::kebabCaseToTitleCase('kebab-string');      // KebabString
 echo StringHelper::snakeCaseToCamelCase('snake_case_string'); // SnakeCaseString
+echo StringHelper::snakeCaseToNamespace('snake_case_string'); // Snake\Case\String
+echo StringHelper::kebabCaseToPath('kebab-string');           // kebab/string (kebab\string on Windows)
+echo StringHelper::camelCaseToUrl('camelCase');               // camel/case
 
 ```
