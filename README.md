@@ -75,16 +75,16 @@ echo $arrayObject->serialize();
 
 ### String Helper
 
-The `Pop\Utils\StringHelper` class has a number of static methods to assist in
+The `Pop\Utils\Str` class has a number of static methods to assist in
 manipulating and generating strings.
 
 ##### Slugs
 
 ```php
 
-use Pop\Utils\StringHelper;
+use Pop\Utils\Str;
 
-echo StringHelper::createSlug('Hello World | Home Page'); // hello-world-home-page
+echo Str::createSlug('Hello World | Home Page'); // hello-world-home-page
 
 ```
 
@@ -92,9 +92,9 @@ echo StringHelper::createSlug('Hello World | Home Page'); // hello-world-home-pa
 
 ```php
 
-use Pop\Utils\StringHelper;
+use Pop\Utils\Str;
 
-echo StringHelper::createLinks('Test Email test@test.com and Test Website http://www.test.com/');
+echo Str::createLinks('Test Email test@test.com and Test Website http://www.test.com/');
 // Test Email <a href="mailto:test@test.com">test@test.com</a> and
 // Test Website <href="http://www.test.com/">http://www.test.com/</a>
 
@@ -105,11 +105,11 @@ echo StringHelper::createLinks('Test Email test@test.com and Test Website http:/
 
 ```php
 
-use Pop\Utils\StringHelper;
+use Pop\Utils\Str;
 
-echo StringHelper::createRandom(10);                                  // 5.u9MHw{PC
-echo StringHelper::createRandomAlpha(10, StringHelper::LOWERCASE);    // wvjvvsmnjw
-echo StringHelper::createRandomAlphaNum(10, StringHelper::UPPERCASE); // 6S73HQ629R
+echo Str::createRandom(10);                                  // 5.u9MHw{PC
+echo Str::createRandomAlpha(10, Str::LOWERCASE);    // wvjvvsmnjw
+echo Str::createRandomAlphaNum(10, Str::UPPERCASE); // 6S73HQ629R
 
 ```
 
@@ -129,16 +129,16 @@ And can be utilized via a variety of dynamic static method calls:
 
 ```php
 
-use Pop\Utils\StringHelper;
+use Pop\Utils\Str;
 
-echo StringHelper::titleCaseToKebabCase('TitleCase');         // title-case
-echo StringHelper::titleCaseToSnakeCase('TitleCase');         // title_case
-echo StringHelper::camelCaseToDash('camelCase');              // camel-case
-echo StringHelper::camelCaseToUnderscore('camelCase');        // camel_case
-echo StringHelper::kebabCaseToTitleCase('kebab-string');      // KebabString
-echo StringHelper::snakeCaseToCamelCase('snake_case_string'); // SnakeCaseString
-echo StringHelper::snakeCaseToNamespace('snake_case_string'); // Snake\Case\String
-echo StringHelper::kebabCaseToPath('kebab-string');           // kebab/string (kebab\string on Windows)
-echo StringHelper::camelCaseToUrl('camelCase');               // camel/case
+echo Str::titleCaseToKebabCase('TitleCase');         // title-case
+echo Str::titleCaseToSnakeCase('TitleCase');         // title_case
+echo Str::camelCaseToDash('camelCase');              // camel-case
+echo Str::camelCaseToUnderscore('camelCase');        // camel_case
+echo Str::kebabCaseToTitleCase('kebab-string');      // KebabString
+echo Str::snakeCaseToCamelCase('snake_case_string'); // SnakeCaseString
+echo Str::snakeCaseToNamespace('snake_case_string'); // Snake\Case\String
+echo Str::kebabCaseToPath('kebab-string');           // kebab/string (kebab\string on Windows)
+echo Str::camelCaseToUrl('camelCase');               // camel/case
 
 ```

@@ -23,7 +23,7 @@ namespace Pop\Utils;
  * @license    http://www.popphp.org/license     New BSD License
  * @version    1.0.0
  */
-class StringHelper
+class Str
 {
 
     /**
@@ -71,13 +71,15 @@ class StringHelper
      * Convert the string into an SEO-friendly slug.
      *
      * @param  string $string
+     * @param  string $separator
      * @return string
      */
-    public static function createSlug($string)
+    public static function createSlug($string, $separator = '-')
     {
-        return preg_replace(
-            '/-*-/', '-', str_replace(' ', '-', preg_replace('/([^a-zA-Z0-9 \-\/])/', '', strtolower($string)))
-        );
+        $string = str_replace(' ', $separator, preg_replace('/([^a-zA-Z0-9 \-\/])/', '', strtolower($string)));
+        $regex  = '/' . $separator . '*' . $separator .'/';
+
+        return preg_replace($regex, $separator, $string);
     }
 
     /**
