@@ -23,35 +23,29 @@ namespace Pop\Utils;
  * @license    http://www.popphp.org/license     New BSD License
  * @version    1.0.0
  */
-class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, ArrayableInterface
+class Collection extends AbstractArray implements \ArrayAccess, \Countable, \IteratorAggregate
 {
-
-    /**
-     * Array of items in the collection
-     * @var array
-     */
-    protected $items = null;
 
     /**
      * Constructor
      *
      * Instantiate the collection object
      *
-     * @param mixed $items
+     * @param mixed $data
      */
-    public function __construct($items = [])
+    public function __construct($data = [])
     {
-        $this->items = $this->getItemsAsArray($items);
+        $this->data = $this->getDataAsArray($data);
     }
 
     /**
-     * Method to get the count of items in the collection
+     * Method to get the count of data in the collection
      *
      * @return int
      */
     public function count()
     {
-        return count($this->items);
+        return count($this->data);
     }
 
     /**
@@ -61,7 +55,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function first()
     {
-        return reset($this->items);
+        return reset($this->data);
     }
 
     /**
@@ -71,7 +65,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function next()
     {
-        return next($this->items);
+        return next($this->data);
     }
 
     /**
@@ -81,7 +75,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function current()
     {
-        return current($this->items);
+        return current($this->data);
     }
 
     /**
@@ -91,7 +85,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function last()
     {
-        return end($this->items);
+        return end($this->data);
     }
 
     /**
@@ -101,7 +95,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function key()
     {
-        return key($this->items);
+        return key($this->data);
     }
 
     /**
@@ -113,7 +107,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function contains($key, $strict = false)
     {
-        return in_array($key, $this->items, $strict);
+        return in_array($key, $this->data, $strict);
     }
 
     /**
@@ -124,7 +118,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function each(callable $callback)
     {
-        foreach ($this->items as $key => $item) {
+        foreach ($this->data as $key => $item) {
             if ($callback($item, $key) === false) {
                 break;
             }
@@ -145,7 +139,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
         $new      = [];
         $position = 0;
 
-        foreach ($this->items as $item) {
+        foreach ($this->data as $item) {
             if (($position % $step) === $offset) {
                 $new[] = $item;
             }
@@ -164,7 +158,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function filter(callable $callback = null, $flag = 0)
     {
-        return new static(array_filter($this->items, $callback, $flag));
+        return new static(array_filter($this->data, $callback, $flag));
     }
 
     /**
@@ -176,20 +170,20 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function map(callable $callback, $flag = 0)
     {
-        return new static(array_map($callback, $this->items));
+        return new static(array_map($callback, $this->data));
     }
 
     /**
-     * Flip the items in the collection
+     * Flip the data in the collection
      *
      * @return Collection
      */
     public function flip()
     {
-        foreach ($this->items as $i => $item) {
-            $this->items[$i] = array_flip($item);
+        foreach ($this->data as $i => $item) {
+            $this->data[$i] = array_flip($item);
         }
-        return new static($this->items);
+        return new static($this->data);
     }
 
     /**
@@ -210,41 +204,41 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function isEmpty()
     {
-        return empty($this->items);
+        return empty($this->data);
     }
 
     /**
-     * Get the keys of the collection items
+     * Get the keys of the collection data
      *
      * @return Collection
      */
     public function keys()
     {
-        return new static(array_keys($this->items));
+        return new static(array_keys($this->data));
     }
 
     /**
-     * Get the values of the collection items
+     * Get the values of the collection data
      *
      * @return Collection
      */
     public function values()
     {
-        return new static(array_values($this->items));
+        return new static(array_values($this->data));
     }
 
     /**
-     * Merge the collection with the passed items
+     * Merge the collection with the passed data
      *
-     * @param  mixed   $items
+     * @param  mixed   $data
      * @param  boolean $recursive
      * @return Collection
      */
-    public function merge($items, $recursive = false)
+    public function merge($data, $recursive = false)
     {
         return ($recursive) ?
-            new static(array_merge_recursive($this->items, $this->getItemsAsArray($items))) :
-            new static(array_merge($this->items, $this->getItemsAsArray($items)));
+            new static(array_merge_recursive($this->data, $this->getDataAsArray($data))) :
+            new static(array_merge($this->data, $this->getDataAsArray($data)));
     }
 
     /**
@@ -266,7 +260,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function pop()
     {
-        return array_pop($this->items);
+        return array_pop($this->data);
     }
 
     /**
@@ -288,7 +282,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function shift()
     {
-        return array_shift($this->items);
+        return array_shift($this->data);
     }
 
     /**
@@ -300,7 +294,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function slice($offset, $length = null)
     {
-        return new static(array_slice($this->items, $offset, $length, true));
+        return new static(array_slice($this->data, $offset, $length, true));
     }
 
     /**
@@ -314,12 +308,12 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
     public function splice($offset, $length = null, $replacement = [])
     {
         return ((null === $length) && (count($replacement) == 0)) ?
-            new static(array_splice($this->items, $offset)) :
-            new static(array_splice($this->items, $offset, $length, $replacement));
+            new static(array_splice($this->data, $offset)) :
+            new static(array_splice($this->data, $offset, $length, $replacement));
     }
 
     /**
-     * Sort items
+     * Sort data
      *
      * @param  callable|null $callback
      * @param  int           $flags
@@ -327,15 +321,15 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function sort(callable $callback = null, $flags = SORT_REGULAR)
     {
-        $items = $this->items;
+        $data = $this->data;
 
         if (null !== $callback) {
-            uasort($items, $callback);
+            uasort($data, $callback);
         } else {
-            asort($items, $flags);
+            asort($data, $flags);
         }
 
-        return new static($items);
+        return new static($data);
     }
 
     /**
@@ -346,7 +340,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function sortByAsc($flags = SORT_REGULAR)
     {
-        $results = $this->items;
+        $results = $this->data;
         asort($results, $flags);
         return new static($results);
     }
@@ -359,19 +353,9 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function sortByDesc($flags = SORT_REGULAR)
     {
-        $results = $this->items;
+        $results = $this->data;
         arsort($results, $flags);
         return new static($results);
-    }
-
-    /**
-     * Method to get collection object items (alias to toArray)
-     *
-     * @return array
-     */
-    public function getItems()
-    {
-        return $this->items;
     }
 
     /**
@@ -381,7 +365,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function toArray()
     {
-        return $this->items;
+        return $this->data;
     }
 
     /**
@@ -391,31 +375,32 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new \ArrayIterator($this->data);
     }
 
     /**
-     * Method to get items as an array
+     * Method to get data as an array
      *
-     * @param  mixed $items
+     * @param  mixed $data
      * @return array
      */
-    protected function getItemsAsArray($items)
+    protected function getDataAsArray($data)
     {
-        if ($items instanceof self) {
-            $items = $items->getItems();
-        } else if ($items instanceof \ArrayObject) {
-            $items = (array)$items;
-        } else if (($items instanceof \ArrayAccess) && method_exists($items, 'toArray')) {
-            $items = $items->toArray();
-        } else if ($items instanceof \Traversable) {
-            $items = iterator_to_array($items);
+        if ($data instanceof self) {
+            $data = $data->toArray();
+        } else if ($data instanceof \ArrayObject) {
+            $data = (array)$data;
+        } else if (is_object($data) && method_exists($data, 'toArray')) {
+            $data = $data->toArray();
+        } else if ($data instanceof \Traversable) {
+            $data = iterator_to_array($data);
         }
-        return $items;
+
+        return $data;
     }
 
     /**
-     * Magic method to set the property to the value of $this->items[$name]
+     * Magic method to set the property to the value of $this->data[$name]
      *
      * @param  string $name
      * @param  mixed $value
@@ -424,44 +409,44 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate, Arraya
     public function __set($name, $value)
     {
         if (null !== $name) {
-            $this->items[$name] = $value;
+            $this->data[$name] = $value;
         } else {
-            $this->items[] = $value;
+            $this->data[] = $value;
         }
     }
 
     /**
-     * Magic method to return the value of $this->items[$name]
+     * Magic method to return the value of $this->data[$name]
      *
      * @param  string $name
      * @return mixed
      */
     public function __get($name)
     {
-        return (isset($this->items[$name])) ? $this->items[$name] : null;
+        return (isset($this->data[$name])) ? $this->data[$name] : null;
     }
 
     /**
-     * Magic method to return the isset value of $this->items[$name]
+     * Magic method to return the isset value of $this->data[$name]
      *
      * @param  string $name
      * @return boolean
      */
     public function __isset($name)
     {
-        return array_key_exists($name, $this->items);
+        return array_key_exists($name, $this->data);
     }
 
     /**
-     * Magic method to unset $this->items[$name]
+     * Magic method to unset $this->data[$name]
      *
      * @param  string $name
      * @return void
      */
     public function __unset($name)
     {
-        if (isset($this->items[$name])) {
-            unset($this->items[$name]);
+        if (isset($this->data[$name])) {
+            unset($this->data[$name]);
         }
     }
 

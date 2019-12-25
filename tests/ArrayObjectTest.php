@@ -3,6 +3,7 @@
 namespace Pop\Utils\Test;
 
 use Pop\Utils\ArrayObject;
+use Pop\Utils\Test\TestAsset\MockIterator;
 use PHPUnit\Framework\TestCase;
 
 class ArrayObjectTest extends TestCase
@@ -12,6 +13,12 @@ class ArrayObjectTest extends TestCase
     {
         $arrayObject = new ArrayObject(['foo' => 'bar']);
         $this->assertInstanceOf('Pop\Utils\ArrayObject', $arrayObject);
+    }
+
+    public function testConstructorException()
+    {
+        $this->expectException('Pop\Utils\Exception');
+        $arrayObject = new ArrayObject('bad');
     }
 
     public function testGettersAndSetters()
@@ -32,11 +39,41 @@ class ArrayObjectTest extends TestCase
         $this->assertFalse(isset($arrayObject['foo']));
     }
 
-    public function testToArray()
+    public function testToArray1()
     {
         $ary = ['foo' => 'bar'];
         $arrayObject = new ArrayObject($ary);
         $this->assertTrue(($ary === $arrayObject->toArray()));
+    }
+
+    public function testToArray2()
+    {
+        $ary = ['foo' => 'bar'];
+        $arrayObject = new ArrayObject(new ArrayObject(['foo' => 'bar']));
+        $this->assertTrue(($ary === $arrayObject->toArray()));
+    }
+
+    public function testToArray3()
+    {
+        $ary = ['foo' => 'bar'];
+        $arrayObject = new ArrayObject(new \ArrayObject(['foo' => 'bar'], \ArrayObject::ARRAY_AS_PROPS));
+        $this->assertTrue(($ary === $arrayObject->toArray()));
+    }
+
+    public function testToArray4()
+    {
+        $ary = ['foo' => 'bar'];
+        $arrayObject = new ArrayObject(new MockIterator(['foo' => 'bar']));
+        $this->assertTrue(($ary === $arrayObject->toArray()));
+    }
+
+    public function testToArrayNested()
+    {
+        $arrayObject = new ArrayObject(['foo' => new ArrayObject(['bar' => 123])]);
+        $ary = $arrayObject->toArray();
+        $this->assertTrue(isset($ary['foo']));
+        $this->assertTrue(isset($ary['foo']['bar']));
+        $this->assertEquals(123, $ary['foo']['bar']);
     }
 
     public function testCount()

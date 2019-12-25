@@ -23,7 +23,7 @@ class CollectionTest extends TestCase
             ]
         ]);
         $this->assertInstanceOf('Pop\Utils\Collection', $collection);
-        $this->assertEquals(2, count($collection->getItems()));
+        $this->assertEquals(2, count($collection->toArray()));
     }
 
     public function testFirstAndLast()
@@ -147,8 +147,8 @@ class CollectionTest extends TestCase
         ]);
 
         ob_start();
-        $collection->each(function($item, $key) {
-            echo $item['name'];
+        $collection->each(function($data, $key) {
+            echo $data['name'];
         });
         $contents = ob_get_clean();
 
@@ -169,11 +169,11 @@ class CollectionTest extends TestCase
         ]);
 
         ob_start();
-        $collection->each(function($item, $key) {
-            if ($item['name'] == 'Jane') {
+        $collection->each(function($data, $key) {
+            if ($data['name'] == 'Jane') {
                 return false;
             }
-            echo $item['name'];
+            echo $data['name'];
         });
         $contents = ob_get_clean();
 
@@ -211,9 +211,9 @@ class CollectionTest extends TestCase
             ]
         ]);
 
-        $newCollection = $collection->filter(function($item) {
-            if ($item['id'] == 1) {
-                return $item;
+        $newCollection = $collection->filter(function($data) {
+            if ($data['id'] == 1) {
+                return $data;
             }
         });
 
@@ -302,9 +302,9 @@ class CollectionTest extends TestCase
             ]
         ]);
 
-        $item = $collection->pop();
+        $data = $collection->pop();
 
-        $this->assertEquals(2, count($item));
+        $this->assertEquals(2, count($data));
         $collection->push(            [
             'id'   => 3,
             'name' => 'Bob'
@@ -326,9 +326,9 @@ class CollectionTest extends TestCase
             ]
         ]);
 
-        $item = $collection->shift();
+        $data = $collection->shift();
 
-        $this->assertEquals(2, count($item));
+        $this->assertEquals(2, count($data));
         $this->assertEquals(1, $collection->count());
     }
 
@@ -458,9 +458,9 @@ class CollectionTest extends TestCase
         $this->assertEquals('baz', $collection->foo['bar']);
     }
 
-    public function testGetItemsAsArrayWithSelf()
+    public function testGetDataAsArrayWithSelf()
     {
-        $items = [
+        $datas = [
             [
                 'id'   => 1,
                 'name' => 'John'
@@ -471,15 +471,15 @@ class CollectionTest extends TestCase
             ]
         ];
 
-        $collection1 = new Collection($items);
+        $collection1 = new Collection($datas);
         $collection2 = new Collection($collection1);
 
-        $this->assertTrue(($items === $collection2->getItems()));
+        $this->assertTrue(($datas === $collection2->toArray()));
     }
 
-    public function testGetItemsAsArrayWithArrayObject()
+    public function testGetDataAsArrayWithArrayObject()
     {
-        $items = new \ArrayObject([
+        $datas = new \ArrayObject([
             [
                 'id'   => 1,
                 'name' => 'John'
@@ -490,13 +490,13 @@ class CollectionTest extends TestCase
             ]
         ], \ArrayObject::ARRAY_AS_PROPS);
 
-        $collection = new Collection($items);
-        $this->assertTrue(is_array($collection->getItems()));
+        $collection = new Collection($datas);
+        $this->assertTrue(is_array($collection->toArray()));
     }
 
-    public function testGetItemsAsArrayWithUtilsArrayObject()
+    public function testGetDataAsArrayWithUtilsArrayObject()
     {
-        $items = new ArrayObject([
+        $datas = new ArrayObject([
             [
                 'id'   => 1,
                 'name' => 'John'
@@ -507,13 +507,13 @@ class CollectionTest extends TestCase
             ]
         ]);
 
-        $collection = new Collection($items);
-        $this->assertTrue(is_array($collection->getItems()));
+        $collection = new Collection($datas);
+        $this->assertTrue(is_array($collection->toArray()));
     }
 
-    public function testGetItemsAsArrayWithIterator()
+    public function testGetDataAsArrayWithIterator()
     {
-        $items = new MockIterator([
+        $datas = new MockIterator([
             [
                 'id'   => 1,
                 'name' => 'John'
@@ -524,8 +524,8 @@ class CollectionTest extends TestCase
             ]
         ]);
 
-        $collection = new Collection($items);
-        $this->assertTrue(is_array($collection->getItems()));
+        $collection = new Collection($datas);
+        $this->assertTrue(is_array($collection->toArray()));
     }
 
 

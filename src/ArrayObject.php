@@ -23,24 +23,23 @@ namespace Pop\Utils;
  * @license    http://www.popphp.org/license     New BSD License
  * @version    1.0.0
  */
-class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, \Serializable, ArrayableInterface, JsonableInterface
+class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \IteratorAggregate, \Serializable, JsonableInterface
 {
-
-    /**
-     * Array data
-     * @var array
-     */
-    protected $data = [];
 
     /**
      * Constructor
      *
      * Instantiate the array object
      *
-     * @param  array $data
+     * @param  mixed $data
+     * @throws Exception
      */
-    public function __construct(array $data = [])
+    public function __construct($data = null)
     {
+        if ((null !== $data) && !is_array($data) && !($data instanceof self) && !($data instanceof \ArrayObject) &&
+            !($data instanceof \ArrayAccess) && !($data instanceof \Countable) && !($data instanceof \IteratorAggregate)) {
+            throw new Exception('Error: The data passed must be an array or an array-like object.');
+        }
         $this->data = $data;
     }
 
@@ -88,15 +87,7 @@ class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, \Seri
         return new \ArrayIterator($this->data);
     }
 
-    /**
-     * Get the values as an array
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return $this->data;
-    }
+
 
     /**
      * JSON serialize the array object
@@ -107,7 +98,7 @@ class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, \Seri
      */
     public function jsonSerialize($options = 0, $depth = 512)
     {
-        return json_encode($this->data, $options, $depth);
+        return json_encode($this->toArray(), $options, $depth);
     }
 
     /**
@@ -132,7 +123,7 @@ class ArrayObject implements \ArrayAccess, \Countable, \IteratorAggregate, \Seri
      */
     public function serialize($self = false)
     {
-        return ($self)? serialize($this) : serialize($this->data);
+        return ($self)? serialize($this) : serialize($this->toArray());
     }
 
     /**
