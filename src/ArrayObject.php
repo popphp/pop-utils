@@ -87,8 +87,6 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
         return new \ArrayIterator($this->data);
     }
 
-
-
     /**
      * JSON serialize the array object
      *
