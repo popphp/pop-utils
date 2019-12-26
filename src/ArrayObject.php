@@ -167,7 +167,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      */
     public function __get($name)
     {
-        return (isset($this->data[$name])) ? $this->data[$name] : null;
+        return (array_key_exists($name, $this->data)) ? $this->data[$name] : null;
     }
 
     /**
@@ -178,7 +178,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      */
     public function __isset($name)
     {
-        return isset($this->data[$name]);
+        return array_key_exists($name, $this->data);
     }
 
     /**
@@ -189,7 +189,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      */
     public function __unset($name)
     {
-        if (isset($this->data[$name])) {
+        if (array_key_exists($name, $this->data)) {
             unset($this->data[$name]);
         }
     }
