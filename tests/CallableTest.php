@@ -55,4 +55,60 @@ class CallableTest extends TestCase
         $this->assertFalse($callable->hasConstructorParams());
     }
 
+    public function testFunctionCall()
+    {
+        $callable = new CallableObject('trim', ' Hello World! ');
+        $this->assertEquals('Hello World!', $callable->call());
+    }
+
+    public function testClosureCall()
+    {
+        $callable = new CallableObject(function($name) {
+            return 'This is another way to say hello, ' . $name .'!';
+        }, 'Nick');
+        $this->assertEquals('This is another way to say hello, Nick!', $callable->call());
+    }
+
+    public function testStaticCall()
+    {
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass::sayHello', 'Nick');
+        $this->assertEquals('Hello, Nick', $callable->call());
+    }
+
+    public function testInstanceCall()
+    {
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass->printFoo');
+        $callable->setConstructorParams(['foo' => 'HI!']);
+        $this->assertEquals('HI!', $callable->call());
+    }
+
+    public function testConstructorCall()
+    {
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass', 'HI BACK!');
+        $result = $callable->call();
+        $this->assertInstanceOf('Pop\Utils\Test\TestAsset\TestClass', $result);
+        $this->assertEquals('HI BACK!', $result->printFoo());
+    }
+
+    public function testPrepareNoClassException()
+    {
+        $this->expectException('Pop\Utils\Exception');
+        $callable = new CallableObject('BadClass->badMethod');
+        $result = $callable->call();
+    }
+
+    public function testPrepareNoMethodException()
+    {
+        $this->expectException('Pop\Utils\Exception');
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass->badMethod');
+        $result = $callable->call();
+    }
+
+    public function testPrepareNoCallableException()
+    {
+        $this->expectException('Pop\Utils\Exception');
+        $callable = new CallableObject('badFunction');
+        $result = $callable->call();
+    }
+
 }

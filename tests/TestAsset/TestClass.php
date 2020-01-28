@@ -15,11 +15,11 @@ class TestClass
 
     public function printFoo()
     {
-        echo $this->foo . PHP_EOL;
+        return $this->foo;
     }
 
     public static function sayHello($name)
     {
-        echo 'Hello, ' . $name . PHP_EOL;
+        return 'Hello, ' . $name;
     }
 }
