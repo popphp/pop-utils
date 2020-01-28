@@ -249,7 +249,7 @@ abstract class AbstractCallable implements CallableInterface
     }
 
     /**
-     * Get parameters
+     * Get constructor parameters for instance call
      *
      * @return array
      */
@@ -259,7 +259,7 @@ abstract class AbstractCallable implements CallableInterface
     }
 
     /**
-     * Get a parameter
+     * Get a constructor parameter for instance call
      *
      * @param  string $key
      * @return mixed
@@ -270,7 +270,7 @@ abstract class AbstractCallable implements CallableInterface
     }
 
     /**
-     * Has parameters
+     * Has constructor parameters for instance call
      *
      * @return boolean
      */
@@ -280,7 +280,7 @@ abstract class AbstractCallable implements CallableInterface
     }
 
     /**
-     * Has a parameter
+     * Has a constructor parameter for instance call
      *
      * @param  string $key
      * @return boolean
@@ -291,7 +291,7 @@ abstract class AbstractCallable implements CallableInterface
     }
 
     /**
-     * Remove a parameter
+     * Remove a constructor parameter for instance call
      *
      * @param  string $key
      * @return AbstractCallable
@@ -305,7 +305,7 @@ abstract class AbstractCallable implements CallableInterface
     }
 
     /**
-     * Remove all parameters
+     * Remove all constructor parameters for instance call
      *
      * @return AbstractCallable
      */
@@ -322,6 +322,10 @@ abstract class AbstractCallable implements CallableInterface
      */
     public function isCallable()
     {
+        if (null === $this->callableType) {
+            $this->prepare();
+        }
+
         return (null !== $this->callableType);
     }
 

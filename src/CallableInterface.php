@@ -127,7 +127,7 @@ interface CallableInterface
     public function removeParameters();
 
     /**
-     * Set constructor parameters
+     * Set constructor parameters for instance call
      *
      * @param  array $constructorParams
      * @return CallableInterface
@@ -135,14 +135,14 @@ interface CallableInterface
     public function setConstructorParams(array $constructorParams);
 
     /**
-     * Get parameters
+     * Get constructor parameters for instance call
      *
      * @return array
      */
     public function getConstructorParams();
 
     /**
-     * Get a parameter
+     * Get a constructor parameter for instance call
      *
      * @param  string $key
      * @return mixed
@@ -150,14 +150,14 @@ interface CallableInterface
     public function getConstructorParam($key);
 
     /**
-     * Has parameters
+     * Has constructor parameters for instance call
      *
      * @return boolean
      */
     public function hasConstructorParams();
 
     /**
-     * Has a parameter
+     * Has a constructor parameter for instance call
      *
      * @param  string $key
      * @return boolean
@@ -165,7 +165,7 @@ interface CallableInterface
     public function hasConstructorParam($key);
 
     /**
-     * Remove a parameter
+     * Remove a constructor parameter for instance call
      *
      * @param  string $key
      * @return CallableInterface
@@ -173,7 +173,7 @@ interface CallableInterface
     public function removeConstructorParam($key);
 
     /**
-     * Remove all parameters
+     * Remove all constructor parameters for instance call
      *
      * @return CallableInterface
      */

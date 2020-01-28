@@ -15,7 +15,7 @@ class CallableTest extends TestCase
         $this->assertEquals('trim', $callable->getCallable());
         $this->assertEquals(' Hello World! ', $callable->getParameter(0));
         $this->assertNull($callable->getCallableType());
-        $this->assertFalse($callable->isCallable());
+        $this->assertTrue($callable->isCallable());
         $this->assertFalse($callable->wasCalled());
     }
 
@@ -57,8 +57,10 @@ class CallableTest extends TestCase
 
     public function testFunctionCall()
     {
-        $callable = new CallableObject('trim', ' Hello World! ');
-        $this->assertEquals('Hello World!', $callable->call());
+        $callable1 = new CallableObject('trim', ' Hello World! ');
+        $this->assertEquals('Hello World!', $callable1->call());
+        $callable2 = new CallableObject('uniqid');
+        $this->assertEquals(13, strlen($callable2->call()));
     }
 
     public function testClosureCall()
@@ -72,6 +74,7 @@ class CallableTest extends TestCase
     public function testStaticCall()
     {
         $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass::sayHello', 'Nick');
+        $this->assertTrue($callable->isCallable());
         $this->assertEquals('Hello, Nick', $callable->call());
     }
 
@@ -82,12 +85,48 @@ class CallableTest extends TestCase
         $this->assertEquals('HI!', $callable->call());
     }
 
+    public function testInstanceCallWithParams1()
+    {
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass->setFoo', ['foo' => 'HI!']);
+        $result = $callable->call();
+        $this->assertEquals('HI!', $result->getFoo());
+    }
+
+    public function testInstanceCallWithParams2()
+    {
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass->addFoo', ['foo' => 'HOW ARE YOU?']);
+        $callable->setConstructorParams(['foo' => 'HI! ']);
+        $result = $callable->call();
+        $this->assertEquals('HI! HOW ARE YOU?', $result->getFoo());
+    }
+
     public function testConstructorCall()
+    {
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass');
+        $result = $callable->call();
+        $result->setFoo('HI!!!');
+        $this->assertInstanceOf('Pop\Utils\Test\TestAsset\TestClass', $result);
+        $this->assertEquals('HI!!!', $result->printFoo());
+    }
+
+    public function testConstructorCallWithParams()
     {
         $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass', 'HI BACK!');
         $result = $callable->call();
         $this->assertInstanceOf('Pop\Utils\Test\TestAsset\TestClass', $result);
         $this->assertEquals('HI BACK!', $result->printFoo());
+    }
+
+    public function testCallWithParams1()
+    {
+        $callable = new CallableObject('trim');
+        $this->assertEquals('Hello World!', $callable->call(' Hello World! '));
+    }
+
+    public function testCallWithParams2()
+    {
+        $callable = new CallableObject(function($var1, $var2){ return $var1 . ' ' . $var2;});
+        $this->assertEquals('Hello World!', $callable->call(['Hello', 'World!']));
     }
 
     public function testPrepareNoClassException()
@@ -110,5 +149,27 @@ class CallableTest extends TestCase
         $callable = new CallableObject('badFunction');
         $result = $callable->call();
     }
+
+    public function testPrepareParameters1()
+    {
+        $param    = new CallableObject(function(){ return ' Hello World! ';});
+        $callable = new CallableObject('trim', $param);
+        $this->assertEquals('Hello World!', $callable->call());
+    }
+
+    public function testPrepareParameters2()
+    {
+        $param    = function(){ return ' Hello World! ';};
+        $callable = new CallableObject('trim', $param);
+        $this->assertEquals('Hello World!', $callable->call());
+    }
+
+    public function testPrepareParameters3()
+    {
+        $param    = [[function($foo){ return $foo;}, ' Hello World! ']];
+        $callable = new CallableObject('trim', $param);
+        $this->assertEquals('Hello World!', $callable->call());
+    }
+
 
 }

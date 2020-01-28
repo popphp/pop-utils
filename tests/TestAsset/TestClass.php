@@ -13,6 +13,23 @@ class TestClass
         }
     }
 
+    public function setFoo($foo)
+    {
+        $this->foo = $foo;
+        return $this;
+    }
+
+    public function addFoo($foo)
+    {
+        $this->foo .= $foo;
+        return $this;
+    }
+
+    public function getFoo()
+    {
+        return $this->foo;
+    }
+
     public function printFoo()
     {
         return $this->foo;

@@ -57,18 +57,18 @@ class CallableObject extends AbstractCallable
         $method = null;
 
         if ($this->callable instanceof \Closure) {
-            $this->callableType = (!empty($this->parameters)) ? self::CLOSURE_PARAMS : self::CLOSURE;
+            $this->callableType = self::CLOSURE;
         } else if (is_string($this->callable)) {
             if (strpos($this->callable, '::') !== false) {
-                $this->callableType = (!empty($this->parameters)) ? self::STATIC_CALL_PARAMS : self::STATIC_CALL;
+                $this->callableType = self::STATIC_CALL;
                 [$class, $method]   = explode('::', $this->callable);
             } else if (strpos($this->callable, '->') !== false) {
-                $this->callableType = (!empty($this->parameters)) ? self::INSTANCE_CALL_PARAMS : self::INSTANCE_CALL;
+                $this->callableType = self::INSTANCE_CALL;
                 [$class, $method]   = explode('->', $this->callable);
             } else if (class_exists($this->callable)) {
-                $this->callableType = (!empty($this->parameters)) ? self::CONSTRUCTOR_CALL_PARAMS : self::CONSTRUCTOR_CALL;
+                $this->callableType = self::CONSTRUCTOR_CALL;
             } else if (function_exists($this->callable)) {
-                $this->callableType = (!empty($this->parameters)) ? self::FUNCTION_PARAMS : self::FUNCTION;
+                $this->callableType = self::FUNCTION;
             }
         }
 
@@ -83,8 +83,10 @@ class CallableObject extends AbstractCallable
             }
         }
 
-        if (!$this->isCallable()) {
+        if (null === $this->callableType) {
             throw new Exception('Error: Unable to prepare the callable object for execution.');
+        } else if (!empty($this->parameters)) {
+            $this->callableType .= '_PARAMS';
         }
 
         $this->class  = $class;
@@ -116,23 +118,23 @@ class CallableObject extends AbstractCallable
     }
 
     /**
-     * Execute the call
+     * Execute the callable
      *
      * @param  mixed $parameters
      * @return mixed
      */
     public function call($parameters = null)
     {
-        if (!$this->isCallable()) {
-            $this->prepare();
-        }
-
         if (null !== $parameters) {
             if (!is_array($parameters)) {
                 $this->addParameter($parameters);
             } else {
                 $this->addParameters($parameters);
             }
+        }
+
+        if (null === $this->callableType) {
+            $this->prepare();
         }
 
         $this->prepareParameters();
@@ -142,30 +144,31 @@ class CallableObject extends AbstractCallable
         switch ($this->callableType) {
             case self::FUNCTION:
             case self::CLOSURE:
-                $result = ${$this->callable}();
+            case self::STATIC_CALL:
+                $result = call_user_func($this->callable);
                 break;
             case self::FUNCTION_PARAMS:
             case self::CLOSURE_PARAMS:
             case self::STATIC_CALL_PARAMS:
                 $result = call_user_func_array($this->callable, $this->parameters);
                 break;
-            case self::STATIC_CALL:
-                $result = call_user_func($this->callable);
-                break;
             case self::INSTANCE_CALL:
+                $class  = $this->class;
                 $object = (!empty($this->constructorParams)) ?
-                    (new \ReflectionClass($this->class))->newInstanceArgs($this->constructorParams) :
-                    new ${$this->class}();
+                    (new \ReflectionClass($class))->newInstanceArgs($this->constructorParams) :
+                    new $class();
                 $result = call_user_func([$object, $this->method]);
                 break;
             case self::INSTANCE_CALL_PARAMS:
+                $class  = $this->class;
                 $object = (!empty($this->constructorParams)) ?
-                    (new \ReflectionClass($this->class))->newInstanceArgs($this->constructorParams) :
-                    new ${$this->class}();
+                    (new \ReflectionClass($class))->newInstanceArgs($this->constructorParams) :
+                    new $class();
                 $result = call_user_func_array([$object, $this->method], $this->parameters);
                 break;
             case self::CONSTRUCTOR_CALL:
-                $result = new ${$this->callable}();
+                $class  = $this->callable;
+                $result = new $class();
                 break;
             case self::CONSTRUCTOR_CALL_PARAMS:
                 $result = (new \ReflectionClass($this->callable))->newInstanceArgs($this->parameters);
