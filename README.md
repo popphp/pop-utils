@@ -18,7 +18,7 @@ Install `pop-utils` using Composer.
 Or, require it in your composer.json file
 
     "require": {
-        "popphp/pop-utils" : "1.0.*"
+        "popphp/pop-utils" : "1.1.*"
     }
 
 
@@ -103,7 +103,34 @@ $callable->addParameter('hello world');
 echo $callable->call(); // Outputs 'HELLO WORLD!'
 ```
 
+Here's an alternate way to call by passing the parameter in at the time of the call:
+
+```php
+use Pop\Utils\CallableObject;
+
+$callable = new CallableObject(function ($var) { echo strtoupper($var) . '!';});
+echo $callable->call('hello world'); // Outputs 'HELLO WORLD!'
+```
+
+
+##### Static Method Callable
+
+```php
+use Pop\Utils\CallableObject;
+
+$callable = new CallableObject('MyClass::someMethod');
+echo $callable->call(); // Executes the static 'someMethod()' from class 'MyClass'
+
 ##### Instance Method Callable
+
+```php
+use Pop\Utils\CallableObject;
+
+$callable = new CallableObject('MyClass->someMethod');
+echo $callable->call(); // Executes the 'someMethod()' in an instance of 'MyClass'
+```
+
+##### Constructor Callable
 
 ```php
 use Pop\Utils\CallableObject;
@@ -131,14 +158,6 @@ $myInstance = $callable->call();
 $myInstance->printString() ;
 ```
 
-##### Instance Method Callable
-
-```php
-use Pop\Utils\CallableObject;
-
-$callable = new CallableObject('MyClass->someMethod');
-echo $callable->call(); // Executes the 'someMethod()' in an instance of 'MyClass'
-```
 
 ### String Helper
 
