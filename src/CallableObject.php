@@ -123,6 +123,10 @@ class CallableObject extends AbstractCallable
      */
     public function call($parameters = null)
     {
+        if (!$this->isCallable()) {
+            $this->prepare();
+        }
+
         if (null !== $parameters) {
             if (!is_array($parameters)) {
                 $this->addParameter($parameters);
@@ -152,13 +156,13 @@ class CallableObject extends AbstractCallable
                 $object = (!empty($this->constructorParams)) ?
                     (new \ReflectionClass($this->class))->newInstanceArgs($this->constructorParams) :
                     new ${$this->class}();
-                $result = call_user_func([$object, ${$this->method}]);
+                $result = call_user_func([$object, $this->method]);
                 break;
             case self::INSTANCE_CALL_PARAMS:
                 $object = (!empty($this->constructorParams)) ?
                     (new \ReflectionClass($this->class))->newInstanceArgs($this->constructorParams) :
                     new ${$this->class}();
-                $result = call_user_func_array([$object, ${$this->method}], $this->parameters);
+                $result = call_user_func_array([$object, $this->method], $this->parameters);
                 break;
             case self::CONSTRUCTOR_CALL:
                 $result = new ${$this->callable}();
