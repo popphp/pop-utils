@@ -58,6 +58,8 @@ class CallableObject extends AbstractCallable
 
         if ($this->callable instanceof \Closure) {
             $this->callableType = self::CLOSURE;
+        } else if (is_object($this->callable)) {
+            $this->callableType = self::OBJECT;
         } else if (is_string($this->callable)) {
             if (strpos($this->callable, '::') !== false) {
                 $this->callableType = self::STATIC_CALL;
@@ -172,6 +174,9 @@ class CallableObject extends AbstractCallable
                 break;
             case self::CONSTRUCTOR_CALL_PARAMS:
                 $result = (new \ReflectionClass($this->callable))->newInstanceArgs($this->parameters);
+                break;
+            case self::OBJECT:
+                $result = $this->callable;
                 break;
         }
 

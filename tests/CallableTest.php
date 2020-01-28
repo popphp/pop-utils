@@ -117,6 +117,13 @@ class CallableTest extends TestCase
         $this->assertEquals('HI BACK!', $result->printFoo());
     }
 
+    public function testObjectCall()
+    {
+        $callable = new CallableObject(new \stdClass());
+        $result = $callable->call();
+        $this->assertInstanceOf('stdClass', $result);
+    }
+
     public function testCallWithParams1()
     {
         $callable = new CallableObject('trim');

@@ -39,6 +39,7 @@ abstract class AbstractCallable implements CallableInterface
     const INSTANCE_CALL_PARAMS    = 'INSTANCE_CALL_PARAMS';    // 'Class->method' w/ parameters
     const CONSTRUCTOR_CALL        = 'CONSTRUCTOR_CALL';        // 'Class'
     const CONSTRUCTOR_CALL_PARAMS = 'CONSTRUCTOR_CALL_PARAMS'; // 'Class' w/ parameters
+    const OBJECT                  = 'OBJECT';                  // Already an instantiated object
 
     /**
      * Callable
