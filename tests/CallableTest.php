@@ -4,6 +4,7 @@ namespace Pop\Utils\Test;
 
 use Pop\Utils\CallableObject;
 use PHPUnit\Framework\TestCase;
+use Pop\Utils\Test\TestAsset\TestClass;
 
 class CallableTest extends TestCase
 {
@@ -115,6 +116,12 @@ class CallableTest extends TestCase
         $result = $callable->call();
         $this->assertInstanceOf('Pop\Utils\Test\TestAsset\TestClass', $result);
         $this->assertEquals('HI BACK!', $result->printFoo());
+    }
+
+    public function testCallableCall()
+    {
+        $callable = new CallableObject([new TestClass('Hi'), "getFoo"]);
+        $this->assertEquals('Hi', $callable->call());
     }
 
     public function testNewObjectCall()

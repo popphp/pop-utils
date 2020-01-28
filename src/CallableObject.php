@@ -75,6 +75,8 @@ class CallableObject extends AbstractCallable
             } else if (function_exists($this->callable)) {
                 $this->callableType = self::FUNCTION;
             }
+        } else if (is_callable($this->callable)) {
+            $this->callableType = self::IS_CALLABLE;
         }
 
         if (null !== $class) {
@@ -150,11 +152,13 @@ class CallableObject extends AbstractCallable
             case self::FUNCTION:
             case self::CLOSURE:
             case self::STATIC_CALL:
+            case self::IS_CALLABLE:
                 $result = call_user_func($this->callable);
                 break;
             case self::FUNCTION_PARAMS:
             case self::CLOSURE_PARAMS:
             case self::STATIC_CALL_PARAMS:
+            case self::IS_CALLABLE_PARAMS:
                 $result = call_user_func_array($this->callable, $this->parameters);
                 break;
             case self::INSTANCE_CALL:
