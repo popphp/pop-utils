@@ -14,7 +14,7 @@
 namespace Pop\Utils;
 
 /**
- * Pop utils array object class
+ * Pop utils abstract array object class
  *
  * @category   Pop
  * @package    Pop\Utils
