@@ -73,6 +73,73 @@ echo $arrayObject->serialize();
 
 ```
 
+
+### Callable Object
+
+The `Pop\Utils\CallableObject` class helps to manage callable objects and their parameters.
+This includes functions, closures, classes and their methods (both static and instance.)
+
+The parameters can be set anytime in the callable object's life cycle, from the time of
+instantiation via the constructor, via the set/add methods or at the time of calling the object.
+Parameters passed into the callable object can be callable themselves and will be invoked
+at the time the parent callable object is called.
+
+##### Function Callable
+
+```php
+use Pop\Utils\CallableObject;
+
+$callable = new CallableObject('trim', ' Hello World! ');
+echo $callable->call(); // Outputs 'Hello World!'
+```
+
+##### Closure Callable
+
+```php
+use Pop\Utils\CallableObject;
+
+$callable = new CallableObject(function ($var) { echo strtoupper($var) . '!';});
+$callable->addParameter('hello world');
+echo $callable->call(); // Outputs 'HELLO WORLD!'
+```
+
+##### Instance Method Callable
+
+```php
+use Pop\Utils\CallableObject;
+
+class MyClass
+{
+
+    protected $str = null;
+
+    public function __construct($str)
+    {
+        $this->str = $str;
+    }
+
+    public function printString()
+    {
+        echo $this->str;
+    }
+
+}
+
+// Creates an instance of 'MyClass' with the string 'Hello World' passed into the constructor
+$callable = new CallableObject('MyClass', 'Hello World');
+$myInstance = $callable->call();
+$myInstance->printString() ;
+```
+
+##### Instance Method Callable
+
+```php
+use Pop\Utils\CallableObject;
+
+$callable = new CallableObject('MyClass->someMethod');
+echo $callable->call(); // Executes the 'someMethod()' in an instance of 'MyClass'
+```
+
 ### String Helper
 
 The `Pop\Utils\Str` class has a number of static methods to assist in
