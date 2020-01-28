@@ -67,6 +67,9 @@ class CallableObject extends AbstractCallable
             } else if (strpos($this->callable, '->') !== false) {
                 $this->callableType = self::INSTANCE_CALL;
                 [$class, $method]   = explode('->', $this->callable);
+            } else if (substr($this->callable, 0, 4) == 'new ') {
+                $this->callableType = self::NEW_OBJECT;
+                $class = substr($this->callable, 4);
             } else if (class_exists($this->callable)) {
                 $this->callableType = self::CONSTRUCTOR_CALL;
             } else if (function_exists($this->callable)) {
@@ -174,6 +177,10 @@ class CallableObject extends AbstractCallable
                 break;
             case self::CONSTRUCTOR_CALL_PARAMS:
                 $result = (new \ReflectionClass($this->callable))->newInstanceArgs($this->parameters);
+                break;
+            case self::NEW_OBJECT:
+                $class  = $this->class;
+                $result = new $class();
                 break;
             case self::OBJECT:
                 $result = $this->callable;
