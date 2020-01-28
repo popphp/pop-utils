@@ -112,7 +112,6 @@ $callable = new CallableObject(function ($var) { echo strtoupper($var) . '!';});
 echo $callable->call('hello world'); // Outputs 'HELLO WORLD!'
 ```
 
-
 ##### Static Method Callable
 
 ```php
@@ -120,6 +119,7 @@ use Pop\Utils\CallableObject;
 
 $callable = new CallableObject('MyClass::someMethod');
 echo $callable->call(); // Executes the static 'someMethod()' from class 'MyClass'
+```
 
 ##### Instance Method Callable
 
