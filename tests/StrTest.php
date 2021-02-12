@@ -22,10 +22,10 @@ Here is another website http://test.com and an FTP site at ftp://ftp.test.com
 HTML;
 
         $links = Str::createLinks($html, ['target' => '_blank']);
-        $this->assertContains('<a target="_blank" href="mailto:test@test.com">test@test.com</a>', $links);
-        $this->assertContains('<a target="_blank" href="https://www.google.com/">https://www.google.com/</a>', $links);
-        $this->assertContains('<a target="_blank" href="http://test.com">http://test.com</a>', $links);
-        $this->assertContains('<a target="_blank" href="ftp://ftp.test.com">ftp://ftp.test.com</a>', $links);
+        $this->assertStringContainsString('<a target="_blank" href="mailto:test@test.com">test@test.com</a>', $links);
+        $this->assertStringContainsString('<a target="_blank" href="https://www.google.com/">https://www.google.com/</a>', $links);
+        $this->assertStringContainsString('<a target="_blank" href="http://test.com">http://test.com</a>', $links);
+        $this->assertStringContainsString('<a target="_blank" href="ftp://ftp.test.com">ftp://ftp.test.com</a>', $links);
     }
 
     public function testCreateRandom()
