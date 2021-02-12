@@ -1,7 +1,7 @@
 pop-utils
 ==========
 
-[![Build Status](https://travis-ci.org/popphp/pop-utils.svg?branch=master)](https://travis-ci.org/popphp/pop-utils)
+[![Build Status](https://github.com/popphp/ppop-utils/workflows/phpunit/badge.svg)](https://github.com/popphp/pop-utils/actions)
 [![Coverage Status](http://cc.popphp.org/coverage.php?comp=pop-utils)](http://cc.popphp.org/pop-utils/)
 
 OVERVIEW
