@@ -117,7 +117,7 @@ class CallableObject extends AbstractCallable
             } else if (is_array($value) && isset($value[0]) && is_callable($value[0])) {
                 $callable = $value[0];
                 unset($value[0]);
-                $this->parameters[$key] = call_user_func_array($callable, $value);
+                $this->parameters[$key] = call_user_func_array($callable, array_values($value));
             }
         }
 
@@ -159,7 +159,7 @@ class CallableObject extends AbstractCallable
             case self::CLOSURE_PARAMS:
             case self::STATIC_CALL_PARAMS:
             case self::IS_CALLABLE_PARAMS:
-                $result = call_user_func_array($this->callable, $this->parameters);
+                $result = call_user_func_array($this->callable, array_values($this->parameters));
                 break;
             case self::INSTANCE_CALL:
                 $class  = $this->class;
@@ -173,7 +173,7 @@ class CallableObject extends AbstractCallable
                 $object = (!empty($this->constructorParams)) ?
                     (new \ReflectionClass($class))->newInstanceArgs($this->constructorParams) :
                     new $class();
-                $result = call_user_func_array([$object, $this->method], $this->parameters);
+                $result = call_user_func_array([$object, $this->method], array_values($this->parameters));
                 break;
             case self::CONSTRUCTOR_CALL:
                 $class  = $this->callable;
