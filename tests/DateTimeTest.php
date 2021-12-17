@@ -32,7 +32,7 @@ class DateTimeTest extends TestCase
                '05:09',
         ];
         $dateTime = DateTime::getTotal($times, '%H:%I:%S');
-        $this->assertEquals('22:68:94', $dateTime);
+        $this->assertEquals('23:09:34', $dateTime);
     }
 
     public function testAverage1()

@@ -73,6 +73,24 @@ echo $arrayObject->serialize();
 
 ```
 
+### DateTime Object
+
+The `Pop\Utils\DateTime` class extend the native `DateTime` class and adds functionality
+to support adding and averaging times together in the HH:MM:SS format.
+
+```php
+
+use Pop\Utils\DateTime;
+
+$times = ['08:45:18', '15:13:58', '09:05:09'];
+
+$totalTime = Pop\Utils\DateTime::getTotal($times, '%H:%I:%S');
+echo $totalTime . PHP_EOL; // 33:04:25
+
+$averageTime = Pop\Utils\DateTime::getAverage($times, '%H:%I:%S');
+echo $averageTime . PHP_EOL; // 11:01:28
+
+```
 
 ### Callable Object
 

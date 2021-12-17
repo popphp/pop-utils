@@ -165,6 +165,14 @@ class DateTime extends \DateTime
             $totalSeconds  += (int)$totalMinutes * 60;
             $intervalFormat = 'PT' . $totalSeconds . 'S';
         } else {
+            if ($totalSeconds > 60) {
+                $totalMinutes += floor($totalSeconds / 60);
+                $totalSeconds  = $totalSeconds % 60;
+            }
+            if ($totalMinutes > 60) {
+                $totalHours  += floor($totalMinutes / 60);
+                $totalMinutes = $totalMinutes % 60;
+            }
             $intervalFormat = 'PT' . (int)$totalHours . 'H' . (int)$totalMinutes . 'M' . (int)$totalSeconds . 'S';
         }
 
