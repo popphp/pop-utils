@@ -236,6 +236,57 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Method to get dates of a week
+     *
+     * @param  int    $week
+     * @param  int    $year
+     * @param  string $format
+     * @return array
+     */
+    public static function getWeekDates($week = null, $year = null, $format = null)
+    {
+        if (null === $week) {
+            $week = date('W');
+        }
+        if (null === $year) {
+            $year = date('Y');
+        }
+
+        $today     = new static('today');
+        $sunday    = clone $today->setISODate($year, $week, 0);
+        $monday    = clone $today->setISODate($year, $week, 1);
+        $tuesday   = clone $today->setISODate($year, $week, 2);
+        $wednesday = clone $today->setISODate($year, $week, 3);
+        $thursday  = clone $today->setISODate($year, $week, 4);
+        $friday    = clone $today->setISODate($year, $week, 5);
+        $saturday  = clone $today->setISODate($year, $week, 6);
+
+        if (null !== $format) {
+            $weekDates = [
+                0 => $sunday->format($format),
+                1 => $monday->format($format),
+                2 => $tuesday->format($format),
+                3 => $wednesday->format($format),
+                4 => $thursday->format($format),
+                5 => $friday->format($format),
+                6 => $saturday->format($format),
+            ];
+        } else {
+            $weekDates = [
+                0 => $sunday,
+                1 => $monday,
+                2 => $tuesday,
+                3 => $wednesday,
+                4 => $thursday,
+                5 => $friday,
+                6 => $saturday,
+            ];
+        }
+
+        return $weekDates;
+    }
+
+    /**
      * __toString method
      *
      * @return string

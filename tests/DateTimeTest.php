@@ -77,6 +77,38 @@ class DateTimeTest extends TestCase
         $this->assertEquals('00:00:13', $dateTime);
     }
 
+    public function testGetWeekDates1()
+    {
+        $weekDates = DateTime::getWeekDates();
+        $this->assertEquals(7, count($weekDates));
+    }
+
+    public function testGetWeekDates2()
+    {
+        $weekDates = DateTime::getWeekDates(39, 2021);
+        $this->assertEquals(7, count($weekDates));
+        $this->assertEquals('2021-09-26', $weekDates[0]->format('Y-m-d'));
+        $this->assertEquals('2021-09-27', $weekDates[1]->format('Y-m-d'));
+        $this->assertEquals('2021-09-28', $weekDates[2]->format('Y-m-d'));
+        $this->assertEquals('2021-09-29', $weekDates[3]->format('Y-m-d'));
+        $this->assertEquals('2021-09-30', $weekDates[4]->format('Y-m-d'));
+        $this->assertEquals('2021-10-01', $weekDates[5]->format('Y-m-d'));
+        $this->assertEquals('2021-10-02', $weekDates[6]->format('Y-m-d'));
+    }
+
+    public function testGetWeekDates3()
+    {
+        $weekDates = DateTime::getWeekDates(39, 2021, 'Y-m-d');
+        $this->assertEquals(7, count($weekDates));
+        $this->assertEquals('2021-09-26', $weekDates[0]);
+        $this->assertEquals('2021-09-27', $weekDates[1]);
+        $this->assertEquals('2021-09-28', $weekDates[2]);
+        $this->assertEquals('2021-09-29', $weekDates[3]);
+        $this->assertEquals('2021-09-30', $weekDates[4]);
+        $this->assertEquals('2021-10-01', $weekDates[5]);
+        $this->assertEquals('2021-10-02', $weekDates[6]);
+    }
+
     public function testToString1()
     {
         $dateTime = DateTime::create('12/16/21', null, 'Y-m-d');
