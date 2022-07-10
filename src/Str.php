@@ -40,7 +40,7 @@ class Str
     protected static $randomChars = [
         'abcdefghjkmnpqrstuvwxyz',
         'ABCDEFGHJKLMNPQRSTUVWXYZ',
-        '23456789',
+        '0123456789',
         '!?#$%&@-_+*=,.:;()[]{}',
     ];
 
@@ -196,13 +196,25 @@ class Str
     }
 
     /**
+     * Generate a random numeric string of a predefined length.
+     *
+     * @param  int $length
+     * @param  int $case
+     * @return string
+     */
+    public static function createRandomNumeric($length)
+    {
+        return self::generateRandomString($length, [str_split(self::$randomChars[2])]);
+    }
+
+    /**
      * Generate characters based on length and character sets provided
      *
      * @param  int   $length
      * @param  array $charsets
      * @return string
      */
-    public static function generateRandomString($length, $charsets)
+    public static function generateRandomString($length, array $charsets)
     {
         $string  = '';
         $indices = array_keys($charsets);

@@ -44,9 +44,14 @@ HTML;
 
     public function testCreateRandomAlpha()
     {
-        $this->assertEquals(0, preg_match('/[23456789!?#$%&@\-\_\+\*=\,\.:;\(\)\[\]\{\}]/', Str::createRandomAlpha(6)));
-        $this->assertEquals(0, preg_match('/[23456789!?#$%&@\-\_\+\*=\,\.:;\(\)\[\]\{\}]/', Str::createRandomAlpha(8, Str::LOWERCASE)));
-        $this->assertEquals(0, preg_match('/[23456789!?#$%&@\-\_\+\*=\,\.:;\(\)\[\]\{\}]/', Str::createRandomAlpha(10, Str::UPPERCASE)));
+        $this->assertEquals(0, preg_match('/[0123456789!?#$%&@\-\_\+\*=\,\.:;\(\)\[\]\{\}]/', Str::createRandomAlpha(6)));
+        $this->assertEquals(0, preg_match('/[0123456789!?#$%&@\-\_\+\*=\,\.:;\(\)\[\]\{\}]/', Str::createRandomAlpha(8, Str::LOWERCASE)));
+        $this->assertEquals(0, preg_match('/[0123456789!?#$%&@\-\_\+\*=\,\.:;\(\)\[\]\{\}]/', Str::createRandomAlpha(10, Str::UPPERCASE)));
+    }
+
+    public function testCreateRandomNumeric()
+    {
+        $this->assertEquals(1, preg_match('/[0123456789]/', Str::createRandomNumeric(6)));
     }
 
     public function testCaseConvert()
