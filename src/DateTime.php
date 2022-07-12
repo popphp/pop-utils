@@ -13,8 +13,6 @@
  */
 namespace Pop\Utils;
 
-use PhpParser\Builder\Property;
-
 /**
  * Pop utils date-time helper class
  *
