@@ -18,7 +18,7 @@ Install `pop-utils` using Composer.
 Or, require it in your composer.json file
 
     "require": {
-        "popphp/pop-utils" : "1.1.*"
+        "popphp/pop-utils" : "1.3.*"
     }
 
 
