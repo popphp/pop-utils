@@ -202,10 +202,10 @@ class DateTime extends \DateTime
             $hh   = floor($averageTime / 3600);
             $mins = $averageTime - ($hh * 3600);
             $mm   = floor($mins / 60);
-            $ss   = ($mins - ($mm * 60)) % 60;
+            $ss   = (int)($mins - ($mm * 60)) % 60;
         } else if (($averageTime < 3600) && ($averageTime >= 60)) {
             $mm = floor($averageTime / 60);
-            $ss = ($averageTime % 60);
+            $ss = ((int)$averageTime % 60);
         } else {
             $ss = $averageTime;
         }

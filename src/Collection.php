@@ -13,6 +13,8 @@
  */
 namespace Pop\Utils;
 
+use ReturnTypeWillChange;
+
 /**
  * Pop utils array object class
  *
@@ -43,7 +45,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }
@@ -363,7 +365,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->data;
     }
@@ -373,7 +375,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->data);
     }
@@ -456,7 +458,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $offset
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->__isset($offset);
     }
@@ -467,6 +469,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $offset
      * @return mixed
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);
@@ -479,7 +482,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $value
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->__set($offset, $value);
     }
@@ -490,7 +493,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $offset
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->__unset($offset);
     }

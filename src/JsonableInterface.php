@@ -33,7 +33,7 @@ interface JsonableInterface extends \JsonSerializable
      * @param  int $depth
      * @return string
      */
-    public function jsonSerialize($options = 0, $depth = 512);
+    public function jsonSerialize($options = 0, $depth = 512): string;
 
     /**
      * Unserialize a JSON string

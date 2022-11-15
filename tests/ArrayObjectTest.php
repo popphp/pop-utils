@@ -115,8 +115,8 @@ class ArrayObjectTest extends TestCase
     {
         $ary = ['foo' => 'bar'];
         $arrayObject = new ArrayObject($ary);
-        $this->assertEquals('C:21:"Pop\Utils\ArrayObject":26:{a:1:{s:3:"foo";s:3:"bar";}}', $arrayObject->serialize(true));
-        $arrayObject = ArrayObject::createFromSerialized('C:21:"Pop\Utils\ArrayObject":26:{a:1:{s:3:"foo";s:3:"bar";}}');
+        $this->assertEquals('O:21:"Pop\Utils\ArrayObject":1:{s:3:"foo";s:3:"bar";}', $arrayObject->serialize(true));
+        $arrayObject = ArrayObject::createFromSerialized('O:21:"Pop\Utils\ArrayObject":1:{s:3:"foo";s:3:"bar";}');
         $this->assertTrue(($ary === $arrayObject->toArray()));
     }
 

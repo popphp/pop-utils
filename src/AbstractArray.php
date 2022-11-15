@@ -37,7 +37,7 @@ abstract class AbstractArray implements ArrayableInterface
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $data = [];
 

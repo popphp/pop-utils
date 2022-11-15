@@ -13,6 +13,8 @@
  */
 namespace Pop\Utils;
 
+use ReturnTypeWillChange;
+
 /**
  * Pop utils array object class
  *
@@ -72,7 +74,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }
@@ -82,7 +84,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->data);
     }
@@ -94,7 +96,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  int $depth
      * @return string
      */
-    public function jsonSerialize($options = 0, $depth = 512)
+    public function jsonSerialize($options = 0, $depth = 512): string
     {
         return json_encode($this->toArray(), $options, $depth);
     }
@@ -142,6 +144,28 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
         } else {
             throw new Exception('Error: The string was not able to be correctly unserialized.');
         }
+    }
+
+    /**
+     * Serialize megic method
+     *
+     * @return string
+     */
+    public function __serialize()
+    {
+        return $this->data;
+    }
+
+    /**
+     * Unserialize magic method
+     *
+     * @param  array $data
+     * @return ArrayObject
+     */
+    public function __unserialize(array $data)
+    {
+        $this->data = $data;
+        return $this;
     }
 
     /**
@@ -199,7 +223,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $value
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->__set($offset, $value);
     }
@@ -210,6 +234,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $offset
      * @return mixed
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);
@@ -221,7 +246,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $offset
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->__isset($offset);
     }
@@ -232,7 +257,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $offset
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->__unset($offset);
     }
