@@ -18,7 +18,7 @@ Install `pop-utils` using Composer.
 Or, require it in your composer.json file
 
     "require": {
-        "popphp/pop-utils" : "1.3.*"
+        "popphp/pop-utils" : "2.0.*"
     }
 
 
@@ -75,8 +75,11 @@ echo $arrayObject->serialize();
 
 ### DateTime Object
 
-The `Pop\Utils\DateTime` class extend the native `DateTime` class and adds functionality
-to support adding and averaging times together in the HH:MM:SS format.
+The `Pop\Utils\DateTime` class extend the native `DateTime` class and adds some helper functions:
+
+- Add HH:MM:SS formatted times together for a total time in the HH:MM:SS format.
+- Average HH:MM:SS formatted times together for an average time in the HH:MM:SS format.
+- Get the dates of any week in any year.
 
 ```php
 
@@ -90,6 +93,21 @@ echo $totalTime . PHP_EOL; // 33:04:25
 $averageTime = Pop\Utils\DateTime::getAverage($times, '%H:%I:%S');
 echo $averageTime . PHP_EOL; // 11:01:28
 
+$weekDates = DateTime::getWeekDates(40, 2023, 'Y-m-d'); // 40th week of the year 2023
+print_r($weekDates);
+
+/**
+Array
+(
+    [0] => 2023-10-01
+    [1] => 2023-10-02
+    [2] => 2023-10-03
+    [3] => 2023-10-04
+    [4] => 2023-10-05
+    [5] => 2023-10-06
+    [6] => 2023-10-07
+)
+*/
 ```
 
 ### Callable Object
@@ -211,9 +229,10 @@ echo Str::createLinks('Test Email test@test.com and Test Website http://www.test
 
 use Pop\Utils\Str;
 
-echo Str::createRandom(10);                                  // 5.u9MHw{PC
+echo Str::createRandom(10);                         // 5.u9MHw{PC
 echo Str::createRandomAlpha(10, Str::LOWERCASE);    // wvjvvsmnjw
 echo Str::createRandomAlphaNum(10, Str::UPPERCASE); // 6S73HQ629R
+echo Str::createRandomAlphaNum(10, Str::MIXEDCASE); // Yfd35M3T92
 
 ```
 
