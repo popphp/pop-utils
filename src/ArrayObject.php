@@ -40,7 +40,7 @@ class ArrayObject extends AbstractArray implements ArrayAccess, Countable, Itera
      */
     public function __construct(mixed $data = null)
     {
-        if ((null !== $data) && !is_array($data) && !($data instanceof self) && !($data instanceof \ArrayObject) &&
+        if (($data !== null) && !is_array($data) && !($data instanceof self) && !($data instanceof \ArrayObject) &&
             !($data instanceof \ArrayAccess) && !($data instanceof \Countable) && !($data instanceof \IteratorAggregate)) {
             throw new Exception('Error: The data passed must be an array or an array-like object.');
         }

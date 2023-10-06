@@ -311,7 +311,7 @@ class Collection extends AbstractArray implements ArrayAccess, Countable, Iterat
      */
     public function splice(int $offset, ?int $length = null, mixed $replacement = []): Collection
     {
-        return ((null === $length) && (count($replacement) == 0)) ?
+        return (($length === null) && (count($replacement) == 0)) ?
             new static(array_splice($this->data, $offset)) :
             new static(array_splice($this->data, $offset, $length, $replacement));
     }
@@ -327,7 +327,7 @@ class Collection extends AbstractArray implements ArrayAccess, Countable, Iterat
     {
         $data = $this->data;
 
-        if (null !== $callback) {
+        if ($callback !== null) {
             uasort($data, $callback);
         } else {
             asort($data, $flags);
@@ -412,7 +412,7 @@ class Collection extends AbstractArray implements ArrayAccess, Countable, Iterat
      */
     public function __set(?string $name = null, mixed $value = null)
     {
-        if (null !== $name) {
+        if ($name !== null) {
             $this->data[$name] = $value;
         } else {
             $this->data[] = $value;

@@ -326,11 +326,11 @@ abstract class AbstractCallable implements CallableInterface
      */
     public function isCallable(): bool
     {
-        if (null === $this->callableType) {
+        if ($this->callableType === null) {
             $this->prepare();
         }
 
-        return (null !== $this->callableType);
+        return ($this->callableType !== null);
     }
 
     /**

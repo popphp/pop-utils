@@ -40,7 +40,7 @@ class CallableObject extends AbstractCallable
     public function __construct(mixed $callable, mixed $parameters = null)
     {
         $this->setCallable($callable);
-        if (null !== $parameters) {
+        if ($parameters !== null) {
             if (is_array($parameters)) {
                 $this->setParameters($parameters);
             } else {
@@ -83,18 +83,18 @@ class CallableObject extends AbstractCallable
             $this->callableType = self::IS_CALLABLE;
         }
 
-        if (null !== $class) {
+        if ($class !== null) {
             if (!class_exists($class)) {
                 throw new Exception("Error: The class '" . $class . "' does not exist.");
             }
-            if (null !== $method) {
+            if ($method !== null) {
                 if (!method_exists($class, $method)) {
                     throw new Exception("Error: The method '" . $method  . "' does not exist in the class '" . $class . "'.");
                 }
             }
         }
 
-        if (null === $this->callableType) {
+        if ($this->callableType === null) {
             throw new Exception('Error: Unable to prepare the callable object for execution.');
         } else if (!empty($this->parameters)) {
             $this->callableType .= '_PARAMS';
@@ -138,7 +138,7 @@ class CallableObject extends AbstractCallable
      */
     public function call(mixed $parameters = null): mixed
     {
-        if (null !== $parameters) {
+        if ($parameters !== null) {
             if (!is_array($parameters)) {
                 $this->addParameter($parameters);
             } else {
@@ -146,7 +146,7 @@ class CallableObject extends AbstractCallable
             }
         }
 
-        if (null === $this->callableType) {
+        if ($this->callableType === null) {
             $this->prepare();
         }
 

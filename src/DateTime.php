@@ -56,10 +56,10 @@ class DateTime extends \DateTime
         ?string $defaultDateFormat = null, ?string $defaultTimeFormat = null): static
     {
         $dt = new static($dateTime, $timeZone);
-        if (null !== $defaultDateFormat) {
+        if ($defaultDateFormat !== null) {
             $dt->setDefaultDateFormat($defaultDateFormat);
         }
-        if (null !== $defaultTimeFormat) {
+        if ($defaultTimeFormat !== null) {
             $dt->setDefaultTimeFormat($defaultTimeFormat);
         }
 
@@ -183,7 +183,7 @@ class DateTime extends \DateTime
 
         $dateInterval = new DateInterval($intervalFormat);
 
-        return (null !== $format) ? $dateInterval->format($format) : $dateInterval;
+        return ($format !== null) ? $dateInterval->format($format) : $dateInterval;
     }
 
     /**
@@ -238,7 +238,7 @@ class DateTime extends \DateTime
 
         $dateInterval = new DateInterval($intervalFormat);
 
-        return (null !== $format) ? $dateInterval->format($format) : $dateInterval;
+        return ($format !== null) ? $dateInterval->format($format) : $dateInterval;
     }
 
     /**
@@ -251,10 +251,10 @@ class DateTime extends \DateTime
      */
     public static function getWeekDates(?int $week = null, ?int $year = null, ?string $format = null): array
     {
-        if (null === $week) {
+        if ($week === null) {
             $week = date('W');
         }
-        if (null === $year) {
+        if ($year === null) {
             $year = date('Y');
         }
 
@@ -267,7 +267,7 @@ class DateTime extends \DateTime
         $friday    = clone $today->setISODate($year, $week, 5);
         $saturday  = clone $today->setISODate($year, $week, 6);
 
-        if (null !== $format) {
+        if ($format !== null) {
             $weekDates = [
                 0 => $sunday->format($format),
                 1 => $monday->format($format),

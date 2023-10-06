@@ -251,33 +251,33 @@ class Str
             case 'kebabcase':
             case 'dash':
                 $separator = '-';
-                if (null === $preserveCase) {
+                if ($preserveCase === null) {
                     $preserveCase = false;
                 }
                 break;
             case 'snakecase':
             case 'underscore':
                 $separator = '_';
-                if (null === $preserveCase) {
+                if ($preserveCase === null) {
                     $preserveCase = false;
                 }
                 break;
             case 'namespace':
                 $separator = '\\';
-                if (null === $preserveCase) {
+                if ($preserveCase === null) {
                     $preserveCase = true;
                 }
                 break;
             case 'path':
                 $separator = DIRECTORY_SEPARATOR;
-                if (null === $preserveCase) {
+                if ($preserveCase === null) {
                     $preserveCase = true;
                 }
                 break;
             case 'uri':
             case 'url':
                 $separator = '/';
-                if (null === $preserveCase) {
+                if ($preserveCase === null) {
                     $preserveCase = true;
                 }
                 break;
@@ -314,7 +314,7 @@ class Str
                 break;
         }
 
-        if (null === $result) {
+        if ($result === null) {
             switch ($to) {
                 case 'titlecase':
                     $result = ucfirst(self::convertToCamelCase($string, $prevSeparator));
