@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -19,9 +19,9 @@ namespace Pop\Utils;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 abstract class AbstractCallable implements CallableInterface
 {
@@ -48,43 +48,43 @@ abstract class AbstractCallable implements CallableInterface
      * Callable
      * @var mixed
      */
-    protected $callable = null;
+    protected mixed $callable = null;
 
     /**
      * Parameters
      * @var array
      */
-    protected $parameters = [];
+    protected array $parameters = [];
 
     /**
      * Callable type
-     * @var string
+     * @var ?string
      */
-    protected $callableType = null;
+    protected ?string $callableType = null;
 
     /**
      * Was called flag
-     * @var boolean
+     * @var bool
      */
-    protected $wasCalled = false;
+    protected bool $wasCalled = false;
 
     /**
      * Callable class
-     * @var string
+     * @var ?string
      */
-    protected $class = null;
+    protected ?string $class = null;
 
     /**
      * Callable method
-     * @var string
+     * @var ?string
      */
-    protected $method = null;
+    protected ?string $method = null;
 
     /**
      * Constructor parameters for instance calls
      * @var array
      */
-    protected $constructorParams = [];
+    protected array $constructorParams = [];
 
     /**
      * Set callable
@@ -92,7 +92,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  mixed $callable
      * @return AbstractCallable
      */
-    public function setCallable($callable)
+    public function setCallable(mixed $callable): AbstractCallable
     {
         $this->callable = $callable;
         return $this;
@@ -103,7 +103,7 @@ abstract class AbstractCallable implements CallableInterface
      *
      * @return mixed
      */
-    public function getCallable()
+    public function getCallable(): mixed
     {
         return $this->callable;
     }
@@ -111,9 +111,9 @@ abstract class AbstractCallable implements CallableInterface
     /**
      * Get callable type
      *
-     * @return string
+     * @return ?string
      */
-    public function getCallableType()
+    public function getCallableType(): ?string
     {
         return $this->callableType;
     }
@@ -124,7 +124,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  array $parameters
      * @return AbstractCallable
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): AbstractCallable
     {
         $this->parameters = $parameters;
         return $this;
@@ -136,7 +136,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  array $parameters
      * @return AbstractCallable
      */
-    public function addParameters(array $parameters)
+    public function addParameters(array $parameters): AbstractCallable
     {
         foreach ($parameters as $key => $value) {
             if (is_numeric($key)) {
@@ -154,7 +154,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  mixed $parameter
      * @return AbstractCallable
      */
-    public function addParameter($parameter)
+    public function addParameter(mixed $parameter): AbstractCallable
     {
         $this->parameters[] = $parameter;
         return $this;
@@ -167,7 +167,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  mixed  $parameter
      * @return AbstractCallable
      */
-    public function addNamedParameter($name, $parameter)
+    public function addNamedParameter(string $name, mixed $parameter): AbstractCallable
     {
         $this->parameters[$name] = $parameter;
         return $this;
@@ -178,7 +178,7 @@ abstract class AbstractCallable implements CallableInterface
      *
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -189,7 +189,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  string $key
      * @return mixed
      */
-    public function getParameter($key)
+    public function getParameter(string $key): mixed
     {
         return (isset($this->parameters[$key])) ? $this->parameters[$key] : null;
     }
@@ -197,9 +197,9 @@ abstract class AbstractCallable implements CallableInterface
     /**
      * Has parameters
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasParameters()
+    public function hasParameters(): bool
     {
         return !empty($this->parameters);
     }
@@ -208,9 +208,9 @@ abstract class AbstractCallable implements CallableInterface
      * Has a parameter
      *
      * @param  string $key
-     * @return boolean
+     * @return bool
      */
-    public function hasParameter($key)
+    public function hasParameter(string $key): bool
     {
         return isset($this->parameters[$key]);
     }
@@ -221,7 +221,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  string $key
      * @return AbstractCallable
      */
-    public function removeParameter($key)
+    public function removeParameter(string $key): AbstractCallable
     {
         if (isset($this->parameters[$key])) {
             unset($this->parameters[$key]);
@@ -234,7 +234,7 @@ abstract class AbstractCallable implements CallableInterface
      *
      * @return AbstractCallable
      */
-    public function removeParameters()
+    public function removeParameters(): AbstractCallable
     {
         $this->parameters = [];
         return $this;
@@ -246,7 +246,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  array $constructorParams
      * @return AbstractCallable
      */
-    public function setConstructorParams(array $constructorParams)
+    public function setConstructorParams(array $constructorParams): AbstractCallable
     {
         $this->constructorParams = $constructorParams;
         return $this;
@@ -257,7 +257,7 @@ abstract class AbstractCallable implements CallableInterface
      *
      * @return array
      */
-    public function getConstructorParams()
+    public function getConstructorParams(): array
     {
         return $this->constructorParams;
     }
@@ -268,7 +268,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  string $key
      * @return mixed
      */
-    public function getConstructorParam($key)
+    public function getConstructorParam(string $key): mixed
     {
         return (isset($this->constructorParams[$key])) ? $this->constructorParams[$key] : null;
     }
@@ -276,9 +276,9 @@ abstract class AbstractCallable implements CallableInterface
     /**
      * Has constructor parameters for instance call
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasConstructorParams()
+    public function hasConstructorParams(): bool
     {
         return !empty($this->constructorParams);
     }
@@ -287,9 +287,9 @@ abstract class AbstractCallable implements CallableInterface
      * Has a constructor parameter for instance call
      *
      * @param  string $key
-     * @return boolean
+     * @return bool
      */
-    public function hasConstructorParam($key)
+    public function hasConstructorParam(string $key): bool
     {
         return isset($this->constructorParams[$key]);
     }
@@ -300,7 +300,7 @@ abstract class AbstractCallable implements CallableInterface
      * @param  string $key
      * @return AbstractCallable
      */
-    public function removeConstructorParam($key)
+    public function removeConstructorParam(string $key): AbstractCallable
     {
         if (isset($this->constructorParams[$key])) {
             unset($this->constructorParams[$key]);
@@ -313,7 +313,7 @@ abstract class AbstractCallable implements CallableInterface
      *
      * @return AbstractCallable
      */
-    public function removeConstructorParams()
+    public function removeConstructorParams(): AbstractCallable
     {
         $this->constructorParams = [];
         return $this;
@@ -322,9 +322,9 @@ abstract class AbstractCallable implements CallableInterface
     /**
      * Check if object is callable
      *
-     * @return boolean
+     * @return bool
      */
-    public function isCallable()
+    public function isCallable(): bool
     {
         if (null === $this->callableType) {
             $this->prepare();
@@ -336,9 +336,9 @@ abstract class AbstractCallable implements CallableInterface
     /**
      * Check if object was called
      *
-     * @return boolean
+     * @return bool
      */
-    public function wasCalled()
+    public function wasCalled(): bool
     {
         return $this->wasCalled;
     }
@@ -348,14 +348,14 @@ abstract class AbstractCallable implements CallableInterface
      *
      * @return AbstractCallable
      */
-    abstract public function prepare();
+    abstract public function prepare(): AbstractCallable;
 
     /**
      * Prepare parameters
      *
      * @return AbstractCallable
      */
-    abstract public function prepareParameters();
+    abstract public function prepareParameters(): AbstractCallable;
 
     /**
      * Execute the call
@@ -363,6 +363,6 @@ abstract class AbstractCallable implements CallableInterface
      * @param  mixed $parameters
      * @return mixed
      */
-    abstract public function call($parameters = null);
+    abstract public function call(mixed $parameters = null): mixed;
 
 }

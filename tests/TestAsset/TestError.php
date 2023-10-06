@@ -6,7 +6,7 @@ use Pop\Utils\AbstractError;
 
 class TestError extends AbstractError
 {
-    protected $errorMessages = [
+    protected array $errorMessages = [
         1 => 'Error #1',
         2 => 'Error #2',
         3 => 'Error #3',

@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -19,9 +19,9 @@ namespace Pop\Utils;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 interface ErrorInterface
 {
@@ -31,7 +31,7 @@ interface ErrorInterface
      *
      * @return array
      */
-    public function getErrorCodes();
+    public function getErrorCodes(): array;
 
     /**
      * Set error code (clear all previous errors)
@@ -39,7 +39,7 @@ interface ErrorInterface
      * @param  mixed $errorCode
      * @return ErrorInterface
      */
-    public function setErrorCode($errorCode);
+    public function setErrorCode(mixed $errorCode): ErrorInterface;
 
     /**
      * Set error codes (clear all previous errors)
@@ -47,7 +47,7 @@ interface ErrorInterface
      * @param  array $errorCodes
      * @return ErrorInterface
      */
-    public function setErrorCodes(array $errorCodes);
+    public function setErrorCodes(array $errorCodes): ErrorInterface;
 
     /**
      * Add error code
@@ -55,7 +55,7 @@ interface ErrorInterface
      * @param  mixed $errorCode
      * @return ErrorInterface
      */
-    public function addErrorCode($errorCode);
+    public function addErrorCode(mixed $errorCode): ErrorInterface;
 
     /**
      * Add error codes
@@ -63,49 +63,49 @@ interface ErrorInterface
      * @param  array $errorCodes
      * @return ErrorInterface
      */
-    public function addErrorCodes(array $errorCode);
+    public function addErrorCodes(array $errorCode): ErrorInterface;
 
     /**
      * Has error codes
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasErrorCodes();
+    public function hasErrorCodes(): bool;
 
     /**
      * Has error (alias)
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasError();
+    public function hasError(): bool;
 
     /**
      * Is error (alias)
      *
-     * @return boolean
+     * @return bool
      */
-    public function isError();
+    public function isError(): bool;
 
     /**
      * Get error messages
      *
      * @return array
      */
-    public function getErrorMessages();
+    public function getErrorMessages(): array;
 
     /**
      * Get all error messages
      *
      * @return array
      */
-    public function getAllErrorMessages();
+    public function getAllErrorMessages(): array;
 
     /**
      * Get all error codes
      *
      * @return array
      */
-    public function getAllErrorCodes();
+    public function getAllErrorCodes(): array;
 
     /**
      * Get error message from a provided error code
@@ -113,6 +113,6 @@ interface ErrorInterface
      * @param  mixed $errorCode
      * @return string
      */
-    public function getErrorMessage($errorCode);
+    public function getErrorMessage(mixed $errorCode): string;
 
 }

@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -19,18 +19,18 @@ namespace Pop\Utils;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 abstract class AbstractArray implements ArrayableInterface
 {
 
     /**
      * Array data
-     * @var array
+     * @var mixed
      */
-    protected $data = [];
+    protected mixed $data = null;
 
     /**
      * Get the values as an array
@@ -41,13 +41,15 @@ abstract class AbstractArray implements ArrayableInterface
     {
         $data = [];
 
-        if (is_object($this->data) && method_exists($this->data, 'toArray')) {
-            $data = $this->data->toArray();
-        } else if ($this->data instanceof \ArrayObject) {
-            $data = (array)$this->data;
-        } else if ($this->data instanceof \Traversable) {
-            $data = iterator_to_array($this->data);
-        } else if (is_array($this->data)) {
+        if (!is_array($this->data)) {
+            if (is_object($this->data) && method_exists($this->data, 'toArray')) {
+                $data = $this->data->toArray();
+            } else if ($this->data instanceof \ArrayObject) {
+                $data = (array)$this->data;
+            } else if ($this->data instanceof \Traversable) {
+                $data = iterator_to_array($this->data);
+            }
+        } else {
             $data = $this->data;
         }
 

@@ -14,7 +14,7 @@
 namespace Pop\Utils;
 
 /**
- * Pop utils arrayable interface
+ * Pop utils serializable interface
  *
  * @category   Pop
  * @package    Pop\Utils
@@ -23,14 +23,22 @@ namespace Pop\Utils;
  * @license    http://www.popphp.org/license     New BSD License
  * @version    2.0.0
  */
-interface ArrayableInterface
+interface SerializableInterface extends \JsonSerializable
 {
 
     /**
-     * Get the array object as an array.
+     * Serialize the array object
      *
-     * @return array
+     * @return string
      */
-    public function toArray(): array;
+    public function serialize(): string;
+
+    /**
+     * Unserialize a string
+     *
+     * @param  string $string
+     * @return mixed
+     */
+    public function unserialize(string $string): mixed;
 
 }

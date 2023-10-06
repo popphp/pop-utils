@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -13,41 +13,47 @@
  */
 namespace Pop\Utils;
 
+use DateTimeZone;
+use DateInterval;
+
 /**
  * Pop utils date-time helper class
  *
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 class DateTime extends \DateTime
 {
 
     /**
      * Default date format
-     * @var string
+     * @var ?string
      */
-    protected $defaultDateFormat = null;
+    protected ?string $defaultDateFormat = null;
 
     /**
      * Default time format
-     * @var string
+     * @var ?string
      */
-    protected $defaultTimeFormat = null;
+    protected ?string $defaultTimeFormat = null;
 
     /**
      * Create a new DateTime object
      *
      * @param  string        $dateTime
-     * @param  \DateTimeZone $timeZone
-     * @param  string        $defaultDateFormat
-     * @param  string        $defaultTimeFormat
+     * @param  ?DateTimeZone $timeZone
+     * @param  ?string       $defaultDateFormat
+     * @param  ?string       $defaultTimeFormat
+     * @throws \Exception
      * @return static
      */
-    public static function create($dateTime = 'now', \DateTimeZone $timeZone = null, $defaultDateFormat = null, $defaultTimeFormat = null)
+    public static function create(
+        string $dateTime = 'now', ?DateTimeZone $timeZone = null,
+        ?string $defaultDateFormat = null, ?string $defaultTimeFormat = null): static
     {
         $dt = new static($dateTime, $timeZone);
         if (null !== $defaultDateFormat) {
@@ -66,7 +72,7 @@ class DateTime extends \DateTime
      * @param  string $defaultDateFormat
      * @return static
      */
-    public function setDefaultDateFormat($defaultDateFormat)
+    public function setDefaultDateFormat(string $defaultDateFormat): static
     {
         $this->defaultDateFormat = $defaultDateFormat;
         return $this;
@@ -77,7 +83,7 @@ class DateTime extends \DateTime
      *
      * @return string
      */
-    public function getDefaultDateFormat()
+    public function getDefaultDateFormat(): string
     {
         return $this->defaultDateFormat;
     }
@@ -85,9 +91,9 @@ class DateTime extends \DateTime
     /**
      * Method to see if the object as a default date format
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasDefaultDateFormat()
+    public function hasDefaultDateFormat(): bool
     {
         return !empty($this->defaultDateFormat);
     }
@@ -98,7 +104,7 @@ class DateTime extends \DateTime
      * @param  string $defaultTimeFormat
      * @return static
      */
-    public function setDefaultTimeFormat($defaultTimeFormat)
+    public function setDefaultTimeFormat(string $defaultTimeFormat): static
     {
         $this->defaultTimeFormat = $defaultTimeFormat;
         return $this;
@@ -109,7 +115,7 @@ class DateTime extends \DateTime
      *
      * @return string
      */
-    public function getDefaultTimeFormat()
+    public function getDefaultTimeFormat(): string
     {
         return $this->defaultTimeFormat;
     }
@@ -117,9 +123,9 @@ class DateTime extends \DateTime
     /**
      * Method to see if the object as a default time format
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasDefaultTimeFormat()
+    public function hasDefaultTimeFormat(): bool
     {
         return !empty($this->defaultTimeFormat);
     }
@@ -129,18 +135,19 @@ class DateTime extends \DateTime
      *
      * Standard hh:mm:ss format string is '%H:%I:%S'
      *
-     * @param  array   $times
-     * @param  string  $format
-     * @param  boolean $secondsOnly
-     * @return \DateInterval|string
+     * @param  array $times
+     * @param  ?string $format
+     * @param  bool $secondsOnly
+     * @throws \Exception
+     * @return DateInterval|string
      */
-    public static function getTotal(array $times, $format = null, $secondsOnly = false)
+    public static function getTotal(array $times, ?string $format = null, bool $secondsOnly = false): DateInterval|string
     {
         $totalHours   = 0;
         $totalMinutes = 0;
         $totalSeconds = 0;
 
-        foreach ($times as $i => $time) {
+        foreach ($times as $time) {
             if ($time instanceof \DateInterval) {
                 $hours   = $time->format('%h');
                 $minutes = $time->format('%i');
@@ -174,7 +181,7 @@ class DateTime extends \DateTime
             $intervalFormat = 'PT' . (int)$totalHours . 'H' . (int)$totalMinutes . 'M' . (int)$totalSeconds . 'S';
         }
 
-        $dateInterval = new \DateInterval($intervalFormat);
+        $dateInterval = new DateInterval($intervalFormat);
 
         return (null !== $format) ? $dateInterval->format($format) : $dateInterval;
     }
@@ -185,11 +192,12 @@ class DateTime extends \DateTime
      * Standard hh:mm:ss format string is '%H:%I:%S'
      *
      * @param  array   $times
-     * @param  string  $format
-     * @param  boolean $secondsOnly
-     * @return \DateInterval|string
+     * @param  ?string $format
+     * @param  bool    $secondsOnly
+     * @throws \Exception
+     * @return DateInterval|string
      */
-    public static function getAverage(array $times, $format = null, $secondsOnly = false)
+    public static function getAverage(array $times, ?string $format = null, bool $secondsOnly = false): DateInterval|string
     {
         $total       = static::getTotal($times, null, true);
         $totalTime   = $total->s;
@@ -203,7 +211,7 @@ class DateTime extends \DateTime
             $mins = $averageTime - ($hh * 3600);
             $mm   = floor($mins / 60);
             $ss   = (int)($mins - ($mm * 60)) % 60;
-        } else if (($averageTime < 3600) && ($averageTime >= 60)) {
+        } else if ($averageTime >= 60) {
             $mm = floor($averageTime / 60);
             $ss = ((int)$averageTime % 60);
         } else {
@@ -228,7 +236,7 @@ class DateTime extends \DateTime
             }
         }
 
-        $dateInterval = new \DateInterval($intervalFormat);
+        $dateInterval = new DateInterval($intervalFormat);
 
         return (null !== $format) ? $dateInterval->format($format) : $dateInterval;
     }
@@ -236,12 +244,12 @@ class DateTime extends \DateTime
     /**
      * Method to get dates of a week
      *
-     * @param  int    $week
-     * @param  int    $year
-     * @param  string $format
+     * @param  ?int    $week
+     * @param  ?int    $year
+     * @param  ?string $format
      * @return array
      */
-    public static function getWeekDates($week = null, $year = null, $format = null)
+    public static function getWeekDates(?int $week = null, ?int $year = null, ?string $format = null): array
     {
         if (null === $week) {
             $week = date('W');
@@ -289,7 +297,7 @@ class DateTime extends \DateTime
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $string = '';
 

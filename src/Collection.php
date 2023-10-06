@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -13,7 +13,10 @@
  */
 namespace Pop\Utils;
 
-use ReturnTypeWillChange;
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
 
 /**
  * Pop utils array object class
@@ -21,11 +24,11 @@ use ReturnTypeWillChange;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
-class Collection extends AbstractArray implements \ArrayAccess, \Countable, \IteratorAggregate
+class Collection extends AbstractArray implements ArrayAccess, Countable, IteratorAggregate
 {
 
     /**
@@ -35,7 +38,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @param mixed $data
      */
-    public function __construct($data = [])
+    public function __construct(mixed $data = [])
     {
         $this->data = $this->getDataAsArray($data);
     }
@@ -55,7 +58,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return mixed
      */
-    public function first()
+    public function first(): mixed
     {
         return reset($this->data);
     }
@@ -65,7 +68,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return mixed
      */
-    public function next()
+    public function next(): mixed
     {
         return next($this->data);
     }
@@ -75,7 +78,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return mixed
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->data);
     }
@@ -85,7 +88,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return mixed
      */
-    public function last()
+    public function last(): mixed
     {
         return end($this->data);
     }
@@ -95,7 +98,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->data);
     }
@@ -103,11 +106,11 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Determine if an item exists in the collection
      *
-     * @param  mixed   $key
-     * @param  boolean $strict
-     * @return boolean
+     * @param  mixed $key
+     * @param  bool  $strict
+     * @return bool
      */
-    public function contains($key, $strict = false)
+    public function contains(mixed $key, bool $strict = false): bool
     {
         return in_array($key, $this->data, $strict);
     }
@@ -118,7 +121,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  callable $callback
      * @return Collection
      */
-    public function each(callable $callback)
+    public function each(callable $callback): Collection
     {
         foreach ($this->data as $key => $item) {
             if ($callback($item, $key) === false) {
@@ -136,7 +139,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  int $offset
      * @return Collection
      */
-    public function every($step, $offset = 0)
+    public function every(int $step, int $offset = 0): Collection
     {
         $new      = [];
         $position = 0;
@@ -154,11 +157,11 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Apply filter to the collection
      *
-     * @param  callable $callback
-     * @param  int      $flag
+     * @param  ?callable $callback
+     * @param  int       $flag
      * @return Collection
      */
-    public function filter(callable $callback = null, $flag = 0)
+    public function filter(?callable $callback = null, int $flag = 0): Collection
     {
         return new static(array_filter($this->data, $callback, $flag));
     }
@@ -167,10 +170,9 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * Apply map to the collection
      *
      * @param  callable $callback
-     * @param  int       $flag
      * @return Collection
      */
-    public function map(callable $callback, $flag = 0)
+    public function map(callable $callback): Collection
     {
         return new static(array_map($callback, $this->data));
     }
@@ -180,7 +182,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return Collection
      */
-    public function flip()
+    public function flip(): Collection
     {
         foreach ($this->data as $i => $item) {
             $this->data[$i] = array_flip($item);
@@ -192,9 +194,9 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * Determine if the key exists
      *
      * @param  mixed $key
-     * @return boolean
+     * @return bool
      */
-    public function has($key)
+    public function has(mixed $key): bool
     {
         return $this->offsetExists($key);
     }
@@ -202,9 +204,9 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Determine if the collection is empty or not
      *
-     * @return boolean
+     * @return bool
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->data);
     }
@@ -214,7 +216,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return Collection
      */
-    public function keys()
+    public function keys(): Collection
     {
         return new static(array_keys($this->data));
     }
@@ -224,7 +226,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return Collection
      */
-    public function values()
+    public function values(): Collection
     {
         return new static(array_values($this->data));
     }
@@ -232,11 +234,11 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Merge the collection with the passed data
      *
-     * @param  mixed   $data
-     * @param  boolean $recursive
+     * @param  mixed $data
+     * @param  bool  $recursive
      * @return Collection
      */
-    public function merge($data, $recursive = false)
+    public function merge(mixed $data, $recursive = false): Collection
     {
         return ($recursive) ?
             new static(array_merge_recursive($this->data, $this->getDataAsArray($data))) :
@@ -250,7 +252,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  int  $perPage
      * @return Collection
      */
-    public function forPage($page, $perPage)
+    public function forPage(int $page, int $perPage): Collection
     {
         return $this->slice(($page - 1) * $perPage, $perPage);
     }
@@ -260,7 +262,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return mixed
      */
-    public function pop()
+    public function pop(): mixed
     {
         return array_pop($this->data);
     }
@@ -271,7 +273,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $value
      * @return Collection
      */
-    public function push($value)
+    public function push(mixed $value): Collection
     {
         $this->offsetSet(null, $value);
         return $this;
@@ -282,7 +284,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      *
      * @return mixed
      */
-    public function shift()
+    public function shift(): mixed
     {
         return array_shift($this->data);
     }
@@ -294,7 +296,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  int $length
      * @return Collection
      */
-    public function slice($offset, $length = null)
+    public function slice(int $offset, int $length = null): Collection
     {
         return new static(array_slice($this->data, $offset, $length, true));
     }
@@ -302,12 +304,12 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Splice a portion of the collection
      *
-     * @param  int      $offset
-     * @param  int|null $length
-     * @param  mixed    $replacement
+     * @param  int   $offset
+     * @param  ?int  $length
+     * @param  mixed $replacement
      * @return Collection
      */
-    public function splice($offset, $length = null, $replacement = [])
+    public function splice(int $offset, ?int $length = null, mixed $replacement = []): Collection
     {
         return ((null === $length) && (count($replacement) == 0)) ?
             new static(array_splice($this->data, $offset)) :
@@ -317,11 +319,11 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Sort data
      *
-     * @param  callable|null $callback
-     * @param  int           $flags
+     * @param  ?callable $callback
+     * @param  int       $flags
      * @return Collection
      */
-    public function sort(callable $callback = null, $flags = SORT_REGULAR)
+    public function sort(?callable $callback = null, int $flags = SORT_REGULAR): Collection
     {
         $data = $this->data;
 
@@ -340,7 +342,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  int $flags
      * @return Collection
      */
-    public function sortByAsc($flags = SORT_REGULAR)
+    public function sortByAsc(int $flags = SORT_REGULAR): Collection
     {
         $results = $this->data;
         asort($results, $flags);
@@ -353,7 +355,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  int $flags
      * @return Collection
      */
-    public function sortByDesc($flags = SORT_REGULAR)
+    public function sortByDesc(int $flags = SORT_REGULAR): Collection
     {
         $results = $this->data;
         arsort($results, $flags);
@@ -373,11 +375,11 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Method to iterate over the collection
      *
-     * @return \ArrayIterator
+     * @return ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->data);
+        return new ArrayIterator($this->data);
     }
 
     /**
@@ -386,7 +388,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $data
      * @return array
      */
-    protected function getDataAsArray($data)
+    protected function getDataAsArray(mixed $data): array
     {
         if ($data instanceof self) {
             $data = $data->toArray();
@@ -404,26 +406,28 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Magic method to set the property to the value of $this->data[$name]
      *
-     * @param  string $name
+     * @param  ?string $name
      * @param  mixed $value
-     * @return void
+     * @return static
      */
-    public function __set($name, $value)
+    public function __set(?string $name = null, mixed $value = null)
     {
         if (null !== $name) {
             $this->data[$name] = $value;
         } else {
             $this->data[] = $value;
         }
+
+        return $this;
     }
 
     /**
      * Magic method to return the value of $this->data[$name]
      *
-     * @param  string $name
+     * @param  string|int $name
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string|int $name): mixed
     {
         return (isset($this->data[$name])) ? $this->data[$name] : null;
     }
@@ -431,10 +435,10 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Magic method to return the isset value of $this->data[$name]
      *
-     * @param  string $name
-     * @return boolean
+     * @param  string|int $name
+     * @return bool
      */
-    public function __isset($name)
+    public function __isset(string|int $name): bool
     {
         return array_key_exists($name, $this->data);
     }
@@ -442,10 +446,10 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
     /**
      * Magic method to unset $this->data[$name]
      *
-     * @param  string $name
+     * @param  string|int $name
      * @return void
      */
-    public function __unset($name)
+    public function __unset(string|int $name): void
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
@@ -456,9 +460,9 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * ArrayAccess offsetExists
      *
      * @param  mixed $offset
-     * @return boolean
+     * @return bool
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return $this->__isset($offset);
     }
@@ -469,8 +473,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $offset
      * @return mixed
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->__get($offset);
     }
@@ -482,7 +485,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $value
      * @return void
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset = null, mixed $value = null): void
     {
         $this->__set($offset, $value);
     }
@@ -493,7 +496,7 @@ class Collection extends AbstractArray implements \ArrayAccess, \Countable, \Ite
      * @param  mixed $offset
      * @return void
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $this->__unset($offset);
     }

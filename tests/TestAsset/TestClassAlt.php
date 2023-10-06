@@ -4,15 +4,13 @@ namespace Pop\Utils\Test\TestAsset;
 
 use PHPUnit\Util\Test;
 
-class TestClass
+class TestClassAlt
 {
-    protected mixed $foo = null;
+    protected mixed $foo = 'bar';
 
-    public function __construct(mixed $foo = null)
+    public function __construct()
     {
-        if (null !== $foo) {
-            $this->foo = $foo;
-        }
+
     }
 
     public function setFoo($foo): TestClass

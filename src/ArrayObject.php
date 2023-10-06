@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -13,7 +13,9 @@
  */
 namespace Pop\Utils;
 
-use ReturnTypeWillChange;
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
 
 /**
  * Pop utils array object class
@@ -21,11 +23,11 @@ use ReturnTypeWillChange;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
-class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \IteratorAggregate, \Serializable, JsonableInterface
+class ArrayObject extends AbstractArray implements ArrayAccess, Countable, IteratorAggregate, SerializableInterface, JsonableInterface
 {
 
     /**
@@ -33,10 +35,10 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      *
      * Instantiate the array object
      *
-     * @param  mixed $data
+     * @param mixed|null $data
      * @throws Exception
      */
-    public function __construct($data = null)
+    public function __construct(mixed $data = null)
     {
         if ((null !== $data) && !is_array($data) && !($data instanceof self) && !($data instanceof \ArrayObject) &&
             !($data instanceof \ArrayAccess) && !($data instanceof \Countable) && !($data instanceof \IteratorAggregate)) {
@@ -48,12 +50,12 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
     /**
      * Create array object from JSON string
      *
-     * @param  string  $jsonString
-     * @param  int     $depth
-     * @param  int     $options
+     * @param  string $jsonString
+     * @param  int    $depth
+     * @param  int    $options
      * @return ArrayObject
      */
-    public static function createFromJson($jsonString, $depth = 512, $options = 0)
+    public static function createFromJson(string $jsonString, int $depth = 512, int $options = 0): ArrayObject
     {
         return (new self())->jsonUnserialize($jsonString, $depth, $options);
     }
@@ -61,10 +63,11 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
     /**
      * Create array object from serialized string
      *
-     * @param  string  $string
+     * @param string $string
      * @return ArrayObject
+     * @throws Exception
      */
-    public static function createFromSerialized($string)
+    public static function createFromSerialized(string $string): ArrayObject
     {
         return (new self())->unserialize($string);
     }
@@ -96,7 +99,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  int $depth
      * @return string
      */
-    public function jsonSerialize($options = 0, $depth = 512): string
+    public function jsonSerialize(int $options = 0, int $depth = 512): string
     {
         return json_encode($this->toArray(), $options, $depth);
     }
@@ -104,12 +107,12 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
     /**
      * Unserialize a JSON string
      *
-     * @param  string  $jsonString
-     * @param  int     $depth
-     * @param  int     $options
+     * @param  string $jsonString
+     * @param  int    $depth
+     * @param  int    $options
      * @return ArrayObject
      */
-    public function jsonUnserialize($jsonString, $depth = 512, $options = 0)
+    public function jsonUnserialize(string $jsonString, int $depth = 512, int $options = 0): ArrayObject
     {
         $this->data = json_decode($jsonString, true, $depth, $options);
         return $this;
@@ -118,10 +121,10 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
     /**
      * Serialize the array object
      *
-     * @param  boolean $self
+     * @param  bool $self
      * @return string
      */
-    public function serialize($self = false)
+    public function serialize(bool $self = false): string
     {
         return ($self)? serialize($this) : serialize($this->toArray());
     }
@@ -133,7 +136,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @throws Exception
      * @return ArrayObject
      */
-    public function unserialize($string)
+    public function unserialize(string $string): ArrayObject
     {
         $data = @unserialize($string);
         if ($data instanceof ArrayObject) {
@@ -147,9 +150,9 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
     }
 
     /**
-     * Serialize megic method
+     * Serialize magic method
      *
-     * @return string
+     * @return mixed
      */
     public function __serialize()
     {
@@ -175,7 +178,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $value
      * @return ArrayObject
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value)
     {
         $this->data[$name] = $value;
         return $this;
@@ -187,20 +190,20 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  string $name
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
-        return (array_key_exists($name, $this->data)) ? $this->data[$name] : null;
+        return (array_key_exists($name, (array)$this->data)) ? $this->data[$name] : null;
     }
 
     /**
      * Is value set
      *
      * @param  string $name
-     * @return boolean
+     * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
-        return array_key_exists($name, $this->data);
+        return array_key_exists($name, (array)$this->data);
     }
 
     /**
@@ -209,9 +212,9 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  string $name
      * @return void
      */
-    public function __unset($name)
+    public function __unset(string $name): void
     {
-        if (array_key_exists($name, $this->data)) {
+        if (array_key_exists($name, (array)$this->data)) {
             unset($this->data[$name]);
         }
     }
@@ -223,7 +226,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $value
      * @return void
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->__set($offset, $value);
     }
@@ -234,8 +237,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $offset
      * @return mixed
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->__get($offset);
     }
@@ -244,9 +246,9 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * ArrayAccess offsetExists
      *
      * @param  mixed $offset
-     * @return boolean
+     * @return bool
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return $this->__isset($offset);
     }
@@ -257,7 +259,7 @@ class ArrayObject extends AbstractArray implements \ArrayAccess, \Countable, \It
      * @param  mixed $offset
      * @return void
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $this->__unset($offset);
     }

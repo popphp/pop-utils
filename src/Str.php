@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -19,9 +19,9 @@ namespace Pop\Utils;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 class Str
 {
@@ -37,7 +37,7 @@ class Str
      * Characters for random string generation (certain characters omitted to eliminate confusion)
      * @var array
      */
-    protected static $randomChars = [
+    protected static array $randomChars = [
         'abcdefghjkmnpqrstuvwxyz',
         'ABCDEFGHJKLMNPQRSTUVWXYZ',
         '0123456789',
@@ -48,7 +48,7 @@ class Str
      * Regex patterns & replacements for links
      * @var array
      */
-    protected static $linksRegex = [
+    protected static array $linksRegex = [
         [
             'pattern'     => '/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/m',
             'replacement' => '<a href="$0">$0</a>'
@@ -63,7 +63,7 @@ class Str
      * Allowed keywords for converting cases
      * @var array
      */
-    protected static $allowedCases = [
+    protected static array $allowedCases = [
         'titlecase', 'camelcase', 'kebabcase', 'dash', 'snakecase', 'underscore', 'namespace', 'path', 'url', 'uri'
     ];
 
@@ -74,7 +74,7 @@ class Str
      * @param  string $separator
      * @return string
      */
-    public static function createSlug($string, $separator = '-')
+    public static function createSlug(string $string, string $separator = '-'): string
     {
         $string = str_replace(' ', $separator, preg_replace('/([^a-zA-Z0-9 \-\/])/', '', strtolower($string)));
         $regex  = '/' . $separator . '*' . $separator .'/';
@@ -89,7 +89,7 @@ class Str
      * @param  array  $attributes
      * @return string
      */
-    public static function createLinks($string, array $attributes = [])
+    public static function createLinks(string $string, array $attributes = []): string
     {
         foreach (self::$linksRegex as $regex) {
             $replacement = $regex['replacement'];
@@ -115,7 +115,7 @@ class Str
      * @param  int $case
      * @return string
      */
-    public static function createRandom($length, $case = self::MIXEDCASE)
+    public static function createRandom(int $length, int $case = self::MIXEDCASE): string
     {
         $chars    = self::$randomChars;
         $charsets = [];
@@ -137,13 +137,13 @@ class Str
     }
 
     /**
-     * Generate a random alpha-numeric string of a predefined length.
+     * Generate a random alphanumeric string of a predefined length.
      *
      * @param  int $length
      * @param  int $case
      * @return string
      */
-    public static function createRandomAlphaNum($length, $case = self::MIXEDCASE)
+    public static function createRandomAlphaNum(int $length, int $case = self::MIXEDCASE): string
     {
         $chars    = self::$randomChars;
         $charsets = [];
@@ -172,7 +172,7 @@ class Str
      * @param  int $case
      * @return string
      */
-    public static function createRandomAlpha($length, $case = self::MIXEDCASE)
+    public static function createRandomAlpha(int $length, int $case = self::MIXEDCASE): string
     {
         $chars    = self::$randomChars;
         $charsets = [];
@@ -199,10 +199,9 @@ class Str
      * Generate a random numeric string of a predefined length.
      *
      * @param  int $length
-     * @param  int $case
      * @return string
      */
-    public static function createRandomNumeric($length)
+    public static function createRandomNumeric(int $length): string
     {
         return self::generateRandomString($length, [str_split(self::$randomChars[2])]);
     }
@@ -214,7 +213,7 @@ class Str
      * @param  array $charsets
      * @return string
      */
-    public static function generateRandomString($length, array $charsets)
+    public static function generateRandomString(int $length, array $charsets): string
     {
         $string  = '';
         $indices = array_keys($charsets);
@@ -235,7 +234,7 @@ class Str
      * @param array  $arguments
      * @return string
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments): string
     {
         [$from, $to]   = explode('to', strtolower($name));
         $string        = $arguments[0] ?? null;
@@ -341,11 +340,11 @@ class Str
      * Convert a camelCase string using the $separator value passed
      *
      * @param string  $string
-     * @param string  $separator
-     * @param boolean $preserveCase
+     * @param ?string $separator
+     * @param bool    $preserveCase
      * @return string
      */
-    public static function convertFromCamelCase($string, $separator, $preserveCase = false)
+    public static function convertFromCamelCase(string $string, ?string $separator = null, bool $preserveCase = false): string
     {
         $stringAry = str_split($string);
         $converted = null;
@@ -361,11 +360,11 @@ class Str
     /**
      * Convert a camelCase string using the $separator value passed
      *
-     * @param string $string
-     * @param string $separator
+     * @param  string $string
+     * @param  string $separator
      * @return string
      */
-    public static function convertToCamelCase($string, $separator)
+    public static function convertToCamelCase(string $string, string $separator): string
     {
         $stringAry = explode($separator, $string);
         $converted = null;

@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -19,9 +19,9 @@ namespace Pop\Utils;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 interface CallableInterface
 {
@@ -32,21 +32,21 @@ interface CallableInterface
      * @param  mixed $callable
      * @return CallableInterface
      */
-    public function setCallable($callable);
+    public function setCallable(mixed $callable): CallableInterface;
 
     /**
      * Get callable
      *
      * @return mixed
      */
-    public function getCallable();
+    public function getCallable(): mixed;
 
     /**
      * Get callable type
      *
-     * @return string
+     * @return ?string
      */
-    public function getCallableType();
+    public function getCallableType(): ?string;
 
     /**
      * Set parameters
@@ -54,7 +54,7 @@ interface CallableInterface
      * @param  array $parameters
      * @return CallableInterface
      */
-    public function setParameters(array $parameters);
+    public function setParameters(array $parameters): CallableInterface;
 
     /**
      * Add parameters
@@ -62,7 +62,7 @@ interface CallableInterface
      * @param  array $parameters
      * @return CallableInterface
      */
-    public function addParameters(array $parameters);
+    public function addParameters(array $parameters): CallableInterface;
 
     /**
      * Add a parameter
@@ -70,7 +70,7 @@ interface CallableInterface
      * @param  mixed $parameter
      * @return CallableInterface
      */
-    public function addParameter($parameter);
+    public function addParameter(mixed $parameter): CallableInterface;
 
     /**
      * Add a parameter
@@ -79,14 +79,14 @@ interface CallableInterface
      * @param  mixed  $parameter
      * @return CallableInterface
      */
-    public function addNamedParameter($name, $parameter);
+    public function addNamedParameter(string $name, mixed $parameter): CallableInterface;
 
     /**
      * Get parameters
      *
      * @return array
      */
-    public function getParameters();
+    public function getParameters(): array;
 
     /**
      * Get a parameter
@@ -94,22 +94,22 @@ interface CallableInterface
      * @param  string $key
      * @return mixed
      */
-    public function getParameter($key);
+    public function getParameter(string $key): mixed;
 
     /**
      * Has parameters
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasParameters();
+    public function hasParameters(): bool;
 
     /**
      * Has a parameter
      *
      * @param  string $key
-     * @return boolean
+     * @return bool
      */
-    public function hasParameter($key);
+    public function hasParameter(string $key): bool;
 
     /**
      * Remove a parameter
@@ -117,14 +117,14 @@ interface CallableInterface
      * @param  string $key
      * @return CallableInterface
      */
-    public function removeParameter($key);
+    public function removeParameter(string $key): CallableInterface;
 
     /**
      * Remove all parameters
      *
      * @return CallableInterface
      */
-    public function removeParameters();
+    public function removeParameters(): CallableInterface;
 
     /**
      * Set constructor parameters for instance call
@@ -132,14 +132,14 @@ interface CallableInterface
      * @param  array $constructorParams
      * @return CallableInterface
      */
-    public function setConstructorParams(array $constructorParams);
+    public function setConstructorParams(array $constructorParams): CallableInterface;
 
     /**
      * Get constructor parameters for instance call
      *
      * @return array
      */
-    public function getConstructorParams();
+    public function getConstructorParams(): array;
 
     /**
      * Get a constructor parameter for instance call
@@ -147,22 +147,22 @@ interface CallableInterface
      * @param  string $key
      * @return mixed
      */
-    public function getConstructorParam($key);
+    public function getConstructorParam(string $key): mixed;
 
     /**
      * Has constructor parameters for instance call
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasConstructorParams();
+    public function hasConstructorParams(): bool;
 
     /**
      * Has a constructor parameter for instance call
      *
      * @param  string $key
-     * @return boolean
+     * @return bool
      */
-    public function hasConstructorParam($key);
+    public function hasConstructorParam(string $key): bool;
 
     /**
      * Remove a constructor parameter for instance call
@@ -170,42 +170,42 @@ interface CallableInterface
      * @param  string $key
      * @return CallableInterface
      */
-    public function removeConstructorParam($key);
+    public function removeConstructorParam(string $key): CallableInterface;
 
     /**
      * Remove all constructor parameters for instance call
      *
      * @return CallableInterface
      */
-    public function removeConstructorParams();
+    public function removeConstructorParams(): CallableInterface;
 
     /**
      * Check if object is callable
      *
-     * @return boolean
+     * @return bool
      */
-    public function isCallable();
+    public function isCallable(): bool;
 
     /**
      * Check if object was called
      *
-     * @return boolean
+     * @return bool
      */
-    public function wasCalled();
+    public function wasCalled(): bool;
 
     /**
      * Prepare object for call
      *
      * @return CallableInterface
      */
-    public function prepare();
+    public function prepare(): CallableInterface;
 
     /**
      * Prepare parameters
      *
      * @return CallableInterface
      */
-    public function prepareParameters();
+    public function prepareParameters(): CallableInterface;
 
     /**
      * Execute the call
@@ -213,6 +213,6 @@ interface CallableInterface
      * @param  mixed $parameters
      * @return mixed
      */
-    public function call($parameters = null);
+    public function call(mixed $parameters = null): mixed;
 
 }

@@ -79,11 +79,17 @@ class CallableTest extends TestCase
         $this->assertEquals('Hello, Nick', $callable->call());
     }
 
-    public function testInstanceCall()
+    public function testInstanceCall1()
     {
         $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClass->printFoo');
         $callable->setConstructorParams(['foo' => 'HI!']);
         $this->assertEquals('HI!', $callable->call());
+    }
+
+    public function testInstanceCall2()
+    {
+        $callable = new CallableObject('Pop\Utils\Test\TestAsset\TestClassAlt->getFoo');
+        $this->assertEquals('bar', $callable->call());
     }
 
     public function testInstanceCallWithParams1()

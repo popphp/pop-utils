@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -19,31 +19,31 @@ namespace Pop\Utils;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 abstract class AbstractError implements ErrorInterface
 {
 
     /**
      * Current error codes
-     * @var mixed
+     * @var array
      */
-    protected $errorCodes = [];
+    protected array $errorCodes = [];
 
     /**
      * Error messages
      * @var array
      */
-    protected $errorMessages = [];
+    protected array $errorMessages = [];
 
     /**
      * Get current error codes
      *
      * @return array
      */
-    public function getErrorCodes()
+    public function getErrorCodes(): array
     {
         return $this->errorCodes;
     }
@@ -51,11 +51,11 @@ abstract class AbstractError implements ErrorInterface
     /**
      * Set error code (clear all previous errors)
      *
-     * @param mixed $errorCode
-     * @return AbstractError
+     * @param  mixed $errorCode
      * @throws Exception
+     * @return AbstractError
      */
-    public function setErrorCode($errorCode)
+    public function setErrorCode(mixed $errorCode): AbstractError
     {
         if (!array_key_exists($errorCode, $this->errorMessages)) {
             throw new Exception('Error: That error code is not allowed.');
@@ -67,10 +67,10 @@ abstract class AbstractError implements ErrorInterface
     /**
      * Set error codes (clear all previous errors)
      *
-     * @param array $errorCodes
+     * @param  array $errorCodes
      * @return AbstractError
      */
-    public function setErrorCodes(array $errorCodes)
+    public function setErrorCodes(array $errorCodes): AbstractError
     {
         $this->errorCodes = [];
         $this->addErrorCodes($errorCodes);
@@ -80,11 +80,11 @@ abstract class AbstractError implements ErrorInterface
     /**
      * Add error code
      *
-     * @param mixed $errorCode
-     * @return AbstractError
+     * @param  mixed $errorCode
      * @throws Exception
+     * @return AbstractError
      */
-    public function addErrorCode($errorCode)
+    public function addErrorCode(mixed $errorCode): AbstractError
     {
         if (!array_key_exists($errorCode, $this->errorMessages)) {
             throw new Exception('Error: That error code is not allowed.');
@@ -96,10 +96,10 @@ abstract class AbstractError implements ErrorInterface
     /**
      * Add error codes
      *
-     * @param array $errorCodes
+     * @param  array $errorCodes
      * @return AbstractError
      */
-    public function addErrorCodes(array $errorCodes)
+    public function addErrorCodes(array $errorCodes): AbstractError
     {
         foreach ($errorCodes as $errorCode) {
             $this->addErrorCode($errorCode);
@@ -111,9 +111,9 @@ abstract class AbstractError implements ErrorInterface
     /**
      * Has error codes
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasErrorCodes()
+    public function hasErrorCodes(): bool
     {
         return !empty($this->errorCodes);
     }
@@ -121,9 +121,9 @@ abstract class AbstractError implements ErrorInterface
     /**
      * Has error (alias)
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasError()
+    public function hasError(): bool
     {
         return $this->hasErrorCodes();
     }
@@ -131,9 +131,9 @@ abstract class AbstractError implements ErrorInterface
     /**
      * Is error (alias)
      *
-     * @return boolean
+     * @return bool
      */
-    public function isError()
+    public function isError(): bool
     {
         return $this->hasErrorCodes();
     }
@@ -143,7 +143,7 @@ abstract class AbstractError implements ErrorInterface
      *
      * @return array
      */
-    public function getErrorMessages()
+    public function getErrorMessages(): array
     {
         $errorCodes = $this->errorCodes;
 
@@ -157,7 +157,7 @@ abstract class AbstractError implements ErrorInterface
      *
      * @return array
      */
-    public function getAllErrorMessages()
+    public function getAllErrorMessages(): array
     {
         return $this->errorMessages;
     }
@@ -167,7 +167,7 @@ abstract class AbstractError implements ErrorInterface
      *
      * @return array
      */
-    public function getAllErrorCodes()
+    public function getAllErrorCodes(): array
     {
         return array_keys($this->errorMessages);
     }
@@ -179,7 +179,7 @@ abstract class AbstractError implements ErrorInterface
      * @throws Exception
      * @return string
      */
-    public function getErrorMessage($errorCode)
+    public function getErrorMessage(mixed $errorCode): string
     {
         if (!array_key_exists($errorCode, $this->errorMessages)) {
             throw new Exception('Error: That error code is not allowed.');

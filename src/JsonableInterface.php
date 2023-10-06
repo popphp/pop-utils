@@ -4,7 +4,7 @@
  *
  * @link       https://github.com/popphp/popphp-framework
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
  */
 
@@ -19,9 +19,9 @@ namespace Pop\Utils;
  * @category   Pop
  * @package    Pop\Utils
  * @author     Nick Sagona, III <dev@nolainteractive.com>
- * @copyright  Copyright (c) 2009-2023 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    1.3.0
+ * @version    2.0.0
  */
 interface JsonableInterface extends \JsonSerializable
 {
@@ -33,16 +33,16 @@ interface JsonableInterface extends \JsonSerializable
      * @param  int $depth
      * @return string
      */
-    public function jsonSerialize($options = 0, $depth = 512): string;
+    public function jsonSerialize(int $options = 0, int $depth = 512): string;
 
     /**
      * Unserialize a JSON string
      *
-     * @param  string  $jsonString
-     * @param  int     $depth
-     * @param  int     $options
+     * @param  string $jsonString
+     * @param  int    $depth
+     * @param  int    $options
      * @return ArrayObject
      */
-    public function jsonUnserialize($jsonString, $depth = 512, $options = 0);
+    public function jsonUnserialize(string $jsonString, int $depth = 512, int $options = 0): ArrayObject;
 
 }
