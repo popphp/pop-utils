@@ -19,6 +19,7 @@ class FileTest extends TestCase
         $this->assertTrue($file->hasSize());
         $this->assertTrue($file->hasMimeType());
         $this->assertFalse($file->isDefaultMimeType());
+        $this->assertTrue($file->exists());
         $this->assertEquals('test.txt', $file->getBasename());
         $this->assertEquals('test', $file->getFilename());
         $this->assertEquals('txt', $file->getExtension());
@@ -27,13 +28,6 @@ class FileTest extends TestCase
         $this->assertGreaterThan(10, $file->getSize());
         $this->assertEquals('Hello World!', trim($file->getContents()));
         $this->assertEquals(__DIR__ . '/tmp/test.txt', (string)$file);
-
-    }
-
-    public function testConstructorException()
-    {
-        $this->expectException('Pop\Utils\Exception');
-        $file = new File(__DIR__ . '/tmp/bad.file');
     }
 
     public function testDefaultMimeType()
@@ -49,6 +43,19 @@ class FileTest extends TestCase
         $this->assertTrue(isset($mimeTypes['jpeg']));
         $this->assertEquals('image/jpeg', $mimeTypes['jpeg']);
         $this->assertEquals('text/plain', File::getFileMimeType(__DIR__ . '/tmp/test.txt'));
+    }
+
+    public function testToArray()
+    {
+        $file = new File(__DIR__ . '/tmp/test.txt');
+        $fileArray = $file->toArray();
+        $this->assertTrue(is_array($fileArray));
+        $this->assertTrue(isset($fileArray['basename']));
+        $this->assertTrue(isset($fileArray['filename']));
+        $this->assertTrue(isset($fileArray['extension']));
+        $this->assertTrue(isset($fileArray['path']));
+        $this->assertTrue(isset($fileArray['size']));
+        $this->assertTrue(isset($fileArray['mime_type']));
     }
 
 }

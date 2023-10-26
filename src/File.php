@@ -140,30 +140,25 @@ class File
      * Instantiate the file object
      *
      * @param  ?string $filename
-     * @throws Exception
      */
     public function __construct(?string $filename = null)
     {
-        if ($filename !== null) {
-            if (!file_exists($filename)) {
-                throw new Exception("Error: The file '" . $filename . "' does not exist.");
-            }
+        $info = pathinfo($filename);
 
-            $info = pathinfo($filename);
+        if (!empty($info['basename'])) {
+            $this->setBasename($info['basename']);
+        }
+        if (!empty($info['filename'])) {
+            $this->setFilename($info['filename']);
+        }
+        if (!empty($info['dirname'])) {
+            $this->setPath($info['dirname']);
+        }
+        if (!empty($info['extension'])) {
+            $this->setExtension($info['extension']);
+        }
 
-            if (!empty($info['basename'])) {
-                $this->setBasename($info['basename']);
-            }
-            if (!empty($info['filename'])) {
-                $this->setFilename($info['filename']);
-            }
-            if (!empty($info['dirname'])) {
-                $this->setPath($info['dirname']);
-            }
-            if (!empty($info['extension'])) {
-                $this->setExtension($info['extension']);
-            }
-
+        if (file_exists($filename)) {
             $this->setSize(filesize($filename));
         }
     }
@@ -182,7 +177,6 @@ class File
      * Get file's mime type
      *
      * @param  string $filename
-     * @throws Exception
      * @return ?string
      */
     public static function getFileMimeType(string $filename): ?string
@@ -429,14 +423,42 @@ class File
     }
 
     /**
+     * Does the file exist
+     *
+     * @return bool
+     */
+    public function exists(): bool
+    {
+        $fullPath = ($this->hasPath()) ? $this->path . DIRECTORY_SEPARATOR . $this->basename : $this->basename;
+        return file_exists($fullPath);
+    }
+
+    /**
      * Get the file contents
      *
      * @return mixed
      */
     public function getContents(): mixed
     {
-        $fullPath = ($this->hasPath()) ?$this->path . DIRECTORY_SEPARATOR . $this->basename : $this->basename;
+        $fullPath = ($this->hasPath()) ? $this->path . DIRECTORY_SEPARATOR . $this->basename : $this->basename;
         return file_get_contents($fullPath);
+    }
+
+    /**
+     * Convert file to an array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'basename'  => $this->basename,
+            'filename'  => $this->filename,
+            'extension' => $this->extension,
+            'path'      => $this->path,
+            'size'      => $this->size,
+            'mime_type' => $this->mimeType,
+        ];
     }
 
     /**
@@ -446,7 +468,7 @@ class File
      */
     public function __toString(): string
     {
-        return ($this->hasPath()) ?$this->path . DIRECTORY_SEPARATOR . $this->basename : $this->basename;
+        return ($this->hasPath()) ? $this->path . DIRECTORY_SEPARATOR . $this->basename : $this->basename;
     }
 
 }
