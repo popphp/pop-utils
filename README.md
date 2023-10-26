@@ -194,6 +194,31 @@ $myInstance = $callable->call();
 $myInstance->printString() ;
 ```
 
+### File Helper
+
+The `Pop\Utils\File` class get quickly parse and return information about a file,
+including the mime type for common file types
+
+```php
+use Pop\Utils\File
+
+$file = new File(__DIR__ . '/tmp/test.txt');
+
+echo $file->getBasename());  // 'test.txt'
+echo $file->getFilename());  // 'test'
+echo $file->getExtension()); // 'txt'
+echo $file->getMimeType());  // 'text/plain'
+echo $file->getPath());      // __DIR__ . '/tmp
+echo $file->getSize());      // 13
+```
+
+You can quick get just the mime type of a file like this:
+
+```php
+use Pop\Utils\File
+
+echo File::getFileMimeType(__DIR__ . '/tmp/image.jpg'); // 'image/jpeg'
+```
 
 ### String Helper
 
