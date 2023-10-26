@@ -25,7 +25,9 @@ class FileTest extends TestCase
         $this->assertEquals('text/plain', $file->getMimeType());
         $this->assertEquals(__DIR__ . '/tmp', $file->getPath());
         $this->assertGreaterThan(10, $file->getSize());
+        $this->assertEquals('Hello World!', trim($file->getContents()));
         $this->assertEquals(__DIR__ . '/tmp/test.txt', (string)$file);
+
     }
 
     public function testConstructorException()

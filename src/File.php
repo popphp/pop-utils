@@ -429,6 +429,17 @@ class File
     }
 
     /**
+     * Get the file contents
+     *
+     * @return mixed
+     */
+    public function getContents(): mixed
+    {
+        $fullPath = ($this->hasPath()) ?$this->path . DIRECTORY_SEPARATOR . $this->basename : $this->basename;
+        return file_get_contents($fullPath);
+    }
+
+    /**
      * To string
      *
      * @return string
