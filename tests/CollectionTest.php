@@ -133,6 +133,22 @@ class CollectionTest extends TestCase
         $this->assertEquals(2, count($collection->values()));
     }
 
+    public function testColumn()
+    {
+        $collection = new Collection([
+            [
+                'id'   => 1,
+                'name' => 'John'
+            ],
+            [
+                'id'   => 2,
+                'name' => 'Jane'
+            ]
+        ]);
+
+        $this->assertEquals(['John', 'Jane'], $collection->column('name')->toArray());
+    }
+
     public function testEach()
     {
         $collection = new Collection([

@@ -222,6 +222,16 @@ class Collection extends AbstractArray implements ArrayAccess, Countable, Iterat
     }
 
     /**
+     * Get the values of a column
+     *
+     * @return Collection
+     */
+    public function column(string $column): Collection
+    {
+        return new static(array_column($this->data, $column));
+    }
+
+    /**
      * Get the values of the collection data
      *
      * @return Collection
