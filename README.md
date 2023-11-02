@@ -10,6 +10,7 @@ pop-utils
 * [Overview](#overview)
 * [Install](#install)
 * [Array Object](#array-object)
+* [Collection](#collection)
 * [DateTime Object](#datetime-object)
 * [Callable Object](#callable-object)
 * [File Helper](#file-helper)
@@ -82,6 +83,43 @@ use Pop\Utils\ArrayObject;
 $arrayObject = ArrayObject::createFromSerialized('a:1:{s:3:"foo";s:3:"bar";}');
 echo $arrayObject->serialize();
 ```
+
+[Top](#pop-utils)
+
+### Collection
+
+The collection object is a array-like object with a tremendous amount of array-like functionality
+built into it. This allows you to call any number of methods on the object to perform operations on the
+array and its data. It's available API includes:
+
+- `count(): int`
+- `first(): mixed`
+- `next(): mixed`
+- `current(): mixed`
+- `last(): mixed`
+- `key(): mixed`
+- `contains(mixed $key, bool $strict = false): bool`
+- `each(callable $callback): Collection`
+- `every(int $step, int $offset = 0): Collection`
+- `filter(?callable $callback = null, int $flag = 0): Collection`
+- `map(callable $callback): Collection`
+- `flip(): Collection`
+- `has(mixed $key): bool`
+- `isEmpty(): bool`
+- `keys(): Collection`
+- `column(string $column): Collection`
+- `values(): Collection`
+- `merge(mixed $data, $recursive = false): Collection`
+- `forPage(int $page, int $perPage): Collection`
+- `pop(): mixed`
+- `push(mixed $value): Collection`
+- `shift(): mixed`
+- `slice(int $offset, int $length = null): Collection`
+- `splice(int $offset, ?int $length = null, mixed $replacement = []): Collection`
+- `sort(?callable $callback = null, int $flags = SORT_REGULAR): Collection`
+- `sortByAsc(int $flags = SORT_REGULAR): Collection`
+- `sortByDesc(int $flags = SORT_REGULAR): Collection`
+- `toArray(): array`
 
 [Top](#pop-utils)
 
