@@ -127,6 +127,8 @@ array and its data. It's available API includes:
 
 The `Pop\Utils\CallableObject` class helps to manage callable objects and their parameters.
 This includes functions, closures, classes and their methods (both static and instance.)
+This is useful for wiring up something that needs to be called or triggered by the application
+at a later time.
 
 The parameters can be set anytime in the callable object's life cycle, from the time of
 instantiation via the constructor, via the set/add methods or at the time of calling the object.
