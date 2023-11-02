@@ -206,7 +206,7 @@ class MyClass
 // Creates an instance of 'MyClass' with the string 'Hello World' passed into the constructor
 $callable = new CallableObject('MyClass', 'Hello World');
 $myInstance = $callable->call();
-$myInstance->printString() ;
+$myInstance->printString();
 ```
 
 [Top](#pop-utils)
