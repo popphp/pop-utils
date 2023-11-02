@@ -17,7 +17,8 @@ pop-utils
 
 Overview
 --------
-`pop-utils` is a basic utilities component of the [Pop PHP Framework](http://www.popphp.org/).
+`pop-utils` is a basic utilities component of the [Pop PHP Framework](http://www.popphp.org/). It comes with
+a number of utility and helper classes that can be useful when building applications with Pop.
 
 [Top](#pop-utils)
 
