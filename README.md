@@ -4,11 +4,24 @@ pop-utils
 [![Build Status](https://github.com/popphp/pop-utils/workflows/phpunit/badge.svg)](https://github.com/popphp/pop-utils/actions)
 [![Coverage Status](http://cc.popphp.org/coverage.php?comp=pop-utils)](http://cc.popphp.org/pop-utils/)
 
-OVERVIEW
+[![Join the chat at https://popphp.slack.com](https://media.popphp.org/img/slack.svg)](https://popphp.slack.com)
+[![Join the chat at https://discord.gg/D9JBxPa5](https://media.popphp.org/img/discord.svg)](https://discord.gg/D9JBxPa5)
+
+* [Overview](#overview)
+* [Install](#install)
+* [Array Object](#array-object)
+* [DateTime Object](#datetime-object)
+* [Callable Object](#callable-object)
+* [File Helper](#file-helper)
+* [String Helper](#string-helper)
+
+Overview
 --------
 `pop-utils` is a basic utilities component of the [Pop PHP Framework](http://www.popphp.org/).
 
-INSTALL
+[Top](#pop-utils)
+
+Install
 -------
 
 Install `pop-utils` using Composer.
@@ -21,9 +34,7 @@ Or, require it in your composer.json file
         "popphp/pop-utils" : "^2.0.0"
     }
 
-
-BASIC USAGE
------------
+[Top](#pop-utils)
 
 ### Array Object
 
@@ -50,7 +61,6 @@ foreach ($arrayObject as $key => $value) {
 }
 
 $array = $arrayObject->toArray();
-
 ```
 
 There are also additional serialize/unserialize methods that allow you to work with the
@@ -70,8 +80,9 @@ use Pop\Utils\ArrayObject;
 
 $arrayObject = ArrayObject::createFromSerialized('a:1:{s:3:"foo";s:3:"bar";}');
 echo $arrayObject->serialize();
-
 ```
+
+[Top](#pop-utils)
 
 ### DateTime Object
 
@@ -109,6 +120,8 @@ Array
 )
 */
 ```
+
+[Top](#pop-utils)
 
 ### Callable Object
 
@@ -194,6 +207,8 @@ $myInstance = $callable->call();
 $myInstance->printString() ;
 ```
 
+[Top](#pop-utils)
+
 ### File Helper
 
 The `Pop\Utils\File` class get quickly parse and return information about a file,
@@ -212,13 +227,15 @@ echo $file->getPath());      // __DIR__ . '/tmp
 echo $file->getSize());      // 13
 ```
 
-You can quick get just the mime type of a file like this:
+You can quickly get just the mime type of a file like this:
 
 ```php
 use Pop\Utils\File
 
 echo File::getFileMimeType(__DIR__ . '/tmp/image.jpg'); // 'image/jpeg'
 ```
+
+[Top](#pop-utils)
 
 ### String Helper
 
@@ -238,27 +255,25 @@ echo Str::createSlug('Hello World | Home Page'); // hello-world-home-page
 ##### Links
 
 ```php
-
 use Pop\Utils\Str;
 
 echo Str::createLinks('Test Email test@test.com and Test Website http://www.test.com/');
-// Test Email <a href="mailto:test@test.com">test@test.com</a> and
-// Test Website <href="http://www.test.com/">http://www.test.com/</a>
+```
 
-
+```text
+Test Email <a href="mailto:test@test.com">test@test.com</a> and
+Test Website <href="http://www.test.com/">http://www.test.com/</a>
 ```
 
 ##### Random Strings
 
 ```php
-
 use Pop\Utils\Str;
 
 echo Str::createRandom(10);                         // 5.u9MHw{PC
 echo Str::createRandomAlpha(10, Str::LOWERCASE);    // wvjvvsmnjw
 echo Str::createRandomAlphaNum(10, Str::UPPERCASE); // 6S73HQ629R
 echo Str::createRandomAlphaNum(10, Str::MIXEDCASE); // Yfd35M3T92
-
 ```
 
 ##### Convert Case
@@ -276,7 +291,6 @@ The convert case feature allows for the following case and string format types:
 And can be utilized via a variety of dynamic static method calls:
 
 ```php
-
 use Pop\Utils\Str;
 
 echo Str::titleCaseToKebabCase('TitleCase');         // title-case
@@ -288,5 +302,4 @@ echo Str::snakeCaseToCamelCase('snake_case_string'); // SnakeCaseString
 echo Str::snakeCaseToNamespace('snake_case_string'); // Snake\Case\String
 echo Str::kebabCaseToPath('kebab-string');           // kebab/string (kebab\string on Windows)
 echo Str::camelCaseToUrl('camelCase');               // camel/case
-
 ```
