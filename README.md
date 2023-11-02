@@ -11,8 +11,8 @@ pop-utils
 * [Install](#install)
 * [Array Object](#array-object)
 * [Collection](#collection)
-* [DateTime Object](#datetime-object)
 * [Callable Object](#callable-object)
+* [DateTime Object](#datetime-object)
 * [File Helper](#file-helper)
 * [String Helper](#string-helper)
 
@@ -123,45 +123,6 @@ array and its data. It's available API includes:
 
 [Top](#pop-utils)
 
-### DateTime Object
-
-The `Pop\Utils\DateTime` class extend the native `DateTime` class and adds some helper functions:
-
-- Add HH:MM:SS formatted times together for a total time in the HH:MM:SS format.
-- Average HH:MM:SS formatted times together for an average time in the HH:MM:SS format.
-- Get the dates of any week in any year.
-
-```php
-
-use Pop\Utils\DateTime;
-
-$times = ['08:45:18', '15:13:58', '09:05:09'];
-
-$totalTime = Pop\Utils\DateTime::getTotal($times, '%H:%I:%S');
-echo $totalTime . PHP_EOL; // 33:04:25
-
-$averageTime = Pop\Utils\DateTime::getAverage($times, '%H:%I:%S');
-echo $averageTime . PHP_EOL; // 11:01:28
-
-$weekDates = DateTime::getWeekDates(40, 2023, 'Y-m-d'); // 40th week of the year 2023
-print_r($weekDates);
-
-/**
-Array
-(
-    [0] => 2023-10-01
-    [1] => 2023-10-02
-    [2] => 2023-10-03
-    [3] => 2023-10-04
-    [4] => 2023-10-05
-    [5] => 2023-10-06
-    [6] => 2023-10-07
-)
-*/
-```
-
-[Top](#pop-utils)
-
 ### Callable Object
 
 The `Pop\Utils\CallableObject` class helps to manage callable objects and their parameters.
@@ -244,6 +205,45 @@ class MyClass
 $callable = new CallableObject('MyClass', 'Hello World');
 $myInstance = $callable->call();
 $myInstance->printString() ;
+```
+
+[Top](#pop-utils)
+
+### DateTime Object
+
+The `Pop\Utils\DateTime` class extend the native `DateTime` class and adds some helper functions:
+
+- Add HH:MM:SS formatted times together for a total time in the HH:MM:SS format.
+- Average HH:MM:SS formatted times together for an average time in the HH:MM:SS format.
+- Get the dates of any week in any year.
+
+```php
+
+use Pop\Utils\DateTime;
+
+$times = ['08:45:18', '15:13:58', '09:05:09'];
+
+$totalTime = Pop\Utils\DateTime::getTotal($times, '%H:%I:%S');
+echo $totalTime . PHP_EOL; // 33:04:25
+
+$averageTime = Pop\Utils\DateTime::getAverage($times, '%H:%I:%S');
+echo $averageTime . PHP_EOL; // 11:01:28
+
+$weekDates = DateTime::getWeekDates(40, 2023, 'Y-m-d'); // 40th week of the year 2023
+print_r($weekDates);
+
+/**
+Array
+(
+    [0] => 2023-10-01
+    [1] => 2023-10-02
+    [2] => 2023-10-03
+    [3] => 2023-10-04
+    [4] => 2023-10-05
+    [5] => 2023-10-06
+    [6] => 2023-10-07
+)
+*/
 ```
 
 [Top](#pop-utils)
