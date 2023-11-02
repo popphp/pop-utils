@@ -140,7 +140,7 @@ at the time the parent callable object is called.
 ```php
 use Pop\Utils\CallableObject;
 
-$callable = new CallableObject('trim', ' Hello World! ');
+$callable = new CallableObject('trim', ' Hello World!');
 echo $callable->call(); // Outputs 'Hello World!'
 ```
 
