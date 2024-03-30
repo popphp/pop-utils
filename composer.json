@@ -18,6 +18,7 @@
     ],
     "require": {
         "php": ">=8.1.0",
+        "popphp/popphp": "^4.2.12",
         "ext-json": "*"
     },
     "require-dev": {
