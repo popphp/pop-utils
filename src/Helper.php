@@ -26,6 +26,17 @@ namespace Pop\Utils;
 class Helper
 {
 
+
+    /**
+     * Check if helper functions are loaded
+     *
+     * @return bool
+     */
+    public static function isLoaded(): bool
+    {
+        return function_exists('app_date');
+    }
+
     /**
      * Load helper functions
      *
