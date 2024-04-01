@@ -83,6 +83,115 @@ class ArrayObjectTest extends TestCase
         $this->assertEquals(1, $arrayObject->count());
     }
 
+    public function testSplit()
+    {
+        $arrayObject = ArrayObject::split('foo-bar', '-');
+        $this->assertEquals('foo', $arrayObject[0]);
+        $this->assertEquals('bar', $arrayObject[1]);
+    }
+
+    public function testJoin1()
+    {
+        $arrayObject = new ArrayObject(['foo', 'bar']);
+        $this->assertEquals('foo-bar', $arrayObject->join('-'));
+    }
+
+    public function testJoin2()
+    {
+        $arrayObject = new ArrayObject([]);
+        $this->assertEquals('', $arrayObject->join('-', '.'));
+    }
+
+    public function testJoin3()
+    {
+        $arrayObject = new ArrayObject(['foo']);
+        $this->assertEquals('foo', $arrayObject->join('-', '.'));
+    }
+
+    public function testJoin4()
+    {
+        $arrayObject = new ArrayObject(['foo', 'bar', 'baz']);
+        $this->assertEquals('foo-bar.baz', $arrayObject->join('-', '.'));
+    }
+
+    public function testKsort()
+    {
+        $arrayObject = new ArrayObject([2 => 3, 1 => 2, 0 => 1]);
+        $arrayObject->ksort();
+        $this->assertEquals(1, $arrayObject[0]);
+        $this->assertEquals(2, $arrayObject[1]);
+        $this->assertEquals(3, $arrayObject[2]);
+    }
+
+    public function testKsortDesc()
+    {
+        $arrayObject = new ArrayObject([3, 2, 1]);
+        $arrayObject->ksortDesc();
+        $this->assertEquals(3, $arrayObject[0]);
+        $this->assertEquals(2, $arrayObject[1]);
+        $this->assertEquals(1, $arrayObject[2]);
+    }
+
+    public function testUsort()
+    {
+         $arrayObject = new ArrayObject([
+            [
+                'id'   => 1,
+                'name' => 'John'
+            ],
+            [
+                'id'   => 2,
+                'name' => 'Jane'
+            ]
+        ]);
+
+        $arrayObject->usort(function($a, $b){
+            return ($a > $b) ? -1 : 1;
+        }, false);
+        $this->assertEquals(2, $arrayObject->count());
+        $this->assertEquals('Jane', $arrayObject[0]['name']);
+    }
+
+    public function testUasort()
+    {
+        $arrayObject = new ArrayObject([
+            'a' => [
+                'id'   => 1,
+                'name' => 'John'
+            ],
+            'b' => [
+                'id'   => 2,
+                'name' => 'Jane'
+            ]
+        ]);
+
+        $arrayObject->uksort(function($a, $b){
+            return ($a > $b) ? -1 : 1;
+        });
+        $this->assertEquals(2, $arrayObject->count());
+        $this->assertEquals('Jane', $arrayObject['b']['name']);
+    }
+
+    public function testUksort()
+    {
+        $arrayObject = new ArrayObject([
+            'a' => [
+                'id'   => 1,
+                'name' => 'John'
+            ],
+            'b' => [
+                'id'   => 2,
+                'name' => 'Jane'
+            ]
+        ]);
+
+        $arrayObject->usort(function($a, $b){
+            return ($a > $b) ? -1 : 1;
+        });
+        $this->assertEquals(2, $arrayObject->count());
+        $this->assertEquals('Jane', $arrayObject['b']['name']);
+    }
+
     public function testIterator()
     {
         $arrayObject = new ArrayObject(['foo' => 'bar']);

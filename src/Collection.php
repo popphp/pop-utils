@@ -13,10 +13,7 @@
  */
 namespace Pop\Utils;
 
-use ArrayAccess;
 use ArrayIterator;
-use Countable;
-use IteratorAggregate;
 
 /**
  * Pop utils array collection class
@@ -26,9 +23,9 @@ use IteratorAggregate;
  * @author     Nick Sagona, III <dev@nolainteractive.com>
  * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    2.0.0
+ * @version    2.1.0
  */
-class Collection extends AbstractArray implements ArrayAccess, Countable, IteratorAggregate
+class Collection extends AbstractArray
 {
 
     /**
@@ -41,78 +38,6 @@ class Collection extends AbstractArray implements ArrayAccess, Countable, Iterat
     public function __construct(mixed $data = [])
     {
         $this->data = $this->getDataAsArray($data);
-    }
-
-    /**
-     * Method to get the count of data in the collection
-     *
-     * @return int
-     */
-    public function count(): int
-    {
-        return count($this->data);
-    }
-
-    /**
-     * Get the first item of the collection
-     *
-     * @return mixed
-     */
-    public function first(): mixed
-    {
-        return reset($this->data);
-    }
-
-    /**
-     * Get the next item of the collection
-     *
-     * @return mixed
-     */
-    public function next(): mixed
-    {
-        return next($this->data);
-    }
-
-    /**
-     * Get the current item of the collection
-     *
-     * @return mixed
-     */
-    public function current(): mixed
-    {
-        return current($this->data);
-    }
-
-    /**
-     * Get the last item of the collection
-     *
-     * @return mixed
-     */
-    public function last(): mixed
-    {
-        return end($this->data);
-    }
-
-    /**
-     * Get the key of the current item of the collection
-     *
-     * @return mixed
-     */
-    public function key(): mixed
-    {
-        return key($this->data);
-    }
-
-    /**
-     * Determine if an item exists in the collection
-     *
-     * @param  mixed $key
-     * @param  bool  $strict
-     * @return bool
-     */
-    public function contains(mixed $key, bool $strict = false): bool
-    {
-        return in_array($key, $this->data, $strict);
     }
 
     /**
@@ -327,72 +252,6 @@ class Collection extends AbstractArray implements ArrayAccess, Countable, Iterat
     }
 
     /**
-     * Sort data
-     *
-     * @param  ?callable $callback
-     * @param  int       $flags
-     * @return Collection
-     */
-    public function sort(?callable $callback = null, int $flags = SORT_REGULAR): Collection
-    {
-        $data = $this->data;
-
-        if ($callback !== null) {
-            uasort($data, $callback);
-        } else {
-            asort($data, $flags);
-        }
-
-        return new static($data);
-    }
-
-    /**
-     * Sort the collection ascending
-     *
-     * @param  int $flags
-     * @return Collection
-     */
-    public function sortByAsc(int $flags = SORT_REGULAR): Collection
-    {
-        $results = $this->data;
-        asort($results, $flags);
-        return new static($results);
-    }
-
-    /**
-     * Sort the collection descending
-     *
-     * @param  int $flags
-     * @return Collection
-     */
-    public function sortByDesc(int $flags = SORT_REGULAR): Collection
-    {
-        $results = $this->data;
-        arsort($results, $flags);
-        return new static($results);
-    }
-
-    /**
-     * Method to get collection object as an array
-     *
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return $this->data;
-    }
-
-    /**
-     * Method to iterate over the collection
-     *
-     * @return ArrayIterator
-     */
-    public function getIterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->data);
-    }
-
-    /**
      * Method to get data as an array
      *
      * @param  mixed $data
@@ -411,104 +270,6 @@ class Collection extends AbstractArray implements ArrayAccess, Countable, Iterat
         }
 
         return $data;
-    }
-
-    /**
-     * Magic method to set the property to the value of $this->data[$name]
-     *
-     * @param  ?string $name
-     * @param  mixed $value
-     * @return static
-     */
-    public function __set(?string $name = null, mixed $value = null)
-    {
-        if ($name !== null) {
-            $this->data[$name] = $value;
-        } else {
-            $this->data[] = $value;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Magic method to return the value of $this->data[$name]
-     *
-     * @param  string|int $name
-     * @return mixed
-     */
-    public function __get(string|int $name): mixed
-    {
-        return (isset($this->data[$name])) ? $this->data[$name] : null;
-    }
-
-    /**
-     * Magic method to return the isset value of $this->data[$name]
-     *
-     * @param  string|int $name
-     * @return bool
-     */
-    public function __isset(string|int $name): bool
-    {
-        return array_key_exists($name, $this->data);
-    }
-
-    /**
-     * Magic method to unset $this->data[$name]
-     *
-     * @param  string|int $name
-     * @return void
-     */
-    public function __unset(string|int $name): void
-    {
-        if (isset($this->data[$name])) {
-            unset($this->data[$name]);
-        }
-    }
-
-    /**
-     * ArrayAccess offsetExists
-     *
-     * @param  mixed $offset
-     * @return bool
-     */
-    public function offsetExists(mixed $offset): bool
-    {
-        return $this->__isset($offset);
-    }
-
-    /**
-     * ArrayAccess offsetGet
-     *
-     * @param  mixed $offset
-     * @return mixed
-     */
-    public function offsetGet(mixed $offset): mixed
-    {
-        return $this->__get($offset);
-    }
-
-    /**
-     * ArrayAccess offsetSet
-     *
-     * @param  mixed $offset
-     * @param  mixed $value
-     * @return void
-     */
-    public function offsetSet(mixed $offset = null, mixed $value = null): void
-    {
-        $this->__set($offset, $value);
-    }
-
-    /**
-     * ArrayAccess offsetUnset
-     *
-     * @param  mixed $offset
-     * @return void
-     */
-    public function offsetUnset(mixed $offset): void
-    {
-        $this->__unset($offset);
     }
 
 }

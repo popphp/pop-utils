@@ -22,7 +22,7 @@ use ArrayAccess;
  * @author     Nick Sagona, III <dev@nolainteractive.com>
  * @copyright  Copyright (c) 2009-2024 NOLA Interactive, LLC. (http://www.nolainteractive.com)
  * @license    http://www.popphp.org/license     New BSD License
- * @version    2.0.0
+ * @version    2.1.0
  */
 class Arr
 {
@@ -77,19 +77,20 @@ class Arr
     }
 
     /**
-     * Return the value of the key in the array
+     * Return the key in the array based on the first position of the value
      *
-     * @param  array|ArrayAccess $array
-     * @param  string|int        $key
+     * @param  array|AbstractArray $array
+     * @param  mixed               $value
+     * @param  bool                $strict
      * @return mixed
      */
-    public static function search(array|ArrayAccess $array, string|int $key): mixed
+    public static function key(array|AbstractArray $array, string|int $value, bool $strict = false): mixed
     {
         if ($array instanceof ArrayAccess) {
-            return $array->offsetGet($key);
-        } else {
-            return array_search($key, $array);
+            $array = $array->toArray();
         }
+
+        return array_search($value, $array, $strict);
     }
 
     /**
@@ -160,17 +161,19 @@ class Arr
     /**
      * Return a slice of the array
      *
-     * @param  array $array
-     * @param  int   $limit
+     * @param  array|AbstractArray $array
+     * @param  int                 $limit
+     * @param  int                 $offset
      * @return array
      */
-    public static function slice(array $array, int $limit): array
+    public static function slice(array|AbstractArray $array, int $limit, int $offset = 0): array
     {
-        if ($limit < 0) {
-            return array_slice($array, $limit, abs($limit));
-        } else {
-            return array_slice($array, 0, $limit);
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
         }
+
+        return (($limit < 0) && ($offset == 0)) ?
+            array_slice($array, $limit, abs($limit)) : array_slice($array, $offset, $limit);
     }
 
     /**
@@ -189,13 +192,17 @@ class Arr
     /**
      * Join the array values into a string
      *
-     * @param  array  $array
-     * @param  string $glue
-     * @param  string $finalGlue
+     * @param  array|AbstractArray $array
+     * @param  string              $glue
+     * @param  string              $finalGlue
      * @return string
      */
-    public static function join(array $array, string $glue, string $finalGlue = ''): string
+    public static function join(array|AbstractArray $array, string $glue, string $finalGlue = ''): string
     {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
         if ($finalGlue === '') {
             return implode($glue, $array);
         }
@@ -216,13 +223,17 @@ class Arr
     /**
      * Prepend value to the array
      *
-     * @param  array $array
-     * @param  mixed $value
-     * @param  mixed $key
+     * @param  array|AbstractArray $array
+     * @param  mixed               $value
+     * @param  mixed               $key
      * @return array
      */
-    public static function prepend(array $array, mixed $value, mixed $key = null): array
+    public static function prepend(array|AbstractArray $array, mixed $value, mixed $key = null): array
     {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
         if ($key === null) {
             array_unshift($array, $value);
         } else {
@@ -237,14 +248,188 @@ class Arr
      *
      * @param  array $array
      * @param  mixed $key
-     * @return array
+     * @return mixed
      */
-    public static function pull(array &$array, mixed $key): array
+    public static function pull(array &$array, mixed $key): mixed
     {
         $value = $array[$key] ?? null;
         unset($array[$key]);
 
         return $value;
+    }
+
+    /**
+     * Sort array
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @param  bool                $assoc
+     * @param  bool                $descending
+     * @return array
+     */
+    public static function sort(
+        array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false
+    ): array
+    {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+        if ($descending) {
+            $func = ($assoc) ? 'arsort' : 'rsort';
+        } else {
+            $func = ($assoc) ? 'asort' : 'sort';
+        }
+
+        $func($array, $flags);
+        return $array;
+    }
+
+    /**
+     * Sort array descending
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @param  bool                $assoc
+     * @return array
+     */
+    public static function sortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true): array
+    {
+        return static::sort($array, $flags, $assoc, true);
+    }
+
+    /**
+     * Sort array by keys
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @param  bool                $descending
+     * @return array
+     */
+    public static function ksort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $descending = false): array
+    {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
+        if ($descending) {
+            krsort($array, $flags);
+        } else {
+            ksort($array, $flags);
+        }
+
+        return $array;
+    }
+
+    /**
+     * Sort array by keys, descending
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @return array
+     */
+    public static function ksortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR): array
+    {
+        return static::ksort($array, $flags, true);
+    }
+
+    /**
+     * Sort array by user-defined callback
+     *
+     * @param  array|AbstractArray $array
+     * @param  mixed               $callback
+     * @param  bool                $assoc
+     * @return array
+     */
+    public static function usort(array|AbstractArray $array, mixed $callback, bool $assoc = true): array
+    {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
+        if ($assoc) {
+            uasort($array, $callback);
+        } else {
+            usort($array, $callback);
+        }
+
+        return $array;
+    }
+
+    /**
+     * Sort array by user-defined callback using keys
+     *
+     * @param  array|AbstractArray $array
+     * @param  mixed               $callback
+     * @return array
+     */
+    public static function uksort(array|AbstractArray $array, mixed $callback): array
+    {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
+        uksort($array, $callback);
+
+        return $array;
+    }
+
+    /**
+     * Execute a callable over the values of the array
+     *
+     * @param  array|AbstractArray $array
+     * @param  mixed               $callback
+     * @return array
+     */
+    public static function map(array|AbstractArray $array, mixed $callback): array
+    {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
+        return array_map($callback, $array);
+    }
+
+    /**
+     * Trim extra whitespace in the array values
+     *
+     * @param  array|AbstractArray $array
+     * @return array
+     */
+    public static function trim(array|AbstractArray $array): array
+    {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
+        return array_map('trim', $array);
+    }
+
+    /**
+     * Execute a filter callback over the values of the array
+     *
+     * @param  array|AbstractArray $array
+     * @param  mixed               $callback
+     * @param  int   $mode
+     * @return array
+     */
+    public static function filter(array|AbstractArray $array, mixed $callback = null, int $mode = ARRAY_FILTER_USE_BOTH): array
+    {
+        if ($array instanceof AbstractArray) {
+            $array = $array->toArray();
+        }
+
+        return array_filter($array, $callback, $mode);
+    }
+
+    /**
+     * Force value to be any array (if it is not one already)
+     *
+     * @param  mixed $value
+     * @return array
+     */
+    public static function make(mixed $value): array
+    {
+        return is_array($value) ? $value : [$value];
     }
 
 }
