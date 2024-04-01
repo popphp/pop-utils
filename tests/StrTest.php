@@ -146,4 +146,9 @@ HTML;
         $this->assertEquals('Url\String', Str::uriToNamespace('url/string'));
     }
 
+    public function testDetectSeparator()
+    {
+        $this->assertEquals('', Str::detectSeparator('NoSeparator'));
+    }
+
 }

@@ -27,6 +27,25 @@ interface ArrayableInterface
 {
 
     /**
+     * Split a string into an array object
+     *
+     * @param  string $string
+     * @param  string $separator
+     * @param  int    $limit
+     * @return static
+     */
+    public static function split(string $string, string $separator, int $limit = PHP_INT_MAX): static;
+
+    /**
+     * Join the array values into a string
+     *
+     * @param  string $glue
+     * @param  string $finalGlue
+     * @return string
+     */
+    public function join(string $glue, string $finalGlue = ''): string;
+
+    /**
      * Get the array object as an array.
      *
      * @return array

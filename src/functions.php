@@ -8,15 +8,17 @@ if (!function_exists('app_date')) {
      * Produce datetime string based on app timezone
      *
      * @param  string $format
-     * @param ?int    $timestamp
+     * @param  ?int   $timestamp
+     * @param  string $env
+     * @param  mixed  $envDefault
      * @return string|null
      */
-    function app_date(string $format, ?int $timestamp = null): string|null
+    function app_date(string $format, ?int $timestamp = null, string $env = 'APP_TIMEZONE', mixed $envDefault = null): string|null
     {
-        $timezone = \Pop\App::env('APP_TIMEZONE');
+        $timezone = App::env($env, $envDefault);
         $gm       = function_exists('gmdate');
 
-        if ((($timezone == 'UTC') || ($timezone == 0)) && ($gm)) {
+        if ((($timezone == 'UTC') || (is_numeric($timezone) && ($timezone == 0))) && ($gm)) {
             return gmdate($format, $timestamp);
         } else {
             if (is_numeric($timezone) && ($gm)) {
@@ -73,7 +75,7 @@ if (!function_exists('str_random_num')) {
     /**
      * Generate a random numeric string of a predefined length.
      *
-     * @param  int $lengthe
+     * @param  int $length
      * @return string
      */
     function str_random_num(int $length): string
@@ -105,7 +107,7 @@ if (!function_exists('str_from_camel')) {
      * @param  bool    $preserveCase
      * @return string
      */
-    function str_from_camel(string $string, ?string $separator = null, bool $preserveCase = false): string
+    function str_from_camel(string $string, ?string $separator = '-', bool $preserveCase = false): string
     {
         return Str::convertFromCamelCase($string, $separator, $preserveCase);
     }
@@ -116,12 +118,11 @@ if (!function_exists('str_to_camel')) {
      * Convert a camelCase string using the $separator value passed
      *
      * @param  string $string
-     * @param  string $separator
      * @return string
      */
-    function str_to_camel(string $string, string $separator): string
+    function str_to_camel(string $string): string
     {
-        return Str::convertToCamelCase($string, $separator);
+        return Str::convertToCamelCase($string);
     }
 }
 
@@ -130,12 +131,11 @@ if (!function_exists('str_title_case')) {
      * Convert a string to title case
      *
      * @param  string $string
-     * @param  string $separator
      * @return string
      */
-    function str_title_case(string $string, string $separator): string
+    function str_title_case(string $string): string
     {
-        return ucfirst(Str::convertToCamelCase($string, $separator));
+        return ucfirst(Str::convertToCamelCase($string));
     }
 }
 

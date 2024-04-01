@@ -360,12 +360,15 @@ class Str
     /**
      * Convert a camelCase string using the $separator value passed
      *
-     * @param  string $string
-     * @param  string $separator
+     * @param  string  $string
+     * @param  ?string $separator
      * @return string
      */
-    public static function convertToCamelCase(string $string, string $separator): string
+    public static function convertToCamelCase(string $string, ?string $separator = null): string
     {
+        if ($separator === null) {
+            $separator = self::detectSeparator($string);
+        }
         $stringAry = explode($separator, $string);
         $converted = null;
 
@@ -374,6 +377,26 @@ class Str
         }
 
         return $converted;
+    }
+
+    /**
+     * Attempt to detect separator
+     *
+     * @param  string  $string
+     * @return string
+     */
+    public static function detectSeparator(string $string): string
+    {
+        $separator  = '';
+        $separators = ['-', '_', '\\', '/', DIRECTORY_SEPARATOR];
+
+        foreach ($separators as $s) {
+            if (str_contains($string, $s)) {
+                return $s;
+            }
+        }
+
+        return $separator;
     }
 
 }

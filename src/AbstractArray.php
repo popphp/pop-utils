@@ -33,6 +33,45 @@ abstract class AbstractArray implements ArrayableInterface
     protected mixed $data = null;
 
     /**
+     * Split a string into an array object
+     *
+     * @param  string $string
+     * @param  string $separator
+     * @param  int    $limit
+     * @return static
+     */
+    public static function split(string $string, string $separator, int $limit = PHP_INT_MAX): static
+    {
+        return new static(explode($separator, $string, $limit));
+    }
+
+    /**
+     * Join the array values into a string
+     *
+     * @param  string $glue
+     * @param  string $finalGlue
+     * @return string
+     */
+    public function join(string $glue, string $finalGlue = ''): string
+    {
+        if ($finalGlue === '') {
+            return implode($glue, $this->data);
+        }
+
+        if (count($this->data) == 0) {
+            return '';
+        }
+
+        if (count($this->data) == 1) {
+            return end($this->data);
+        }
+
+        $finalItem = array_pop($this->data);
+
+        return implode($glue, $this->data) . $finalGlue . $finalItem;
+    }
+
+    /**
      * Get the values as an array
      *
      * @return array

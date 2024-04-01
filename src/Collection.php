@@ -19,7 +19,7 @@ use Countable;
 use IteratorAggregate;
 
 /**
- * Pop utils array object class
+ * Pop utils array collection class
  *
  * @category   Pop
  * @package    Pop\Utils

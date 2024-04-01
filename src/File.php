@@ -143,7 +143,12 @@ class File
      */
     public function __construct(?string $filename = null)
     {
-        $info = pathinfo($filename);
+        $info = [];
+
+        if (!empty($filename)) {
+            $info = pathinfo($filename);
+            $this->setSize(filesize($filename));
+        }
 
         if (!empty($info['basename'])) {
             $this->setBasename($info['basename']);
@@ -156,10 +161,6 @@ class File
         }
         if (!empty($info['extension'])) {
             $this->setExtension($info['extension']);
-        }
-
-        if (file_exists($filename)) {
-            $this->setSize(filesize($filename));
         }
     }
 
