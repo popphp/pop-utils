@@ -174,6 +174,19 @@ class Arr
     }
 
     /**
+     * Split a string into an array
+     *
+     * @param  string $string
+     * @param  string $separator
+     * @param  int    $limit
+     * @return array
+     */
+    public static function split(string $string, string $separator, int $limit = PHP_INT_MAX): array
+    {
+        return explode($separator, $string, $limit);
+    }
+
+    /**
      * Join the array values into a string
      *
      * @param  array  $array
