@@ -1,7 +1,9 @@
 <?php
 
 use Pop\App;
+use Pop\Utils\AbstractArray;
 use Pop\Utils\Str;
+use Pop\Utils\Arr;
 
 if (!function_exists('app_date')) {
     /**
@@ -164,5 +166,191 @@ if (!function_exists('str_kebab_case')) {
     function str_kebab_case(string $string, bool $preserveCase = false): string
     {
         return Str::convertFromCamelCase($string, '-', $preserveCase);
+    }
+}
+
+if (!function_exists('array_collapse')) {
+    /**
+     * Collapse an array of arrays
+     *
+     * @param  array|AbstractArray $array
+     * @return array
+     */
+    function array_collapse(array|AbstractArray $array): array
+    {
+        return Arr::collapse($array);
+    }
+}
+
+if (!function_exists('array_flatten')) {
+    /**
+     * Flatten a multi-dimensional array
+     *
+     * @param  array|AbstractArray $array
+     * @param  int|float           $depth
+     * @return array
+     */
+    function array_flatten(array|AbstractArray $array, int|float $depth = INF): array
+    {
+        return Arr::flatten($array, $depth);
+    }
+}
+
+if (!function_exists('array_divide')) {
+    /**
+     * Divide the array in an array of keys and values
+     *
+     * @param  array|AbstractArray $array
+     * @return array
+     */
+    function array_divide(array|AbstractArray $array): array
+    {
+        return Arr::divide($array);
+    }
+}
+
+if (!function_exists('array_join')) {
+    /**
+     * Join the array values into a string
+     *
+     * @param  array|AbstractArray $array
+     * @param  string              $glue
+     * @param  string              $finalGlue
+     * @return string
+     */
+    function array_join(array|AbstractArray $array, string $glue, string $finalGlue = ''): string
+    {
+        return Arr::join($array, $glue, $finalGlue);
+    }
+}
+
+if (!function_exists('array_prepend')) {
+    /**
+     * Prepend value to the array
+     *
+     * @param  array|AbstractArray $array
+     * @param  mixed               $value
+     * @param  mixed               $key
+     * @return array
+     */
+    function array_prepend(array|AbstractArray $array, mixed $value, mixed $key = null): array
+    {
+        return Arr::prepend($array, $value, $key);
+    }
+}
+
+if (!function_exists('array_pull')) {
+    /**
+     * Pull value from the array and remove it
+     *
+     * @param  array $array
+     * @param  mixed $key
+     * @return mixed
+     */
+    function array_pull(array &$array, mixed $key): mixed
+    {
+        return Arr::pull($array, $key);
+    }
+}
+
+if (!function_exists('array_sort')) {
+    /**
+     * Sort array
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @param  bool                $assoc
+     * @param  bool                $descending
+     * @return array
+     */
+    function array_sort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false): array
+    {
+        return Arr::sort($array, $flags, $assoc, $descending);
+    }
+}
+
+if (!function_exists('array_sort_desc')) {
+    /**
+     * Sort array descending
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @param  bool                $assoc
+     * @return array
+     */
+    function array_sort_desc(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true): array
+    {
+        return Arr::sortDesc($array, $flags, $assoc);
+    }
+}
+
+if (!function_exists('array_ksort')) {
+    /**
+     * Sort array by keys
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @param  bool                $descending
+     * @return array
+     */
+    function array_ksort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $descending = false): array
+    {
+        return Arr::ksort($array, $flags, $descending);
+    }
+}
+
+if (!function_exists('array_ksort_desc')) {
+    /**
+     * Sort array by keys, descending
+     *
+     * @param  array|AbstractArray $array
+     * @param  int                 $flags
+     * @return array
+     */
+    function array_ksort_desc(array|AbstractArray $array, int $flags = SORT_REGULAR): array
+    {
+        return Arr::ksortDesc($array, $flags);
+    }
+}
+
+if (!function_exists('array_usort')) {
+    /**
+     * Sort array by user-defined callback
+     *
+     * @param  array|AbstractArray $array
+     * @param  mixed               $callback
+     * @param  bool                $assoc
+     * @return array
+     */
+    function array_usort(array|AbstractArray $array, mixed $callback, bool $assoc = true): array
+    {
+        return Arr::usort($array, $callback, $assoc);
+    }
+}
+
+if (!function_exists('array_uksort')) {
+    /**
+     * Sort array by user-defined callback using keys
+     *
+     * @param  array|AbstractArray $array
+     * @param  mixed               $callback
+     * @return array
+     */
+    function array_uksort(array|AbstractArray $array, mixed $callback): array
+    {
+        return Arr::uksort($array, $callback);
+    }
+}
+
+if (!function_exists('array_make')) {
+    /**
+     * Force value to be any array (if it is not one already)
+     *
+     * @param  mixed $value
+     * @return array
+     */
+    function array_make(mixed $value): array
+    {
+        return Arr::make($value);
     }
 }

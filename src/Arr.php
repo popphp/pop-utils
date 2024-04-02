@@ -119,7 +119,7 @@ class Arr
      * Flatten a multi-dimensional array
      *
      * @param  array|AbstractArray $array
-     * @param  int|float        $depth
+     * @param  int|float           $depth
      * @return array
      */
     public static function flatten(array|AbstractArray $array, int|float $depth = INF): array
@@ -181,12 +181,22 @@ class Arr
      *
      * @param  string $string
      * @param  string $separator
-     * @param  int    $limit
+     * @param  ?int    $limit
      * @return array
      */
-    public static function split(string $string, string $separator, int $limit = PHP_INT_MAX): array
+    public static function split(string $string, string $separator = '', ?int $limit = null): array
     {
-        return explode($separator, $string, $limit);
+        if (empty($separator)) {
+            if ($limit === null) {
+                $limit = 1;
+            }
+            return str_split($string, $limit);
+        } else {
+            if ($limit === null) {
+                $limit = PHP_INT_MAX;
+            }
+            return explode($separator, $string, $limit);
+        }
     }
 
     /**

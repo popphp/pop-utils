@@ -15,6 +15,8 @@ pop-utils
 * [DateTime Object](#datetime-object)
 * [File Helper](#file-helper)
 * [String Helper](#string-helper)
+* [Array Helper](#array-helper)
+* [Helper Functions](#helper-functions)
 
 Overview
 --------
@@ -344,3 +346,81 @@ echo Str::snakeCaseToNamespace('snake_case_string'); // Snake\Case\String
 echo Str::kebabCaseToPath('kebab-string');           // kebab/string (kebab\string on Windows)
 echo Str::camelCaseToUrl('camelCase');               // camel/case
 ```
+
+[Top](#pop-utils)
+
+### Array Helper
+
+The `Pop\Utils\Arr` class has a number of static methods to assist in
+manipulating arrays:
+
+- `Arr::isArray(mixed $value): bool`
+- `Arr::isNumeric(array $array): bool`
+- `Arr::isAssoc(array $array): bool`
+- `Arr::exists(array|ArrayAccess $array, string|int $key): bool`
+- `Arr::key(array|AbstractArray $array, string|int $value, bool $strict = false): mixed`
+- `Arr::collapse(array|AbstractArray $array): array`
+- `Arr::flatten(array|AbstractArray $array, int|float $depth = INF): array`
+- `Arr::divide(array|AbstractArray $array): array`
+- `Arr::slice(array|AbstractArray $array, int $limit, int $offset = 0): array`
+- `Arr::split(string $string, string $separator, int $limit = PHP_INT_MAX): array`
+- `Arr::join(array|AbstractArray $array, string $glue, string $finalGlue = ''): string`
+- `Arr::prepend(array|AbstractArray $array, mixed $value, mixed $key = null): array`
+- `Arr::pull(array &$array, mixed $key): mixed`
+- `Arr::sort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false): array`
+- `Arr::sortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true): array`
+- `Arr::ksort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $descending = false): array`
+- `Arr::ksortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR): array`
+- `Arr::usort(array|AbstractArray $array, mixed $callback, bool $assoc = true): array`
+- `Arr::uksort(array|AbstractArray $array, mixed $callback): array`
+- `Arr::map(array|AbstractArray $array, mixed $callback): array`
+- `Arr::trim(array|AbstractArray $array): array`
+- `Arr::filter(array|AbstractArray $array, mixed $callback = null, int $mode = ARRAY_FILTER_USE_BOTH): array`
+- `Arr::make(mixed $value): array`
+
+[Top](#pop-utils)
+
+### Helper Functions
+
+There is a set of "helper" functions to assist with quick manipulation of data like
+strings, arrays, and dates. The functions themselves can be loaded manually by including the
+`functions.php` file in this repository, or they can be loaded using the `Pop\Utils\Helper`
+class functions:
+
+```php
+use Pop\Utils\Helper;
+
+if (!Helper::isLoaded()) {
+    Helper::loadFunctions();
+}
+```
+
+The above is automatically executed in a `Pop\Application` object's bootstrap method, unless
+it is disabled by the config setting of `'helper_functions' => false`.
+
+The included functions are:
+
+- `app_date(string $format, ?int $timestamp = null, string $env = 'APP_TIMEZONE', mixed $envDefault = null): string|null`
+- `str_slug(string $string, string $separator = '-'): string`
+- `str_random(int $length, int $case = Str::MIXEDCASE): string`
+- `str_random_alpha(int $length, int $case = Str::MIXEDCASE): string`
+- `str_random_num(int $length): string`
+- `str_random_alphanum(int $length, int $case = Str::MIXEDCASE): string`
+- `str_from_camel(string $string, ?string $separator = '-', bool $preserveCase = false): string`
+- `str_to_camel(string $string): string`
+- `str_title_case(string $string): string`
+- `str_snake_case(string $string, bool $preserveCase = false): string`
+- `str_kebab_case(string $string, bool $preserveCase = false): string`
+- `array_collapse(array|AbstractArray $array): array`
+- `array_flatten(array|AbstractArray $array, int|float $depth = INF): array`
+- `array_divide(array|AbstractArray $array): array`
+- `array_join(array|AbstractArray $array, string $glue, string $finalGlue = ''): string`
+- `array_prepend(array|AbstractArray $array, mixed $value, mixed $key = null): array`
+- `array_pull(array &$array, mixed $key): mixed`
+- `array_sort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false): array`
+- `array_sort_desc(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true): array`
+- `array_ksort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $descending = false): array`
+- `array_ksort_desc(array|AbstractArray $array, int $flags = SORT_REGULAR): array`
+- `array_usort(array|AbstractArray $array, mixed $callback, bool $assoc = true): array`
+- `array_uksort(array|AbstractArray $array, mixed $callback): array`
+- `array_make(mixed $value): array`

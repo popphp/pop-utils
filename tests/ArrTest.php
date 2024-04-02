@@ -5,12 +5,16 @@ namespace Pop\Utils\Test;
 use Pop\Utils\Arr;
 use PHPUnit\Framework\TestCase;
 use Pop\Utils\ArrayObject;
+use Pop\Utils\Helper;
 
 class ArrTest extends TestCase
 {
 
     public function testIsMethods()
     {
+        if (!Helper::isLoaded()) {
+            Helper::loadFunctions();
+        }
         $array = ['foo', 'bar'];
         $this->assertTrue(Arr::isArray($array));
         $this->assertFalse(Arr::isAssoc($array));
@@ -52,7 +56,7 @@ class ArrTest extends TestCase
 
         $this->assertCount(4, $array);
 
-        $collapsed = Arr::collapse($array);
+        $collapsed = array_collapse($array);
 
         $this->assertCount(4, $collapsed);
         $this->assertEquals('bar', $collapsed['foo']);
@@ -72,7 +76,7 @@ class ArrTest extends TestCase
 
         $this->assertCount(4, $array);
 
-        $flatten = Arr::flatten($array);
+        $flatten = array_flatten($array);
 
         $this->assertCount(5, $flatten);
         $this->assertEquals('bar', $flatten[0]);
@@ -85,7 +89,7 @@ class ArrTest extends TestCase
     public function testDivide()
     {
         $array = new ArrayObject(['foo' => 'bar', 'bar' => 123]);
-        [$keys, $values] = Arr::divide($array);
+        [$keys, $values] = array_divide($array);
         $this->assertEquals(count($keys), count($values));
         $this->assertEquals('foo', $keys[0]);
         $this->assertEquals('bar', $keys[1]);
@@ -113,7 +117,7 @@ class ArrTest extends TestCase
         $this->assertEquals(6, $sliced[1]);
     }
 
-    public function testSplit()
+    public function testSplit1()
     {
         $array = Arr::split('some-string', '-');
         $this->assertCount(2, $array);
@@ -121,10 +125,19 @@ class ArrTest extends TestCase
         $this->assertEquals('string', $array[1]);
     }
 
+    public function testSplit2()
+    {
+        $array = Arr::split('abc');
+        $this->assertCount(3, $array);
+        $this->assertEquals('a', $array[0]);
+        $this->assertEquals('b', $array[1]);
+        $this->assertEquals('c', $array[2]);
+    }
+
     public function testJoin1()
     {
         $array = new ArrayObject(['foo', 'bar']);
-        $string = Arr::join($array, '-');
+        $string = array_join($array, '-');
         $this->assertEquals('foo-bar', $string);
     }
 
@@ -152,7 +165,7 @@ class ArrTest extends TestCase
     public function testPrepend1()
     {
         $array = new ArrayObject(['foo', 'bar', 'baz']);
-        $array = Arr::prepend($array, 123);
+        $array = array_prepend($array, 123);
         $this->assertCount(4, $array);
         $this->assertEquals(123, $array[0]);
     }
@@ -168,7 +181,7 @@ class ArrTest extends TestCase
     public function testPull()
     {
         $array = ['foo', 'bar', 'baz'];
-        $value = Arr::pull($array, 1);
+        $value = array_pull($array, 1);
         $this->assertCount(2, $array);
         $this->assertEquals('bar', $value);
         $this->assertFalse(isset($array[1]));
@@ -177,7 +190,7 @@ class ArrTest extends TestCase
     public function testSort()
     {
         $array = new ArrayObject(['foo', 'bar', 'baz']);
-        $array = Arr::sort($array);
+        $array = array_sort($array);
         $this->assertEquals('foo', array_pop($array));
         $this->assertEquals('baz', array_pop($array));
         $this->assertEquals('bar', array_pop($array));
@@ -186,7 +199,7 @@ class ArrTest extends TestCase
     public function testSortDesc()
     {
         $array = new ArrayObject(['foo', 'bar', 'baz']);
-        $array = Arr::sortDesc($array);
+        $array = array_sort_desc($array);
         $this->assertEquals('bar', array_pop($array));
         $this->assertEquals('baz', array_pop($array));
         $this->assertEquals('foo', array_pop($array));
@@ -195,7 +208,7 @@ class ArrTest extends TestCase
     public function testKsort()
     {
         $array = new ArrayObject(['foo' => 1, 'bar' => 2, 'baz' => 3]);
-        $array = Arr::ksort($array);
+        $array = array_ksort($array);
         $this->assertEquals(1, array_pop($array));
         $this->assertEquals(3, array_pop($array));
         $this->assertEquals(2, array_pop($array));
@@ -204,7 +217,7 @@ class ArrTest extends TestCase
     public function testKSortDesc()
     {
         $array = new ArrayObject(['foo' => 1, 'bar' => 2, 'baz' => 3]);
-        $array = Arr::ksortDesc($array);
+        $array = array_ksort_desc($array);
         $this->assertEquals(2, array_pop($array));
         $this->assertEquals(3, array_pop($array));
         $this->assertEquals(1, array_pop($array));
@@ -213,7 +226,7 @@ class ArrTest extends TestCase
     public function testUsort()
     {
         $array = new ArrayObject([3, 2, 1]);
-        $array = Arr::usort($array, function($a, $b){
+        $array = array_usort($array, function($a, $b){
             return ($a < $b) ? -1 : 1;
         }, false);
         $this->assertEquals(3, array_pop($array));
@@ -235,7 +248,7 @@ class ArrTest extends TestCase
     public function testUksort()
     {
         $array = new ArrayObject(['foo' => 1, 'bar' => 2, 'baz' => 3]);
-        $array = Arr::uksort($array, function($a, $b){
+        $array = array_uksort($array, function($a, $b){
             return ($a < $b) ? -1 : 1;
         });
         $this->assertEquals(1, array_pop($array));
@@ -269,7 +282,7 @@ class ArrTest extends TestCase
     public function testMake()
     {
         $value = 123;
-        $array = Arr::make($value);
+        $array = array_make($value);
         $this->assertIsArray($array);
         $this->assertEquals(123, $array[0]);
     }

@@ -10,7 +10,6 @@ class HelperTest extends TestCase
 
     public function testLoadFunctions()
     {
-        $this->assertFalse(Helper::isLoaded());
         Helper::loadFunctions();
         $this->assertTrue(Helper::isLoaded());
         $this->assertTrue(function_exists('app_date'));
