@@ -186,6 +186,22 @@ class File
     }
 
     /**
+     * Format file size
+     *
+     * @param  int    $filesize
+     * @param  int    $round
+     * @param  ?bool  $case null = UPPER (MB); true = Title (Mb); false = lower (mb)
+     * @param  string $space
+     * @return string
+     */
+    public static function formatFileSize(int $filesize, int $round = 2, ?bool $case = null, string $space = ' '): string
+    {
+        $file = new self();
+        $file->setSize($filesize);
+        return $file->formatSize();
+    }
+
+    /**
      * Set the basename
      *
      * @param  string $basename
@@ -348,6 +364,38 @@ class File
     public function hasSize(): bool
     {
         return ($this->size > 0);
+    }
+
+    /**
+     * Format size into human-readable string
+     *
+     * @param  int    $round
+     * @param  ?bool  $case null = UPPER (MB); true = Title (Mb); false = lower (mb)
+     * @param  string $space
+     * @return string
+     */
+    public function formatSize(int $round = 2, ?bool $case = null, string $space = ' '): string
+    {
+        $prefix = '';
+        $byte   = ($case !== null) ? 'b' : 'B';
+
+        if ($this->size >= 1000000000000) {
+            $prefix    = ($case !== false) ? 'T' : 't';
+            $formatted = round($this->size / 1000000000000, $round);
+        } else if (($this->size < 1000000000000) && ($this->size >= 1000000000)) {
+            $prefix    = ($case !== false) ? 'G' : 'g';
+            $formatted = round($this->size / 1000000000, $round);
+        } else if (($this->size < 1000000000) && ($this->size >= 1000000)) {
+            $prefix    = ($case !== false) ? 'M' : 'm';
+            $formatted = round($this->size / 1000000, $round);
+        } else if (($this->size < 1000000) && ($this->size >= 1000)) {
+            $prefix    = ($case !== false) ? 'K' : 'k';
+            $formatted = round($this->size / 1000, $round);
+        } else {
+            $formatted = $this->size;
+        }
+
+        return $formatted . $space . $prefix . $byte;
     }
 
     /**

@@ -45,6 +45,20 @@ class FileTest extends TestCase
         $this->assertEquals('text/plain', File::getFileMimeType(__DIR__ . '/tmp/test.txt'));
     }
 
+    public function testFormatFileSize1()
+    {
+        $file = new File(__DIR__ . '/tmp/test.txt');
+        $this->assertEquals('13 B', $file->formatSize());
+    }
+
+    public function testFormatFileSize2()
+    {
+        $this->assertEquals('1.23 TB', File::formatFileSize(1234657890000));
+        $this->assertEquals('1.23 GB', File::formatFileSize(1234657890));
+        $this->assertEquals('1.23 MB', File::formatFileSize(1234657));
+        $this->assertEquals('1.23 KB', File::formatFileSize(1234));
+    }
+
     public function testToArray()
     {
         $file = new File(__DIR__ . '/tmp/test.txt');
