@@ -29,6 +29,8 @@ use DateInterval;
 class DateTime extends \DateTime
 {
 
+    use DateTimeTrait;
+
     /**
      * Default date format
      * @var ?string
