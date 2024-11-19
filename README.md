@@ -4,7 +4,6 @@ pop-utils
 [![Build Status](https://github.com/popphp/pop-utils/workflows/phpunit/badge.svg)](https://github.com/popphp/pop-utils/actions)
 [![Coverage Status](http://cc.popphp.org/coverage.php?comp=pop-utils)](http://cc.popphp.org/pop-utils/)
 
-[![Join the chat at https://popphp.slack.com](https://media.popphp.org/img/slack.svg)](https://popphp.slack.com)
 [![Join the chat at https://discord.gg/TZjgT74U7E](https://media.popphp.org/img/discord.svg)](https://discord.gg/TZjgT74U7E)
 
 * [Overview](#overview)
@@ -20,7 +19,7 @@ pop-utils
 
 Overview
 --------
-`pop-utils` is a basic utilities component of the [Pop PHP Framework](http://www.popphp.org/). It comes with
+`pop-utils` is a basic utilities component of the [Pop PHP Framework](https://www.popphp.org/). It comes with
 a number of utility and helper classes that can be useful when building applications with Pop.
 
 [Top](#pop-utils)
@@ -35,7 +34,7 @@ Install `pop-utils` using Composer.
 Or, require it in your composer.json file
 
     "require": {
-        "popphp/pop-utils" : "^2.0.0"
+        "popphp/pop-utils" : "^2.1.2"
     }
 
 [Top](#pop-utils)

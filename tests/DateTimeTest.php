@@ -123,13 +123,13 @@ class DateTimeTest extends TestCase
 
     public function testFormats()
     {
-        $this->assertEquals('Y-m-d H:i:s.v', DateTime::detectDateTimeFormat('2024-01-01 12:00:03.002'));
-        $this->assertEquals('Y-m-d H:i:s', DateTime::detectDateTimeFormat('2024-01-01 12:00:03'));
-        $this->assertEquals('m/d/Y g:i A', DateTime::detectDateTimeFormat('01/01/2024 9:32 AM'));
+        $this->assertEquals('Y-m-d H:i:s.v', DateTime::detectDateTimeFormat('2025-01-01 12:00:03.002'));
+        $this->assertEquals('Y-m-d H:i:s', DateTime::detectDateTimeFormat('2025-01-01 12:00:03'));
+        $this->assertEquals('m/d/Y g:i A', DateTime::detectDateTimeFormat('01/01/2025 9:32 AM'));
         $this->assertEquals('m/d/y g:i A', DateTime::detectDateTimeFormat('01/01/24 9:32 AM'));
-        $this->assertEquals('Y-m-d', DateTime::detectDateTimeFormat('2024-01-01'));
-        $this->assertEquals('m/d/Y', DateTime::detectDateTimeFormat('01/01/2024'));
-        $this->assertEquals('d.m.Y', DateTime::detectDateTimeFormat('01.01.2024'));
+        $this->assertEquals('Y-m-d', DateTime::detectDateTimeFormat('2025-01-01'));
+        $this->assertEquals('m/d/Y', DateTime::detectDateTimeFormat('01/01/2025'));
+        $this->assertEquals('d.m.Y', DateTime::detectDateTimeFormat('01.01.2025'));
         $this->assertEquals('m/d/y', DateTime::detectDateTimeFormat('01/01/24'));
         $this->assertEquals('d.m.y', DateTime::detectDateTimeFormat('01.01.24'));
         $this->assertEquals('H:i:s', DateTime::detectDateTimeFormat('12:00:03'));
