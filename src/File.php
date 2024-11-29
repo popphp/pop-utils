@@ -147,7 +147,9 @@ class File
 
         if (!empty($filename)) {
             $info = pathinfo($filename);
-            $this->setSize(filesize($filename));
+            if (file_exists($filename)) {
+                $this->setSize(filesize($filename));
+            }
         }
 
         if (!empty($info['basename'])) {
