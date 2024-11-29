@@ -34,7 +34,7 @@ Install `pop-utils` using Composer.
 Or, require it in your composer.json file
 
     "require": {
-        "popphp/pop-utils" : "^2.1.2"
+        "popphp/pop-utils" : "^2.1.3"
     }
 
 [Top](#pop-utils)
