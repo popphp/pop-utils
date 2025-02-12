@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '8.2', '8.3' ]
-        phpunit-versions: ['11.0.0']
+        phpunit-versions: ['11.5.0']
 
     steps:
     - name: Setup PHP
