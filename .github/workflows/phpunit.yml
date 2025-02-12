@@ -16,8 +16,18 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '8.2', '8.3' ]
+        phpunit-versions: ['11.0.0']
 
     steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring
+        ini-values: post_max_size=256M, max_execution_time=180
+        coverage: xdebug,coverage
+        tools: phpunit:${{ matrix.phpunit-versions }}
+
     - uses: actions/checkout@v3
 
     #- name: Validate composer.json and composer.lock
