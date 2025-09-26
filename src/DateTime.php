@@ -133,6 +133,37 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Method to determine if time is currently DST
+     *
+     * Standard hh:mm:ss format string is '%H:%I:%S'
+     *
+     * @param  ?string $dateTime
+     * @param  ?string $dstStart
+     * @param  ?string $dstEnd
+     * @throws \InvalidArgumentException
+     * @return bool
+     */
+    public static function isDst(?string $dateTime = null, ?string $dstStart = null, ?string $dstEnd = null): bool
+    {
+        // Default to U.S.-based DST
+        if (($dstStart === null) || ($dstEnd === null)) {
+            $dstStart = strtotime('Second Sunday of March 2AM');
+            $dstEnd   = strtotime('First Sunday of November 2AM');
+        }
+
+        if ($dateTime === null) {
+            $dateTime = time();
+        } else if (!is_numeric($dateTime)) {
+            $dateTime = strtotime($dateTime);
+            if ($dateTime === false) {
+                throw new \InvalidArgumentException('Error: Invalid date-time parameter.');
+            }
+        }
+
+        return (($dateTime > $dstStart) && ($dateTime < $dstEnd));
+    }
+
+    /**
      * Method to get total time from array of multiple time values in HH:MM:SS format
      *
      * Standard hh:mm:ss format string is '%H:%I:%S'
