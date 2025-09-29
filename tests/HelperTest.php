@@ -94,4 +94,10 @@ class HelperTest extends TestCase
         $this->assertEquals('some-string', str_kebab_case('SomeString'));
     }
 
+    public function testIsJson()
+    {
+        $this->assertTrue(is_json('{"foo":"bar"}'));
+        $this->assertFalse(is_json('{"foo":"bar"'));
+    }
+
 }

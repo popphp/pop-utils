@@ -354,3 +354,17 @@ if (!function_exists('array_make')) {
         return Arr::make($value);
     }
 }
+
+if (!function_exists('is_json')) {
+    /**
+     * Check if string is valid JSON
+     *
+     * @param  string $json
+     * @return bool
+     */
+    function is_json(string $json): bool
+    {
+        return (((is_string($json) && (json_decode($json) !== false)) &&
+            (json_last_error() == JSON_ERROR_NONE)));
+    }
+}
