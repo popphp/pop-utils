@@ -231,7 +231,7 @@ class Collection extends AbstractArray
      * @param  int $length
      * @return Collection
      */
-    public function slice(int $offset, int $length = null): Collection
+    public function slice(int $offset, ?int $length = null): Collection
     {
         return new static(array_slice($this->data, $offset, $length, true));
     }
