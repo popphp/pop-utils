@@ -13,8 +13,6 @@
  */
 namespace Pop\Utils;
 
-use ArrayIterator;
-
 /**
  * Pop utils array collection class
  *
@@ -23,7 +21,7 @@ use ArrayIterator;
  * @author     Nick Sagona, III <dev@noladev.com>
  * @copyright  Copyright (c) 2009-2025 NOLA Interactive, LLC.
  * @license    https://www.popphp.org/license     New BSD License
- * @version    2.2.0
+ * @version    3.0.0
  */
 class Collection extends AbstractArray
 {
@@ -173,7 +171,7 @@ class Collection extends AbstractArray
      * @param  bool  $recursive
      * @return Collection
      */
-    public function merge(mixed $data, $recursive = false): Collection
+    public function merge(mixed $data, bool $recursive = false): Collection
     {
         return ($recursive) ?
             new static(array_merge_recursive($this->data, $this->getDataAsArray($data))) :
@@ -227,8 +225,8 @@ class Collection extends AbstractArray
     /**
      * Slice the collection
      *
-     * @param  int $offset
-     * @param  int $length
+     * @param  int  $offset
+     * @param  ?int $length
      * @return Collection
      */
     public function slice(int $offset, ?int $length = null): Collection
