@@ -359,10 +359,10 @@ if (!function_exists('is_json')) {
     /**
      * Check if string is valid JSON
      *
-     * @param  string $json
+     * @param  mixed $json
      * @return bool
      */
-    function is_json(string $json): bool
+    function is_json(mixed $json): bool
     {
         return (((is_string($json) && (json_decode($json) !== false)) &&
             (json_last_error() == JSON_ERROR_NONE)));
