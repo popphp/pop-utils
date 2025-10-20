@@ -151,4 +151,13 @@ HTML;
         $this->assertEquals('', Str::detectSeparator('NoSeparator'));
     }
 
+    public function testStripSpecialCharacters()
+    {
+        $string = 'Hello World!?#@$ What_is-up?!';
+        $this->assertEquals('Hello World What_is-up', Str::stripSpecialCharacters($string));
+        $this->assertEquals('Hello World Whatisup', Str::stripSpecialCharacters($string, true));
+        $this->assertEquals('HelloWorldWhatisup', Str::stripSpecialCharacters($string, true, false));
+        $this->assertEquals('HelloWorldWhat_is-up', Str::stripSpecialCharacters($string, false, false));
+    }
+
 }

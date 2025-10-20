@@ -136,4 +136,16 @@ class DateTimeTest extends TestCase
         $this->assertEquals('g:i A', DateTime::detectDateTimeFormat('9:32 AM'));
     }
 
+    public function testDst()
+    {
+        $this->assertIsBool(DateTime::isDst());
+        $this->assertTrue(DateTime::isDst('2025-06-01'));
+    }
+
+    public function testDstException()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->assertTrue(DateTime::isDst('Bad date'));
+    }
+
 }
