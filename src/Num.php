@@ -71,7 +71,7 @@ class Num
     }
 
     /**
-     * Convert a numeric float to percentage-formatted string
+     * Convert a numeric float to a percentage-formatted string
      *
      * @param  mixed  $number
      * @param  int    $precision

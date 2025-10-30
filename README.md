@@ -13,8 +13,8 @@ pop-utils
 * [Callable Object](#callable-object)
 * [DateTime Object](#datetime-object)
 * [File Helper](#file-helper)
-* [String Helper](#string-helper)
 * [Array Helper](#array-helper)
+* [Number Helper](#array-helper)
 * [Helper Functions](#helper-functions)
 
 Overview
@@ -279,6 +279,37 @@ echo File::getFileMimeType(__DIR__ . '/tmp/image.jpg'); // 'image/jpeg'
 
 [Top](#pop-utils)
 
+### Array Helper
+
+The `Pop\Utils\Arr` class has a number of static methods to assist in
+manipulating arrays:
+
+- `Arr::isArray(mixed $value): bool`
+- `Arr::isNumeric(array $array): bool`
+- `Arr::isAssoc(array $array): bool`
+- `Arr::exists(array|ArrayAccess $array, string|int $key): bool`
+- `Arr::key(array|AbstractArray $array, string|int $value, bool $strict = false): mixed`
+- `Arr::collapse(array|AbstractArray $array): array`
+- `Arr::flatten(array|AbstractArray $array, int|float $depth = INF): array`
+- `Arr::divide(array|AbstractArray $array): array`
+- `Arr::slice(array|AbstractArray $array, int $limit, int $offset = 0): array`
+- `Arr::split(string $string, string $separator, int $limit = PHP_INT_MAX): array`
+- `Arr::join(array|AbstractArray $array, string $glue, string $finalGlue = ''): string`
+- `Arr::prepend(array|AbstractArray $array, mixed $value, mixed $key = null): array`
+- `Arr::pull(array &$array, mixed $key): mixed`
+- `Arr::sort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false): array`
+- `Arr::sortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true): array`
+- `Arr::ksort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $descending = false): array`
+- `Arr::ksortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR): array`
+- `Arr::usort(array|AbstractArray $array, mixed $callback, bool $assoc = true): array`
+- `Arr::uksort(array|AbstractArray $array, mixed $callback): array`
+- `Arr::map(array|AbstractArray $array, mixed $callback): array`
+- `Arr::trim(array|AbstractArray $array): array`
+- `Arr::filter(array|AbstractArray $array, mixed $callback = null, int $mode = ARRAY_FILTER_USE_BOTH): array`
+- `Arr::make(mixed $value): array`
+
+[Top](#pop-utils)
+
 ### String Helper
 
 The `Pop\Utils\Str` class has a number of static methods to assist in
@@ -348,34 +379,17 @@ echo Str::camelCaseToUrl('camelCase');               // camel/case
 
 [Top](#pop-utils)
 
-### Array Helper
+### Number Helper
 
-The `Pop\Utils\Arr` class has a number of static methods to assist in
-manipulating arrays:
+The `Pop\Utils\Num` class has a number of static methods to assist in
+manipulating and formatting numbers:
 
-- `Arr::isArray(mixed $value): bool`
-- `Arr::isNumeric(array $array): bool`
-- `Arr::isAssoc(array $array): bool`
-- `Arr::exists(array|ArrayAccess $array, string|int $key): bool`
-- `Arr::key(array|AbstractArray $array, string|int $value, bool $strict = false): mixed`
-- `Arr::collapse(array|AbstractArray $array): array`
-- `Arr::flatten(array|AbstractArray $array, int|float $depth = INF): array`
-- `Arr::divide(array|AbstractArray $array): array`
-- `Arr::slice(array|AbstractArray $array, int $limit, int $offset = 0): array`
-- `Arr::split(string $string, string $separator, int $limit = PHP_INT_MAX): array`
-- `Arr::join(array|AbstractArray $array, string $glue, string $finalGlue = ''): string`
-- `Arr::prepend(array|AbstractArray $array, mixed $value, mixed $key = null): array`
-- `Arr::pull(array &$array, mixed $key): mixed`
-- `Arr::sort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false): array`
-- `Arr::sortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true): array`
-- `Arr::ksort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $descending = false): array`
-- `Arr::ksortDesc(array|AbstractArray $array, int $flags = SORT_REGULAR): array`
-- `Arr::usort(array|AbstractArray $array, mixed $callback, bool $assoc = true): array`
-- `Arr::uksort(array|AbstractArray $array, mixed $callback): array`
-- `Arr::map(array|AbstractArray $array, mixed $callback): array`
-- `Arr::trim(array|AbstractArray $array): array`
-- `Arr::filter(array|AbstractArray $array, mixed $callback = null, int $mode = ARRAY_FILTER_USE_BOTH): array`
-- `Arr::make(mixed $value): array`
+- `Num::float(mixed $number, string $separator = '', string $decimal = '.', int $precision = 2): string`
+- `Num::currency(mixed $number, string $currency = '$', string $separator = ',', string $decimal = '.', int $precision = 2): string`
+- `Num::percentage(mixed $number, int $precision = 2, string $decimal = '.'): string`
+- `Num::convertPercentage(mixed $number, int $precision = 2, string $decimal = '.'): string`
+- `Num::abbreviate(mixed $number, int $precision = 2, bool $uppercase = true, string $space = ''): string`
+- `Num::readable(mixed $number,  bool $case = true): string`
 
 [Top](#pop-utils)
 
