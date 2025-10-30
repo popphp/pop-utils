@@ -142,6 +142,8 @@ class DateTimeTest extends TestCase
         $this->assertIsBool($dst);
     }
 
+    }
+
     public function testIsDst2()
     {
         $dst = DateTime::isDst('2025-07-04');

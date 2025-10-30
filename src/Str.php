@@ -228,6 +228,24 @@ class Str
     }
 
     /**
+     * Strip special characters
+     *
+     * @param  string $string
+     * @param  bool   $alphaNumOnly    No dashes or underscores
+     * @param  bool   $spaces          Allow spaces
+     * @return string
+     */
+    public static function stripSpecialCharacters(string $string, bool $alphaNumOnly = false, bool $spaces = true): string
+    {
+        if ($alphaNumOnly) {
+            $regex = ($spaces) ? "/[^A-Za-z0-9 ]/" : "/[^A-Za-z0-9]/";
+        } else {
+            $regex = ($spaces) ? "/[^A-Za-z0-9_\- ]/" : "/[^A-Za-z0-9_\-]/";
+        }
+        return preg_replace($regex, '', $string);
+    }
+
+    /**
      * Convert a string from one case to another
      *
      * @param string $name
