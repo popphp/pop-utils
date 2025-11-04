@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=8.3.0",
-        "popphp/popphp": "^4.3.5",
+        "popphp/popphp": "^4.4.0",
         "ext-json": "*"
     },
     "require-dev": {
@@ -39,7 +39,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2.x-dev"
+            "dev-master": "2.3.x-dev"
         }
     }
 }
