@@ -45,6 +45,26 @@ class FileTest extends TestCase
         $this->assertEquals('text/plain', File::getFileMimeType(__DIR__ . '/tmp/test.txt'));
     }
 
+    public function testIsFileType()
+    {
+        $this->assertTrue(File::isImage('image.psd'));
+        $this->assertFalse(File::isImage('not-an-image.txt'));
+        $this->assertTrue(File::isWebImage('image.jpg'));
+        $this->assertFalse(File::isWebImage('not-an-image.txt'));
+        $this->assertTrue(File::isVideo('video.mp4'));
+        $this->assertFalse(File::isVideo('not-a-video.txt'));
+        $this->assertTrue(File::isAudio('track.wav'));
+        $this->assertFalse(File::isAudio('test.txt'));
+        $this->assertTrue(File::isText('test.txt'));
+        $this->assertFalse(File::isText('not-a-text.jpg'));
+        $this->assertTrue(File::isCompressed('compressed.tar.bz2'));
+        $this->assertFalse(File::isCompressed('not-compressed.txt'));
+        $this->assertTrue(File::isWord('document.docx'));
+        $this->assertFalse(File::isWord('not-a-document.txt'));
+        $this->assertTrue(File::isPdf('document.pdf'));
+        $this->assertFalse(File::isPdf('not-a-document.txt'));
+    }
+
     public function testFormatFileSize1()
     {
         $file = new File(__DIR__ . '/tmp/test.txt');

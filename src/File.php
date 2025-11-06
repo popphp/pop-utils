@@ -67,6 +67,7 @@ class File
      * @var array
      */
     protected static array $mimeTypes = [
+        'aiff'  => 'audio/aiff',
         'avi'   => 'video/x-msvideo',
         'bin'   => 'application/octet-stream',
         'bmp'   => 'image/bmp',
@@ -76,6 +77,7 @@ class File
         'csv'   => 'text/csv',
         'doc'   => 'application/msword',
         'docx'  => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'flac'  => 'audio/flac',
         'gz'    => 'application/gzip',
         'gif'   => 'image/gif',
         'htm'   => 'text/html',
@@ -93,12 +95,15 @@ class File
         'mid'   => 'audio/midi',
         'midi'  => 'audio/midi',
         'mp3'   => 'audio/mpeg',
+        'm4a'   => 'audio/mp4',
         'mp4'   => 'video/mp4',
+        'mov'   => 'video/quicktime',
         'mpeg'  => 'video/mpeg',
         'odp'   => 'application/vnd.oasis.opendocument.presentation',
         'ods'   => 'application/vnd.oasis.opendocument.spreadsheet',
         'odt'   => 'application/vnd.oasis.opendocument.text',
-        'oga'   => 'audio/ogg',
+        'ogg'   => 'audio/ogg',
+        'oga'   => 'audio/oga',
         'ogv'   => 'video/ogg',
         'ogx'   => 'application/ogg',
         'otf'   => 'font/otf',
@@ -120,6 +125,7 @@ class File
         'tsv'   => 'text/tsv',
         'txt'   => 'text/plain',
         'wav'   => 'audio/wav',
+        'wmv'   => 'video/x-ms-wmv',
         'xhtml' => 'application/xhtml+xml',
         'xls'   => 'application/vnd.ms-excel',
         'xlsx'  => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -167,6 +173,22 @@ class File
     }
 
     /**
+     * Format file size
+     *
+     * @param  int    $filesize
+     * @param  int    $round
+     * @param  ?bool  $case null = UPPER (MB); true = Title (Mb); false = lower (mb)
+     * @param  string $space
+     * @return string
+     */
+    public static function formatFileSize(int $filesize, int $round = 2, ?bool $case = null, string $space = ' '): string
+    {
+        $file = new self();
+        $file->setSize($filesize);
+        return $file->formatSize();
+    }
+
+    /**
      * Get common mime types
      *
      * @return array
@@ -188,19 +210,161 @@ class File
     }
 
     /**
-     * Format file size
+     * Check if file is an image file
      *
-     * @param  int    $filesize
-     * @param  int    $round
-     * @param  ?bool  $case null = UPPER (MB); true = Title (Mb); false = lower (mb)
-     * @param  string $space
-     * @return string
+     * @param  string $filename
+     * @return bool
      */
-    public static function formatFileSize(int $filesize, int $round = 2, ?bool $case = null, string $space = ' '): string
+    public static function isImage(string $filename): bool
     {
-        $file = new self();
-        $file->setSize($filesize);
-        return $file->formatSize();
+        $imageFormats = [
+            static::$mimeTypes['bmp'],
+            static::$mimeTypes['gif'],
+            static::$mimeTypes['ico'],
+            static::$mimeTypes['jpe'],
+            static::$mimeTypes['jpg'],
+            static::$mimeTypes['jpeg'],
+            static::$mimeTypes['png'],
+            static::$mimeTypes['psd'],
+            static::$mimeTypes['svg'],
+            static::$mimeTypes['tif'],
+            static::$mimeTypes['tiff'],
+        ];
+
+        return in_array(static::getFileMimeType($filename), $imageFormats);
+    }
+
+    /**
+     * Check if file is a web image file
+     *
+     * @param  string $filename
+     * @return bool
+     */
+    public static function isWebImage(string $filename): bool
+    {
+        $webImageFormats = [
+            static::$mimeTypes['gif'],
+            static::$mimeTypes['ico'],
+            static::$mimeTypes['jpe'],
+            static::$mimeTypes['jpg'],
+            static::$mimeTypes['jpeg'],
+            static::$mimeTypes['png'],
+            static::$mimeTypes['svg'],
+        ];
+
+        return in_array(static::getFileMimeType($filename), $webImageFormats);
+    }
+
+    /**
+     * Check if file is a video file
+     *
+     * @param  string $filename
+     * @return bool
+     */
+    public static function isVideo(string $filename): bool
+    {
+        $videoFormats = [
+            static::$mimeTypes['avi'],
+            static::$mimeTypes['mov'],
+            static::$mimeTypes['mp4'],
+            static::$mimeTypes['mpeg'],
+            static::$mimeTypes['ogv'],
+            static::$mimeTypes['ogx'],
+            static::$mimeTypes['wmv'],
+        ];
+
+        return in_array(static::getFileMimeType($filename), $videoFormats);
+    }
+
+    /**
+     * Check if file is an audio file
+     *
+     * @param  string $filename
+     * @return bool
+     */
+    public static function isAudio(string $filename): bool
+    {
+        $audioFormats = [
+            static::$mimeTypes['aiff'],
+            static::$mimeTypes['flac'],
+            static::$mimeTypes['mid'],
+            static::$mimeTypes['midi'],
+            static::$mimeTypes['mp3'],
+            static::$mimeTypes['m4a'],
+            static::$mimeTypes['ogg'],
+            static::$mimeTypes['oga'],
+            static::$mimeTypes['ogx'],
+            static::$mimeTypes['wav'],
+        ];
+
+        return in_array(static::getFileMimeType($filename), $audioFormats);
+    }
+
+    /**
+     * Check if file is a text file
+     *
+     * @param  string $filename
+     * @return bool
+     */
+    public static function isText(string $filename): bool
+    {
+        $textFormats = [
+            static::$mimeTypes['csv'],
+            static::$mimeTypes['log'],
+            static::$mimeTypes['tsv'],
+            static::$mimeTypes['txt'],
+        ];
+
+        return in_array(static::getFileMimeType($filename), $textFormats);
+    }
+
+    /**
+     * Check if file is a compressed file
+     *
+     * @param  string $filename
+     * @return bool
+     */
+    public static function isCompressed(string $filename): bool
+    {
+        $compressedFormats = [
+            static::$mimeTypes['bz'],
+            static::$mimeTypes['bz2'],
+            static::$mimeTypes['gz'],
+            static::$mimeTypes['jar'],
+            static::$mimeTypes['rar'],
+            static::$mimeTypes['tar'],
+            static::$mimeTypes['zip'],
+        ];
+
+        return in_array(static::getFileMimeType($filename), $compressedFormats);
+    }
+
+    /**
+     * Check if file is a Word document
+     *
+     * @param  string $filename
+     * @return bool
+     */
+    public static function isWord(string $filename): bool
+    {
+        $wordFormats = [
+            static::$mimeTypes['doc'],
+            static::$mimeTypes['docx'],
+            static::$mimeTypes['rtf'],
+        ];
+
+        return in_array(static::getFileMimeType($filename), $wordFormats);
+    }
+
+    /**
+     * Check if file is a PDF document
+     *
+     * @param  string $filename
+     * @return bool
+     */
+    public static function isPdf(string $filename): bool
+    {
+        return (static::getFileMimeType($filename) == 'application/pdf');
     }
 
     /**
