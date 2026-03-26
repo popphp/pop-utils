@@ -35,9 +35,9 @@ class UuidTest extends TestCase
 
     public function testV7()
     {
-        $uuidV4 = Uuid::v7();
-        $parts  = explode('-', $uuidV4);
-        $this->assertEquals(35, strlen($uuidV4));
+        $uuidV7 = Uuid::v7();
+        $parts  = explode('-', $uuidV7);
+        $this->assertEquals(35, strlen($uuidV7));
         $this->assertEquals(5, count($parts));
         $this->assertEquals('7', substr($parts[2], 0, 1));
     }
