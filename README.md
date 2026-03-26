@@ -15,6 +15,7 @@ pop-utils
 * [File Helper](#file-helper)
 * [Array Helper](#array-helper)
 * [Number Helper](#array-helper)
+* [UUID Helper](#uuid-helper)
 * [Helper Functions](#helper-functions)
 
 Overview
@@ -390,6 +391,32 @@ manipulating and formatting numbers:
 - `Num::convertPercentage(mixed $number, int $precision = 2, string $decimal = '.'): string`
 - `Num::abbreviate(mixed $number, int $precision = 2, bool $uppercase = true, string $space = ''): string`
 - `Num::readable(mixed $number,  bool $case = true): string`
+
+[Top](#pop-utils)
+
+### UUID Helper
+
+The `Pop\Utils\Uuid` class has a few static methods to assist in the generation of V4 and V7 UUIDs:
+
+- `Uuid::v4(): string`
+- `Uuid::v4Linux(): string`
+- `Uuid::v4LinuxAvailable(): bool`
+- `Uuid::v7(): string`
+
+```php
+use Pop\Utils\Uuid;
+
+// Generate a v4 UUID (random) using native PHP
+echo Uuid::v4();         
+
+// Generate a v4 UUID (random) using the Linux random/uuid file
+if (Uuid::v4LinuxAvailable()) {
+    echo Uuid::v4Linux();
+}
+
+// Generate a v7 UUID (time-based) using native PHP
+echo Uuid::v7();  
+```
 
 [Top](#pop-utils)
 
