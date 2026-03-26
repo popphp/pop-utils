@@ -145,12 +145,6 @@ class DateTime extends \DateTime
      */
     public static function isDst(?string $dateTime = null, ?string $dstStart = null, ?string $dstEnd = null): bool
     {
-        // Default to U.S.-based DST
-        if (($dstStart === null) || ($dstEnd === null)) {
-            $dstStart = strtotime('Second Sunday of March 2AM');
-            $dstEnd   = strtotime('First Sunday of November 2AM');
-        }
-
         if ($dateTime === null) {
             $dateTime = time();
         } else if (!is_numeric($dateTime)) {
@@ -158,6 +152,13 @@ class DateTime extends \DateTime
             if ($dateTime === false) {
                 throw new \InvalidArgumentException('Error: Invalid date-time parameter.');
             }
+        }
+
+        // Default to U.S.-based DST
+        if (($dstStart === null) || ($dstEnd === null)) {
+            $year     = date('Y', $dateTime);
+            $dstStart = strtotime('Second Sunday of March ' . $year . ' 2AM');
+            $dstEnd   = strtotime('First Sunday of November ' . $year . ' 2AM');
         }
 
         return (($dateTime > $dstStart) && ($dateTime < $dstEnd));

@@ -8,12 +8,6 @@ use PHPUnit\Framework\TestCase;
 class NumTest extends TestCase
 {
 
-//echo Num::percentage($num);
-//echo Num::float($num);
-//echo Num::currency($num);
-//echo Num::trim($num);
-//echo Num::abbreviate($num, 0);
-
     public function testFloat()
     {
         $this->assertEquals(123.45, Num::float('123.45'));
