@@ -10,13 +10,22 @@ if (!function_exists('app_date')) {
      * Produce datetime string based on app timezone
      *
      * @param  string $format
-     * @param  ?int   $timestamp
+     * @param  mixed  $timestamp
      * @param  string $env
      * @param  mixed  $envDefault
      * @return string|null
      */
-    function app_date(string $format, ?int $timestamp = null, string $env = 'APP_TIMEZONE', mixed $envDefault = null): string|null
+    function app_date(string $format, mixed $timestamp = null, string $env = 'APP_TIMEZONE', mixed $envDefault = null): string|null
     {
+        if (!empty($timestamp)) {
+            if (!is_numeric($timestamp)) {
+                $timestamp = strtotime($timestamp);
+                if ($timestamp === false) {
+                    throw new \InvalidArgumentException('Error: That timestamp is invalid.');
+                }
+            }
+        }
+
         $timezone = App::env($env, $envDefault);
         $gm       = function_exists('gmdate');
 
@@ -28,6 +37,22 @@ if (!function_exists('app_date')) {
             }
             return date($format, $timestamp);
         }
+    }
+}
+
+if (!function_exists('app_time')) {
+    /**
+     * Produce timestamp based on app timezone
+     *
+     * @param  mixed   $timestamp
+     * @param  string  $env
+     * @param  mixed   $envDefault
+     * @return string|null
+     */
+    function app_time(?string $timestamp = null, $env = 'APP_TIMEZONE', mixed $envDefault = null): string|null
+    {
+        $datetime = app_date('Y-m-d H:i:s', $timestamp, $env, $envDefault);
+        return (!empty($datetime) && strtotime($datetime) !== false) ? strtotime($datetime) : null;
     }
 }
 

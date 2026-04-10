@@ -26,7 +26,6 @@ namespace Pop\Utils;
 class Helper
 {
 
-
     /**
      * Check if helper functions are loaded
      *

@@ -13,6 +13,7 @@ class HelperTest extends TestCase
         Helper::loadFunctions();
         $this->assertTrue(Helper::isLoaded());
         $this->assertTrue(function_exists('app_date'));
+        $this->assertTrue(function_exists('app_time'));
         $this->assertTrue(function_exists('str_slug'));
         $this->assertTrue(function_exists('str_random'));
         $this->assertTrue(function_exists('str_random_alpha'));
@@ -25,11 +26,22 @@ class HelperTest extends TestCase
         $this->assertTrue(function_exists('str_kebab_case'));
     }
 
-    public function testAppDate()
+    public function testAppDate1()
     {
         $time = time();
         $this->assertTrue(function_exists('app_date'));
         $this->assertEquals(date('Y-m-d H:i:s', $time), app_date('Y-m-d H:i:s', $time));
+    }
+
+    public function testAppDate2()
+    {
+        $this->assertEquals(date('Y-m-d H:i:s', strtotime('30 minutes ago')), app_date('Y-m-d H:i:s', '30 minutes ago'));
+    }
+
+    public function testAppDateException()
+    {
+        $this->expectException('InvalidArgumentException');
+        $time = app_date('Y-m-d H:i:s', 'SOME BAD TIME');
     }
 
     public function testAppDateUTC()
@@ -42,6 +54,12 @@ class HelperTest extends TestCase
     {
         $time = time();
         $this->assertEquals(gmdate('Y-m-d H:i:s', $time), app_date('Y-m-d H:i:s', $time + 3600, 'APP_TIMEZONE', '-1'));
+    }
+
+    public function testAppTime()
+    {
+        $this->assertTrue(function_exists('app_time'));
+        $this->assertEquals(time(), app_time());
     }
 
     public function testStrSlug()
