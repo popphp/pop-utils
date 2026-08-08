@@ -146,7 +146,7 @@ Unlike `AbstractArray`'s own sort methods (shared with `ArrayObject`, see above)
 methods return a **new** `Collection` instance rather than mutating the original in place — so they can
 be chained freely without affecting earlier references.
 
-It's available API includes:
+Its available API includes:
 
 - `count(): int`
 - `first(): mixed`
@@ -318,7 +318,7 @@ parameter value.
 
 ### DateTime Object
 
-The `Pop\Utils\DateTime` class extend the native `DateTime` class and adds some helper functions:
+The `Pop\Utils\DateTime` class extends the native `DateTime` class and adds some helper functions:
 
 - Add HH:MM:SS formatted times together for a total time in the HH:MM:SS format.
 - Average HH:MM:SS formatted times together for an average time in the HH:MM:SS format.
@@ -390,21 +390,21 @@ echo $dateTime; // e.g. '2026-08-06 14:32:10'
 
 ### File Helper
 
-The `Pop\Utils\File` class get quickly parse and return information about a file,
+The `Pop\Utils\File` class can quickly parse and return information about a file,
 including the mime type for common file types
 
 ```php
-use Pop\Utils\File
+use Pop\Utils\File;
 
 $file = new File(__DIR__ . '/tmp/test.txt');
 
-echo $file->getBasename());  // 'test.txt'
-echo $file->getFilename());  // 'test'
-echo $file->getExtension()); // 'txt'
-echo $file->getMimeType());  // 'text/plain'
-echo $file->getPath());      // __DIR__ . '/tmp
-echo $file->getSize());      // 13
-echo $file;                  // __toString() outputs the full path, e.g. __DIR__ . '/tmp/test.txt'
+echo $file->getBasename();  // 'test.txt'
+echo $file->getFilename();  // 'test'
+echo $file->getExtension(); // 'txt'
+echo $file->getMimeType();  // 'text/plain'
+echo $file->getPath();      // __DIR__ . '/tmp'
+echo $file->getSize();      // 13
+echo $file;                 // __toString() outputs the full path, e.g. __DIR__ . '/tmp/test.txt'
 ```
 
 `File` only parses path/size/mime-type information — it does not read the file's contents unless you
@@ -430,7 +430,7 @@ built up manually instead of (or in addition to) parsing an existing path:
 You can quickly get just the mime type of a file like this:
 
 ```php
-use Pop\Utils\File
+use Pop\Utils\File;
 
 echo File::getFileMimeType(__DIR__ . '/tmp/image.jpg'); // 'image/jpeg'
 ```
@@ -514,7 +514,7 @@ echo Str::createLinks('Test Email test@test.com and Test Website http://www.test
 
 ```text
 Test Email <a href="mailto:test@test.com">test@test.com</a> and
-Test Website <href="http://www.test.com/">http://www.test.com/</a>
+Test Website <a href="http://www.test.com/">http://www.test.com/</a>
 ```
 
 ##### Random Strings
