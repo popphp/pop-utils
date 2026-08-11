@@ -19,6 +19,7 @@
     "require": {
         "php": ">=8.4.0",
         "popphp/popphp": "^5.0.0-beta.10",
+        "psr/log": "^3.0",
         "ext-json": "*"
     },
     "require-dev": {
@@ -39,7 +40,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.5.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     }
 }

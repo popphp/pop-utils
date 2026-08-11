@@ -14,7 +14,7 @@
 namespace Pop\Utils;
 
 /**
- * Pop utils serializable interface
+ * Pop utils debugger interface
  *
  * @category   Pop
  * @package    Pop\Utils
@@ -23,22 +23,15 @@ namespace Pop\Utils;
  * @license    https://www.popphp.org/license     New BSD License
  * @version    3.0.0
  */
-interface SerializableInterface extends \JsonSerializable
+interface DebuggerInterface
 {
 
     /**
-     * Serialize the array object
+     * Add a handler
      *
-     * @return string
+     * @param  DebuggerHandlerInterface $handler
+     * @return DebuggerInterface
      */
-    public function serialize(): string;
-
-    /**
-     * Unserialize a string
-     *
-     * @param  string $string
-     * @return mixed
-     */
-    public function unserialize(string $string): mixed;
+    public function addHandler(DebuggerHandlerInterface $handler): DebuggerInterface;
 
 }

@@ -21,6 +21,6 @@ namespace Pop\Utils;
  * @author     Nick Sagona, III <dev@noladev.com>
  * @copyright  Copyright (c) 2009-2027 NOLA Interactive, LLC.
  * @license    https://www.popphp.org/license     New BSD License
- * @version    2.5.0
+ * @version    3.0.0
  */
 class Exception extends \Exception {}
