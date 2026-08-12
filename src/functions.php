@@ -1,6 +1,5 @@
 <?php
 
-use Pop\App;
 use Pop\Utils\AbstractArray;
 use Pop\Utils\Str;
 use Pop\Utils\Arr;
@@ -26,7 +25,7 @@ if (!function_exists('app_date')) {
             }
         }
 
-        $timezone = App::env($env, $envDefault);
+        $timezone = $_ENV[$env] ?? null;
         $gm       = function_exists('gmdate');
 
         if ((($timezone == 'UTC') || (is_numeric($timezone) && ($timezone == 0))) && ($gm)) {
