@@ -9,6 +9,7 @@ pop-utils
 * [Overview](#overview)
 * [Install](#install)
 * [Array Object](#array-object)
+* [Abstract Model](#abstract-model)
 * [Collection](#collection)
 * [Callable Object](#callable-object)
 * [DateTime Object](#datetime-object)
@@ -117,6 +118,28 @@ use Pop\Utils\ArrayObject;
 
 $arrayObject = new ArrayObject(['b' => 2, 'a' => 1]);
 $arrayObject->ksort(); // $arrayObject is now sorted by key in place
+```
+
+[Top](#pop-utils)
+
+### Abstract Model
+
+The `Pop\Utils\AbstractModel` class is an empty stub class that extends `ArrayObject`. It's meant to be
+used as a common base class for an application's data model classes, so they can share one ancestor (for
+type-checking, etc.) while getting all of `ArrayObject`'s array/object-access, iteration, and
+serialize/unserialize behavior for free.
+
+```php
+use Pop\Utils\AbstractModel;
+
+class User extends AbstractModel
+{
+
+}
+
+$user = new User(['id' => 1, 'name' => 'Nick']);
+echo $user->name; // 'Nick'
+echo $user['name']; // 'Nick'
 ```
 
 [Top](#pop-utils)

@@ -25,7 +25,7 @@ if (!function_exists('app_date')) {
             }
         }
 
-        $timezone = $_ENV[$env] ?? null;
+        $timezone = $_ENV[$env] ?? $envDefault;
         $gm       = function_exists('gmdate');
 
         if ((($timezone == 'UTC') || (is_numeric($timezone) && ($timezone == 0))) && ($gm)) {
