@@ -35,4 +35,11 @@ interface DebuggerInterface
      */
     public function addHandler(DebuggerHandlerInterface $handler): DebuggerInterface;
 
+    /**
+     * Save the debug handlers' data to storage (returns the request ID of what was saved)
+     *
+     * @return string
+     */
+    public function save(): string;
+
 }
