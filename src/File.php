@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Pop PHP Framework (https://www.popphp.org/)
  *
@@ -548,13 +549,13 @@ class File
         if ($this->size >= 1000000000000) {
             $prefix    = ($case !== false) ? 'T' : 't';
             $formatted = round($this->size / 1000000000000, $round);
-        } else if (($this->size < 1000000000000) && ($this->size >= 1000000000)) {
+        } else if ($this->size >= 1000000000) {
             $prefix    = ($case !== false) ? 'G' : 'g';
             $formatted = round($this->size / 1000000000, $round);
-        } else if (($this->size < 1000000000) && ($this->size >= 1000000)) {
+        } else if ($this->size >= 1000000) {
             $prefix    = ($case !== false) ? 'M' : 'm';
             $formatted = round($this->size / 1000000, $round);
-        } else if (($this->size < 1000000) && ($this->size >= 1000)) {
+        } else if ($this->size >= 1000) {
             $prefix    = ($case !== false) ? 'K' : 'k';
             $formatted = round($this->size / 1000, $round);
         } else {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Pop PHP Framework (https://www.popphp.org/)
  *
@@ -125,7 +126,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      * @param  int  $flags
      * @param  bool $assoc
      * @param  bool $descending
-     * @return array
+     * @return static
      */
     public function sort(int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false): static
     {
@@ -157,7 +158,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      *
      * @param  int  $flags
      * @param  bool $descending
-     * @return array
+     * @return static
      */
     public function ksort(int $flags = SORT_REGULAR, bool $descending = false): static
     {
@@ -203,7 +204,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      * Sort array by user-defined callback using keys
      *
      * @param  mixed $callback
-     * @return array
+     * @return static
      */
     public function uksort(mixed $callback): static
     {
@@ -285,17 +286,15 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      *
      * @param  ?string $name
      * @param  mixed $value
-     * @return static
+     * @return void
      */
-    public function __set(?string $name = null, mixed $value = null)
+    public function __set(?string $name = null, mixed $value = null): void
     {
         if ($name !== null) {
             $this->data[$name] = $value;
         } else {
             $this->data[] = $value;
         }
-
-        return $this;
     }
 
     /**
@@ -342,7 +341,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      */
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->__set($offset, $value);
+        $this->__set(($offset !== null) ? (string)$offset : null, $value);
     }
 
     /**
@@ -353,7 +352,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      */
     public function offsetGet(mixed $offset): mixed
     {
-        return $this->__get($offset);
+        return $this->__get((string)$offset);
     }
 
     /**
@@ -364,7 +363,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      */
     public function offsetExists(mixed $offset): bool
     {
-        return $this->__isset($offset);
+        return $this->__isset((string)$offset);
     }
 
     /**
@@ -375,7 +374,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      */
     public function offsetUnset(mixed $offset): void
     {
-        $this->__unset($offset);
+        $this->__unset((string)$offset);
     }
 
 }

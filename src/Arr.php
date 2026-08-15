@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Pop PHP Framework (https://www.popphp.org/)
  *
@@ -80,7 +81,7 @@ class Arr
      * Return the key in the array based on the first position of the value
      *
      * @param  array|AbstractArray $array
-     * @param  mixed               $value
+     * @param  string|int          $value
      * @param  bool                $strict
      * @return mixed
      */

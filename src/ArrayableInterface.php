@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Pop PHP Framework (https://www.popphp.org/)
  *
@@ -76,7 +77,7 @@ interface ArrayableInterface
      * @param  int  $flags
      * @param  bool $assoc
      * @param  bool $descending
-     * @return array
+     * @return static
      */
     public function sort(int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false): static;
 
@@ -94,7 +95,7 @@ interface ArrayableInterface
      *
      * @param  int  $flags
      * @param  bool $descending
-     * @return array
+     * @return static
      */
     public function ksort(int $flags = SORT_REGULAR, bool $descending = false): static;
 
@@ -119,7 +120,7 @@ interface ArrayableInterface
      * Sort array by user-defined callback using keys
      *
      * @param  mixed $callback
-     * @return array
+     * @return static
      */
     public function uksort(mixed $callback): static;
 

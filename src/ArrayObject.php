@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Pop PHP Framework (https://www.popphp.org/)
  *
@@ -139,12 +140,11 @@ class ArrayObject extends AbstractArray implements SerializableInterface, Jsonab
      * Unserialize magic method
      *
      * @param  array $data
-     * @return ArrayObject
+     * @return void
      */
-    public function __unserialize(array $data)
+    public function __unserialize(array $data): void
     {
         $this->data = $data;
-        return $this;
     }
 
 }

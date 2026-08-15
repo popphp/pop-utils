@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use Pop\Utils\AbstractArray;
 use Pop\Utils\Str;
@@ -12,9 +13,9 @@ if (!function_exists('app_date')) {
      * @param  mixed  $timestamp
      * @param  string $env
      * @param  mixed  $envDefault
-     * @return string|null
+     * @return string
      */
-    function app_date(string $format, mixed $timestamp = null, string $env = 'APP_TIMEZONE', mixed $envDefault = null): string|null
+    function app_date(string $format, mixed $timestamp = null, string $env = 'APP_TIMEZONE', mixed $envDefault = null): string
     {
         if (!empty($timestamp)) {
             if (!is_numeric($timestamp)) {
@@ -43,12 +44,12 @@ if (!function_exists('app_time')) {
     /**
      * Produce timestamp based on app timezone
      *
-     * @param  mixed   $timestamp
+     * @param  ?string $timestamp
      * @param  string  $env
      * @param  mixed   $envDefault
-     * @return string|null
+     * @return int|null
      */
-    function app_time(?string $timestamp = null, $env = 'APP_TIMEZONE', mixed $envDefault = null): string|null
+    function app_time(?string $timestamp = null, $env = 'APP_TIMEZONE', mixed $envDefault = null): int|null
     {
         $datetime = app_date('Y-m-d H:i:s', $timestamp, $env, $envDefault);
         return (!empty($datetime) && strtotime($datetime) !== false) ? strtotime($datetime) : null;

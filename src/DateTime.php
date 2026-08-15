@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Pop PHP Framework (https://www.popphp.org/)
  *
@@ -286,10 +287,10 @@ class DateTime extends \DateTime
     public static function getWeekDates(?int $week = null, ?int $year = null, ?string $format = null): array
     {
         if ($week === null) {
-            $week = date('W');
+            $week = (int)date('W');
         }
         if ($year === null) {
-            $year = date('Y');
+            $year = (int)date('Y');
         }
 
         $today     = new static('today');
