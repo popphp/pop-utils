@@ -258,17 +258,7 @@ class Collection extends AbstractArray
      */
     protected function getDataAsArray(mixed $data): array
     {
-        if ($data instanceof self) {
-            $data = $data->toArray();
-        } else if ($data instanceof \ArrayObject) {
-            $data = (array)$data;
-        } else if (is_object($data) && method_exists($data, 'toArray')) {
-            $data = $data->toArray();
-        } else if ($data instanceof \Traversable) {
-            $data = iterator_to_array($data);
-        }
-
-        return $data;
+        return Arr::toArray($data);
     }
 
 }

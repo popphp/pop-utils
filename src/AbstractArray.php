@@ -258,19 +258,7 @@ abstract class AbstractArray implements ArrayableInterface, ArrayAccess, Countab
      */
     public function toArray(): array
     {
-        $data = [];
-
-        if (!is_array($this->data)) {
-            if (is_object($this->data) && method_exists($this->data, 'toArray')) {
-                $data = $this->data->toArray();
-            } else if ($this->data instanceof \ArrayObject) {
-                $data = (array)$this->data;
-            } else if ($this->data instanceof \Traversable) {
-                $data = iterator_to_array($this->data);
-            }
-        } else {
-            $data = $this->data;
-        }
+        $data = Arr::toArray($this->data);
 
         foreach ($data as $key => $value) {
             if (is_object($value) && method_exists($value, 'toArray')) {

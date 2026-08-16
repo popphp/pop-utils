@@ -200,14 +200,15 @@ class File
     }
 
     /**
-     * Get file's mime type
+     * Get file's mime type from its extension, without touching the filesystem
      *
      * @param  string $filename
      * @return ?string
      */
     public static function getFileMimeType(string $filename): ?string
     {
-        return (new self($filename))->getMimeType();
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        return (!empty($extension)) ? (self::$mimeTypes[strtolower($extension)] ?? self::$defaultMimeType) : null;
     }
 
     /**

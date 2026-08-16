@@ -40,6 +40,29 @@ class Arr
     }
 
     /**
+     * Resolve an array-like value into a plain array
+     *
+     * @param  mixed $value
+     * @return array
+     */
+    public static function toArray(mixed $value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        } else if ($value instanceof AbstractArray) {
+            return $value->toArray();
+        } else if (is_object($value) && method_exists($value, 'toArray')) {
+            return $value->toArray();
+        } else if ($value instanceof \ArrayObject) {
+            return (array)$value;
+        } else if ($value instanceof \Traversable) {
+            return iterator_to_array($value);
+        }
+
+        return [];
+    }
+
+    /**
      * Check if the value is a numeric (non-associative) array
      *
      * @param  array $array
@@ -153,9 +176,7 @@ class Arr
      */
     public static function divide(array|AbstractArray $array): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
         return [array_keys($array), array_values($array)];
     }
 
@@ -169,9 +190,7 @@ class Arr
      */
     public static function slice(array|AbstractArray $array, int $limit, int $offset = 0): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         return (($limit < 0) && ($offset == 0)) ?
             array_slice($array, $limit, abs($limit)) : array_slice($array, $offset, $limit);
@@ -210,9 +229,7 @@ class Arr
      */
     public static function join(array|AbstractArray $array, string $glue, string $finalGlue = ''): string
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         if ($finalGlue === '') {
             return implode($glue, $array);
@@ -241,9 +258,7 @@ class Arr
      */
     public static function prepend(array|AbstractArray $array, mixed $value, mixed $key = null): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         if ($key === null) {
             array_unshift($array, $value);
@@ -282,9 +297,7 @@ class Arr
         array|AbstractArray $array, int $flags = SORT_REGULAR, bool $assoc = true, bool $descending = false
     ): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
         if ($descending) {
             $func = ($assoc) ? 'arsort' : 'rsort';
         } else {
@@ -318,9 +331,7 @@ class Arr
      */
     public static function ksort(array|AbstractArray $array, int $flags = SORT_REGULAR, bool $descending = false): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         if ($descending) {
             krsort($array, $flags);
@@ -353,9 +364,7 @@ class Arr
      */
     public static function usort(array|AbstractArray $array, mixed $callback, bool $assoc = true): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         if ($assoc) {
             uasort($array, $callback);
@@ -375,9 +384,7 @@ class Arr
      */
     public static function uksort(array|AbstractArray $array, mixed $callback): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         uksort($array, $callback);
 
@@ -393,9 +400,7 @@ class Arr
      */
     public static function map(array|AbstractArray $array, mixed $callback): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         return array_map($callback, $array);
     }
@@ -408,9 +413,7 @@ class Arr
      */
     public static function trim(array|AbstractArray $array): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         return array_map('trim', $array);
     }
@@ -425,9 +428,7 @@ class Arr
      */
     public static function filter(array|AbstractArray $array, mixed $callback = null, int $mode = ARRAY_FILTER_USE_BOTH): array
     {
-        if ($array instanceof AbstractArray) {
-            $array = $array->toArray();
-        }
+        $array = static::toArray($array);
 
         return array_filter($array, $callback, $mode);
     }
