@@ -198,5 +198,32 @@ class CallableTest extends TestCase
         $this->assertEquals('Hello World!', $callable->call());
     }
 
+    public function testNewObjectCallWithParams()
+    {
+        $callable = new CallableObject('new Pop\Utils\Test\TestAsset\TestClass', 'HI BACK!');
+        $result   = $callable->call();
+        $this->assertEquals(CallableObject::NEW_OBJECT_PARAMS, $callable->getCallableType());
+        $this->assertInstanceOf('Pop\Utils\Test\TestAsset\TestClass', $result);
+        $this->assertEquals('HI BACK!', $result->getFoo());
+    }
+
+    public function testNewObjectCallWithNamedParams()
+    {
+        $callable = new CallableObject('new Pop\Utils\Test\TestAsset\TestClass');
+        $callable->addNamedParameter('foo', 'NAMED!');
+        $result = $callable->call();
+        $this->assertInstanceOf('Pop\Utils\Test\TestAsset\TestClass', $result);
+        $this->assertEquals('NAMED!', $result->getFoo());
+    }
+
+    public function testObjectCallWithParams()
+    {
+        $object   = new TestClass('Hi');
+        $callable = new CallableObject($object, 'ignored');
+        $result   = $callable->call();
+        $this->assertEquals(CallableObject::OBJECT_PARAMS, $callable->getCallableType());
+        $this->assertSame($object, $result);
+    }
+
 
 }

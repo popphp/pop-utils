@@ -193,7 +193,11 @@ class CallableObject extends AbstractCallable
                 $class  = $this->class;
                 $result = new $class();
                 break;
+            case self::NEW_OBJECT_PARAMS:
+                $result = (new ReflectionClass($this->class))->newInstanceArgs($this->parameters);
+                break;
             case self::OBJECT:
+            case self::OBJECT_PARAMS:
                 $result = $this->callable;
                 break;
         }

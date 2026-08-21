@@ -296,6 +296,15 @@ $myInstance = $callable->call();
 $myInstance->printString();
 ```
 
+The `'new MyClass'` form is an equivalent spelling of the same thing, and takes constructor parameters
+the same way:
+
+```php
+$callable = new CallableObject('new MyClass', 'Hello World');
+$myInstance = $callable->call();
+$myInstance->printString();
+```
+
 ##### Managing Parameters
 
 Beyond passing parameters into the constructor or `call()`, `CallableObject` has a fluent API for
