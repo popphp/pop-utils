@@ -582,10 +582,20 @@ echo Str::titleCaseToSnakeCase('TitleCase');         // title_case
 echo Str::camelCaseToDash('camelCase');              // camel-case
 echo Str::camelCaseToUnderscore('camelCase');        // camel_case
 echo Str::kebabCaseToTitleCase('kebab-string');      // KebabString
-echo Str::snakeCaseToCamelCase('snake_case_string'); // SnakeCaseString
+echo Str::snakeCaseToCamelCase('snake_case_string'); // snakeCaseString
 echo Str::snakeCaseToNamespace('snake_case_string'); // Snake\Case\String
-echo Str::kebabCaseToPath('kebab-string');           // kebab/string (kebab\string on Windows)
-echo Str::camelCaseToUrl('camelCase');               // camel/case
+echo Str::kebabCaseToPath('kebab-string');           // Kebab/String (Kebab\String on Windows)
+echo Str::camelCaseToUrl('camelCase');               // camel/Case
+```
+
+The path, namespace and URL conversions preserve the source string's casing by default. Pass `false` as
+the second argument for a lowercased result, which is usually what a URL or a filesystem path wants:
+
+```php
+use Pop\Utils\Str;
+
+echo Str::kebabCaseToPath('kebab-string', false);    // kebab/string
+echo Str::camelCaseToUrl('camelCase', false);        // camel/case
 ```
 
 ##### Stripping Special Characters
