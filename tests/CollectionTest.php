@@ -259,9 +259,12 @@ class CollectionTest extends TestCase
             ]
         ]);
 
+        $originalData  = $collection->toArray();
         $newCollection = $collection->flip();
 
         $this->assertEquals('name', $newCollection[0]['John']);
+        $this->assertEquals($originalData, $collection->toArray());
+        $this->assertNotSame($collection, $newCollection);
     }
 
     public function testMerge()

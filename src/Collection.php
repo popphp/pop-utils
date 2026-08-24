@@ -108,10 +108,13 @@ class Collection extends AbstractArray
      */
     public function flip(): Collection
     {
+        $flipped = [];
+
         foreach ($this->data as $i => $item) {
-            $this->data[$i] = array_flip($item);
+            $flipped[$i] = array_flip($item);
         }
-        return new static($this->data);
+
+        return new static($flipped);
     }
 
     /**

@@ -37,9 +37,18 @@ class UuidTest extends TestCase
     {
         $uuidV7 = Uuid::v7();
         $parts  = explode('-', $uuidV7);
-        $this->assertEquals(35, strlen($uuidV7));
+        $this->assertEquals(36, strlen($uuidV7));
         $this->assertEquals(5, count($parts));
+        $this->assertEquals(8, strlen($parts[0]));
+        $this->assertEquals(4, strlen($parts[1]));
+        $this->assertEquals(4, strlen($parts[2]));
+        $this->assertEquals(4, strlen($parts[3]));
+        $this->assertEquals(12, strlen($parts[4]));
         $this->assertEquals('7', substr($parts[2], 0, 1));
+        $this->assertMatchesRegularExpression(
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/',
+            $uuidV7
+        );
     }
 
 }
