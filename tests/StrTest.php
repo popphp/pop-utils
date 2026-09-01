@@ -160,4 +160,41 @@ HTML;
         $this->assertEquals('HelloWorldWhat_is-up', Str::stripSpecialCharacters($string, false, false));
     }
 
+    public function testMatchesLiteral()
+    {
+        $this->assertTrue(Str::matches('hello', 'hello'));
+        $this->assertFalse(Str::matches('hello', 'goodbye'));
+    }
+
+    public function testMatchesFuzzy()
+    {
+        $this->assertTrue(Str::matches('hello', 'hellp', false, 75));
+        $this->assertFalse(Str::matches('hello', 'goodbye', false, 75));
+    }
+
+    public function testMatchesAnyOfMultipleSources()
+    {
+        $this->assertTrue(Str::matches('hello', ['goodbye', 'hello', 'farewell']));
+        $this->assertFalse(Str::matches('hello', ['goodbye', 'farewell']));
+    }
+
+    public function testMatchesStrictRequiresAll()
+    {
+        $this->assertTrue(Str::matches('hello', ['hello', 'hellp'], true, 75));
+        $this->assertFalse(Str::matches('hello', ['hello', 'goodbye'], true, 75));
+    }
+
+    public function testMatchesEmptySources()
+    {
+        $this->assertFalse(Str::matches('hello', []));
+        $this->assertFalse(Str::matches('hello', [], true));
+    }
+
+    public function testMatchesSubstring()
+    {
+        $this->assertTrue(Str::matches('John Doe', 'foo bar John Doe baz pow'));
+        $this->assertFalse(Str::matches('John Doe', 'foo bar John Q. Doe, Esq pow', false, 75));
+        $this->assertTrue(Str::matches('John Doe', 'foo bar John Q. Doe, Esq pow', false, 40));
+    }
+
 }

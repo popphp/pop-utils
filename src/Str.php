@@ -247,6 +247,37 @@ class Str
     }
 
     /**
+     * Check if the sources matches the source string(s) in some way - via direct/literal compare or a similar_text() call
+     *
+     * @param  string $string
+     * @param  mixed  $sources
+     * @param  bool   $strict    If the sources are an array of multiple sources, strict = true means all have to match
+     * @param  int    $accuracy  Sets the precentage of accuracy for similar_text()
+     * @return bool
+     */
+    public static function matches(string $string, mixed $sources, bool $strict = false, int $accuracy = 75): bool
+    {
+        $sources = Arr::make($sources);
+
+        if (empty($sources)) {
+            return false;
+        }
+
+        $results = [];
+
+        foreach ($sources as $source) {
+            if (str_contains($source, $string)) {
+                $results[] = true;
+                continue;
+            }
+            similar_text($string, $source, $percent);
+            $results[] = ($percent >= $accuracy);
+        }
+
+        return $strict ? !in_array(false, $results, true) : in_array(true, $results, true);
+    }
+
+    /**
      * Convert a string from one case to another
      *
      * @param string $name
