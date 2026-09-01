@@ -635,6 +635,25 @@ var_dump(Str::matches('hello', $sources));               // bool(true)  - matche
 var_dump(Str::matches('hello', $sources, strict: true));  // bool(false) - doesn't match 'goodbye' or 'farewell'
 ```
 
+`Str::matchesWords()` is a word-based alternative for longer, noisier source strings, such as matching
+a name against a legal vesting clause. Instead of comparing the two strings as a whole (where a long
+source string dilutes the `similar_text()` percentage even if the name is clearly present), it checks
+what percentage of `$string`'s individual words can be found in `$source` - ignoring word order,
+punctuation, and case, and tolerating minor typos via a per-word `similar_text()` comparison:
+
+```php
+use Pop\Utils\Str;
+
+$vestingClause = 'John Q. Doe, III, Esq, married to Jane R. Doe, formerly divorced and then remarried';
+
+var_dump(Str::matchesWords('John Doe', $vestingClause));     // bool(true)  - both words found
+var_dump(Str::matchesWords('Robert Smith', $vestingClause)); // bool(false) - neither word found
+var_dump(Str::matchesWords('John Smith', $vestingClause));   // bool(false) - only 1 of 2 words found (50% < 75%)
+var_dump(Str::matchesWords('Jon Doe', $vestingClause));      // bool(true)  - 'Jon' is ~86% similar to 'John'
+```
+
+`$sources` and `$strict` behave the same way as they do for `Str::matches()`.
+
 [Top](#pop-utils)
 
 ### Number Helper

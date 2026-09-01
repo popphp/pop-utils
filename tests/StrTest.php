@@ -197,4 +197,45 @@ HTML;
         $this->assertTrue(Str::matches('John Doe', 'foo bar John Q. Doe, Esq pow', false, 40));
     }
 
+    public function testMatchesWordsVestingClause()
+    {
+        $vestingClause = 'John Q. Doe, III, Esq, married to Jane R. Doe, formerly divorced and then remarried';
+
+        $this->assertTrue(Str::matchesWords('John Doe', $vestingClause));
+        $this->assertFalse(Str::matchesWords('Robert Smith', $vestingClause));
+    }
+
+    public function testMatchesWordsPartialNameFails()
+    {
+        $vestingClause = 'John Q. Doe, III, Esq, married to Jane R. Doe, formerly divorced and then remarried';
+
+        $this->assertFalse(Str::matchesWords('John Smith', $vestingClause));
+    }
+
+    public function testMatchesWordsPunctuationAndCase()
+    {
+        $this->assertTrue(Str::matchesWords('john doe', 'Foo Bar, JOHN Q. DOE III'));
+    }
+
+    public function testMatchesWordsTypoTolerance()
+    {
+        $vestingClause = 'John Q. Doe, III, Esq, married to Jane R. Doe, formerly divorced and then remarried';
+
+        $this->assertTrue(Str::matchesWords('Jon Doe', $vestingClause, false, 75));
+    }
+
+    public function testMatchesWordsMultipleSources()
+    {
+        $vestingClause = 'John Q. Doe, III, Esq, married to Jane R. Doe, formerly divorced and then remarried';
+        $sources       = ['foo bar baz', $vestingClause];
+
+        $this->assertTrue(Str::matchesWords('John Doe', $sources));
+        $this->assertFalse(Str::matchesWords('John Doe', $sources, true));
+    }
+
+    public function testMatchesWordsEmptySources()
+    {
+        $this->assertFalse(Str::matchesWords('John Doe', []));
+    }
+
 }

@@ -278,6 +278,89 @@ class Str
     }
 
     /**
+     * Check if the words in the string can be found within the source string(s), tolerant of extra
+     * words, punctuation, word order, and minor typos (via a per-word similar_text() comparison)
+     *
+     * @param  string $string
+     * @param  mixed  $sources
+     * @param  bool   $strict    If the sources are an array of multiple sources, strict = true means all have to match
+     * @param  int    $accuracy  Sets the percentage of accuracy for both per-word typo tolerance and the overall words-found ratio
+     * @return bool
+     */
+    public static function matchesWords(string $string, mixed $sources, bool $strict = false, int $accuracy = 75): bool
+    {
+        $sources = Arr::make($sources);
+
+        if (empty($sources)) {
+            return false;
+        }
+
+        $results = [];
+
+        foreach ($sources as $source) {
+            $results[] = self::matchesWordsInSource($string, $source, $accuracy);
+        }
+
+        return $strict ? !in_array(false, $results, true) : in_array(true, $results, true);
+    }
+
+    /**
+     * Check if the words in the string can be found within a single source string
+     *
+     * @param  string $string
+     * @param  string $source
+     * @param  int    $accuracy
+     * @return bool
+     */
+    protected static function matchesWordsInSource(string $string, string $source, int $accuracy): bool
+    {
+        if (str_contains($source, $string)) {
+            return true;
+        }
+
+        $stringWords = self::extractWords($string);
+
+        if (empty($stringWords)) {
+            return false;
+        }
+
+        $sourceWords = self::extractWords($source);
+        $matched     = 0;
+
+        foreach ($stringWords as $word) {
+            if (in_array($word, $sourceWords, true)) {
+                $matched++;
+                continue;
+            }
+            foreach ($sourceWords as $sourceWord) {
+                similar_text($word, $sourceWord, $percent);
+                if ($percent >= $accuracy) {
+                    $matched++;
+                    continue 2;
+                }
+            }
+        }
+
+        return (($matched / count($stringWords)) * 100) >= $accuracy;
+    }
+
+    /**
+     * Extract lowercased, punctuation-stripped words from a string
+     *
+     * @param  string $string
+     * @return array
+     */
+    protected static function extractWords(string $string): array
+    {
+        $words = preg_split('/\s+/', strtolower($string), -1, PREG_SPLIT_NO_EMPTY);
+
+        return array_values(array_filter(array_map(
+            fn($word) => preg_replace('/[^\p{L}\p{N}]+/u', '', $word),
+            $words
+        ), fn($word) => $word !== ''));
+    }
+
+    /**
      * Convert a string from one case to another
      *
      * @param string $name
