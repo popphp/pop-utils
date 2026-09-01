@@ -609,6 +609,32 @@ echo Str::stripSpecialCharacters('Hello_World! #1'); // 'Hello_World 1'
 echo Str::stripSpecialCharacters('Hello_World! #1', alphaNumOnly: true, spaces: false); // 'HelloWorld1'
 ```
 
+##### Matching Strings
+
+`Str::matches()` checks a string against one or more source strings, first via a direct substring
+check (`str_contains()`), falling back to a `similar_text()` percentage comparison (controlled by
+the `$accuracy` argument, default `75`) if the substring check fails:
+
+```php
+use Pop\Utils\Str;
+
+var_dump(Str::matches('John Doe', 'foo bar John Doe baz pow'));            // bool(true) - direct substring match
+var_dump(Str::matches('John Doe', 'foo bar John Q. Doe, Esq pow'));        // bool(false) - not a substring, and below 75% similar
+var_dump(Str::matches('John Doe', 'foo bar John Q. Doe, Esq pow', accuracy: 40)); // bool(true) - ~44% similar
+```
+
+`$sources` may also be an array of strings. By default, `$strict = false` means only one source has
+to match; pass `$strict = true` to require all of the sources to match:
+
+```php
+use Pop\Utils\Str;
+
+$sources = ['goodbye', 'hello', 'farewell'];
+
+var_dump(Str::matches('hello', $sources));               // bool(true)  - matches 'hello'
+var_dump(Str::matches('hello', $sources, strict: true));  // bool(false) - doesn't match 'goodbye' or 'farewell'
+```
+
 [Top](#pop-utils)
 
 ### Number Helper
