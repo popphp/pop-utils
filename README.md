@@ -518,6 +518,51 @@ manipulating arrays:
 - `Arr::trim(array|AbstractArray $array): array`
 - `Arr::filter(array|AbstractArray $array, mixed $callback = null, int $mode = ARRAY_FILTER_USE_BOTH): array`
 - `Arr::make(mixed $value): array`
+- `Arr::coalesce(array|AbstractArray $primary, array|AbstractArray $fallback, bool $recursive = false): array`
+
+`Arr::coalesce()` merges two arrays key-by-key, preferring `$primary`'s value unless it's `null` or an
+empty string, in which case `$fallback`'s value at that key is used instead:
+
+```php
+use Pop\Utils\Arr;
+
+$primary  = ['name' => 'John Doe', 'email' => '', 'phone' => null];
+$fallback = ['name' => 'Unknown', 'email' => 'unknown@example.com', 'phone' => '555-1234'];
+
+print_r(Arr::coalesce($primary, $fallback));
+
+/*
+Array
+(
+    [name] => John Doe
+    [email] => unknown@example.com
+    [phone] => 555-1234
+)
+*/
+```
+
+By default, nested arrays are compared as whole values (like `array_replace()`). Passing `$recursive = true`
+coalesces nested arrays key-by-key as well (like `array_replace_recursive()`), rather than treating them
+as a single value:
+
+```php
+$primary  = ['contact' => ['email' => '', 'phone' => '555-1234']];
+$fallback = ['contact' => ['email' => 'unknown@example.com', 'phone' => '555-0000']];
+
+print_r(Arr::coalesce($primary, $fallback, true));
+
+/*
+Array
+(
+    [contact] => Array
+        (
+            [email] => unknown@example.com
+            [phone] => 555-1234
+        )
+
+)
+*/
+```
 
 [Top](#pop-utils)
 

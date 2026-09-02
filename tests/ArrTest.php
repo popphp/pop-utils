@@ -287,4 +287,82 @@ class ArrTest extends TestCase
         $this->assertEquals(123, $array[0]);
     }
 
+    public function testCoalesce()
+    {
+        $primary  = ['foo' => 'baz', 'bar' => null, 'baz' => ''];
+        $fallback = ['foo' => 'fallback-foo', 'bar' => 'fallback-bar', 'baz' => 'fallback-baz'];
+
+        $result = Arr::coalesce($primary, $fallback);
+
+        $this->assertEquals('baz', $result['foo']);
+        $this->assertEquals('fallback-bar', $result['bar']);
+        $this->assertEquals('fallback-baz', $result['baz']);
+    }
+
+    public function testCoalesceKeyOnlyInFallback()
+    {
+        $primary  = ['foo' => 'baz'];
+        $fallback = ['foo' => 'fallback-foo', 'bar' => 'fallback-bar'];
+
+        $result = Arr::coalesce($primary, $fallback);
+
+        $this->assertEquals('baz', $result['foo']);
+        $this->assertEquals('fallback-bar', $result['bar']);
+    }
+
+    public function testCoalesceKeyOnlyInPrimary()
+    {
+        $primary  = ['foo' => 'baz', 'bar' => 'baz-bar'];
+        $fallback = ['foo' => 'fallback-foo'];
+
+        $result = Arr::coalesce($primary, $fallback);
+
+        $this->assertEquals('baz', $result['foo']);
+        $this->assertEquals('baz-bar', $result['bar']);
+    }
+
+    public function testCoalesceWithArrayObjects()
+    {
+        $primary  = new ArrayObject(['foo' => null, 'bar' => 'baz-bar']);
+        $fallback = new ArrayObject(['foo' => 'fallback-foo', 'bar' => 'fallback-bar']);
+
+        $result = Arr::coalesce($primary, $fallback);
+
+        $this->assertEquals('fallback-foo', $result['foo']);
+        $this->assertEquals('baz-bar', $result['bar']);
+    }
+
+    public function testCoalesceNotRecursiveByDefault()
+    {
+        $primary  = ['foo' => ['bar' => null, 'baz' => 'primary-baz']];
+        $fallback = ['foo' => ['bar' => 'fallback-bar', 'baz' => 'fallback-baz']];
+
+        $result = Arr::coalesce($primary, $fallback);
+
+        $this->assertNull($result['foo']['bar']);
+        $this->assertEquals('primary-baz', $result['foo']['baz']);
+    }
+
+    public function testCoalesceRecursive()
+    {
+        $primary  = ['foo' => ['bar' => null, 'baz' => 'primary-baz'], 'top' => null];
+        $fallback = ['foo' => ['bar' => 'fallback-bar', 'baz' => 'fallback-baz'], 'top' => 'fallback-top'];
+
+        $result = Arr::coalesce($primary, $fallback, true);
+
+        $this->assertEquals('fallback-bar', $result['foo']['bar']);
+        $this->assertEquals('primary-baz', $result['foo']['baz']);
+        $this->assertEquals('fallback-top', $result['top']);
+    }
+
+    public function testCoalesceRecursiveNestedKeyOnlyInPrimary()
+    {
+        $primary  = ['foo' => ['bar' => 'primary-bar']];
+        $fallback = ['foo' => 'not-an-array'];
+
+        $result = Arr::coalesce($primary, $fallback, true);
+
+        $this->assertEquals(['bar' => 'primary-bar'], $result['foo']);
+    }
+
 }

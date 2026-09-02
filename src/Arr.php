@@ -434,6 +434,38 @@ class Arr
     }
 
     /**
+     * Merge two arrays, preferring $primary's value at each key unless it is null or an empty
+     * string, in which case $fallback's value at that key is used instead. If $recursive is true,
+     * keys where both arrays hold an array value are coalesced recursively instead of compared directly
+     *
+     * @param  array|AbstractArray $primary
+     * @param  array|AbstractArray $fallback
+     * @param  bool                $recursive
+     * @return array
+     */
+    public static function coalesce(array|AbstractArray $primary, array|AbstractArray $fallback, bool $recursive = false): array
+    {
+        $primary  = static::toArray($primary);
+        $fallback = static::toArray($fallback);
+
+        if (!$recursive) {
+            return array_replace($fallback, array_filter($primary, fn($value) => $value !== null && $value !== ''));
+        }
+
+        $result = $fallback;
+
+        foreach ($primary as $key => $value) {
+            if (is_array($value) && isset($result[$key]) && is_array($result[$key])) {
+                $result[$key] = static::coalesce($value, $result[$key], true);
+            } else if ($value !== null && $value !== '') {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Force value to be any array (if it is not one already)
      *
      * @param  mixed $value
