@@ -198,6 +198,45 @@ class CallableTest extends TestCase
         $this->assertEquals('Hello World!', $callable->call());
     }
 
+    /**
+     * A parameter is data, even when it names a function.
+     *
+     * is_callable() is true for every function in the process and matches case-insensitively,
+     * so resolving parameters with it meant any caller passing user input through as a
+     * parameter executed whatever the input named. pop-filter does exactly that - it prepends
+     * the value being filtered as parameter 0 - so a form field of "System" fataled with
+     * "system() expects at least 1 argument, 0 given" and took the whole request with it.
+     */
+    public function testAStringParameterIsNotInvokedEvenWhenItNamesAFunction()
+    {
+        $callable = new CallableObject('strip_tags', 'System');
+        $this->assertEquals('System', $callable->call());
+    }
+
+    /**
+     * The quieter half of the same bug: a function that needs no arguments does not fatal, it
+     * runs - and its return value replaces what the user actually typed. A first name of
+     * "getcwd" was stored as the server's filesystem path, "php_uname" as its kernel and host.
+     */
+    public function testAZeroArgumentFunctionNameIsNotSubstitutedForItsReturnValue()
+    {
+        foreach (['getcwd', 'php_uname', 'phpversion'] as $name) {
+            $callable = new CallableObject('strip_tags', $name);
+            $this->assertEquals($name, $callable->call(), $name . ' was executed rather than passed through');
+        }
+    }
+
+    /**
+     * The array form has the same rule. This one never reached pop-filter, which recurses into
+     * arrays element by element, but it is the more dangerous of the two: the remaining
+     * elements become the call's arguments.
+     */
+    public function testAnArrayOfStringsIsNotInvoked()
+    {
+        $callable = new CallableObject('count', [['strtoupper', 'abc']]);
+        $this->assertEquals(2, $callable->call());
+    }
+
     public function testNewObjectCallWithParams()
     {
         $callable = new CallableObject('new Pop\Utils\Test\TestAsset\TestClass', 'HI BACK!');

@@ -110,6 +110,23 @@ class CallableObject extends AbstractCallable
     /**
      * Prepare parameters
      *
+     * A parameter that is itself callable is resolved here, so that its value is produced at
+     * call time rather than at the time it was set.
+     *
+     * Both shapes are still supported - a bare callable, and a [callable, ...args] array - but
+     * only for an unambiguous callable: a CallableObject, a Closure, or an object implementing
+     * __invoke(). A string is NOT resolved even when it names a real function.
+     *
+     * A string is indistinguishable from ordinary data, and is_callable() answers true for
+     * every function in the process, matched case-insensitively. So any caller that passes user
+     * input through as a parameter used to execute whatever function that input happened to
+     * name: a form field containing "System" reached call_user_func('System') and fataled on
+     * the missing argument, and one containing "getcwd" or "php_uname" quietly succeeded and
+     * replaced the user's own value with the function's return value.
+     *
+     * A caller that really does want a named function resolved should wrap it - a Closure, or
+     * another CallableObject - which says so explicitly instead of inferring it from the value.
+     *
      * @throws Exception|ReflectionException
      * @return CallableObject
      */
@@ -118,9 +135,9 @@ class CallableObject extends AbstractCallable
         foreach ($this->parameters as $key => $value) {
             if ($value instanceof self) {
                 $this->parameters[$key] = $value->call();
-            } else if (is_callable($value)) {
+            } else if (self::isResolvable($value)) {
                 $this->parameters[$key] = call_user_func($value);
-            } else if (is_array($value) && isset($value[0]) && is_callable($value[0])) {
+            } else if (is_array($value) && isset($value[0]) && self::isResolvable($value[0])) {
                 $callable = $value[0];
                 unset($value[0]);
                 $this->parameters[$key] = call_user_func_array($callable, array_values($value));
@@ -128,6 +145,21 @@ class CallableObject extends AbstractCallable
         }
 
         return $this;
+    }
+
+    /**
+     * Is a parameter value a callable this class may resolve on the caller's behalf
+     *
+     * Deliberately narrower than is_callable(): see prepareParameters(). A string or an array
+     * of strings is data, however much it looks like a function name.
+     *
+     * @param  mixed $value
+     * @return bool
+     */
+    protected static function isResolvable(mixed $value): bool
+    {
+        return (($value instanceof self) || ($value instanceof \Closure) ||
+            (is_object($value) && method_exists($value, '__invoke')));
     }
 
     /**

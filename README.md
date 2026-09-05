@@ -220,7 +220,9 @@ at a later time.
 The parameters can be set anytime in the callable object's life cycle, from the time of
 instantiation via the constructor, via the set/add methods or at the time of calling the object.
 Parameters passed into the callable object can be callable themselves and will be invoked
-at the time the parent callable object is called.
+at the time the parent callable object is called. That means a `Closure`, an `__invoke()`-able
+object or another `CallableObject` - a string is treated as data even when it names a real
+function, so that a parameter carrying user input cannot execute whatever it happens to spell.
 
 ##### Function Callable
 
