@@ -51,4 +51,28 @@ class UuidTest extends TestCase
         );
     }
 
+    public function testIsValidV4()
+    {
+        $this->assertTrue(Uuid::isValidV4(Uuid::v4()));
+        $this->assertTrue(Uuid::isValidV4('550E8400-E29B-41D4-A716-446655440000'));
+    }
+
+    public function testIsValidV4Fails()
+    {
+        $this->assertFalse(Uuid::isValidV4(Uuid::v7()));
+        $this->assertFalse(Uuid::isValidV4('not-a-uuid'));
+        $this->assertFalse(Uuid::isValidV4('550e8400-e29b-41d4-a716-44665544000'));
+    }
+
+    public function testIsValidV7()
+    {
+        $this->assertTrue(Uuid::isValidV7(Uuid::v7()));
+    }
+
+    public function testIsValidV7Fails()
+    {
+        $this->assertFalse(Uuid::isValidV7(Uuid::v4()));
+        $this->assertFalse(Uuid::isValidV7('not-a-uuid'));
+    }
+
 }

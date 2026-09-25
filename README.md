@@ -736,6 +736,8 @@ The `Pop\Utils\Uuid` class has a few static methods to assist in the generation 
 - `Uuid::v4Linux(): string`
 - `Uuid::v4LinuxAvailable(): bool`
 - `Uuid::v7(): string`
+- `Uuid::isValidV4(string $value): bool`
+- `Uuid::isValidV7(string $value): bool`
 
 ```php
 use Pop\Utils\Uuid;
@@ -750,6 +752,10 @@ if (Uuid::v4LinuxAvailable()) {
 
 // Generate a v7 UUID (time-based) using native PHP
 echo Uuid::v7();  
+
+// Validate a v4 or v7 UUID string
+var_dump(Uuid::isValidV4(Uuid::v4())); // bool(true)
+var_dump(Uuid::isValidV7(Uuid::v4())); // bool(false)
 ```
 
 [Top](#pop-utils)

@@ -84,4 +84,26 @@ class Uuid
         return $uuid;
     }
 
+    /**
+     * Is the value a valid v4 UUID
+     *
+     * @param  string $value
+     * @return bool
+     */
+    public static function isValidV4(string $value): bool
+    {
+        return (bool)preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $value);
+    }
+
+    /**
+     * Is the value a valid v7 UUID
+     *
+     * @param  string $value
+     * @return bool
+     */
+    public static function isValidV7(string $value): bool
+    {
+        return (bool)preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $value);
+    }
+
 }
