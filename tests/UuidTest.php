@@ -69,6 +69,29 @@ class UuidTest extends TestCase
         $this->assertTrue(Uuid::isValidV7(Uuid::v7()));
     }
 
+    /**
+     * RFC 9562 says a UUID is output lowercase but read either way, so case-insensitive is the
+     * right default. Callers that have to agree with a stricter system -- one whose own validator
+     * has no /i -- need to be able to ask for the canonical form, or they accept ids the next hop
+     * will refuse.
+     */
+    public function testIsValidV4CaseSensitiveAcceptsOnlyLowercase()
+    {
+        $this->assertTrue(Uuid::isValidV4(Uuid::v4(), true));
+        $this->assertTrue(Uuid::isValidV4('550e8400-e29b-41d4-a716-446655440000', true));
+        $this->assertFalse(Uuid::isValidV4('550E8400-E29B-41D4-A716-446655440000', true));
+        $this->assertFalse(Uuid::isValidV4('550E8400-e29b-41d4-a716-446655440000', true));
+    }
+
+    public function testIsValidV7CaseSensitiveAcceptsOnlyLowercase()
+    {
+        $uuidV7 = Uuid::v7();
+
+        $this->assertTrue(Uuid::isValidV7($uuidV7, true));
+        $this->assertFalse(Uuid::isValidV7(strtoupper($uuidV7), true));
+        $this->assertTrue(Uuid::isValidV7(strtoupper($uuidV7)));
+    }
+
     public function testIsValidV7Fails()
     {
         $this->assertFalse(Uuid::isValidV7(Uuid::v4()));

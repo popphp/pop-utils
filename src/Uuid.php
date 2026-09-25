@@ -87,23 +87,37 @@ class Uuid
     /**
      * Is the value a valid v4 UUID
      *
+     * RFC 9562 says a UUID is generated lowercase but read either way, so the check is
+     * case-insensitive by default. Pass $caseSensitive to accept only the canonical lowercase
+     * form - needed when agreeing with a system whose own validator is stricter.
+     *
      * @param  string $value
+     * @param  bool   $caseSensitive
      * @return bool
      */
-    public static function isValidV4(string $value): bool
+    public static function isValidV4(string $value, bool $caseSensitive = false): bool
     {
-        return (bool)preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $value);
+        return (bool)preg_match(
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/' . (($caseSensitive) ? '' : 'i'),
+            $value
+        );
     }
 
     /**
      * Is the value a valid v7 UUID
      *
+     * See isValidV4() for what $caseSensitive is for.
+     *
      * @param  string $value
+     * @param  bool   $caseSensitive
      * @return bool
      */
-    public static function isValidV7(string $value): bool
+    public static function isValidV7(string $value, bool $caseSensitive = false): bool
     {
-        return (bool)preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $value);
+        return (bool)preg_match(
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/' . (($caseSensitive) ? '' : 'i'),
+            $value
+        );
     }
 
 }
